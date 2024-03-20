@@ -15,6 +15,6 @@ const Navbar = () => {
             <button className="p-3 text-3xl rounded-lg bg-purple-secondary bg-opacity-40"><CiDark /></button>
         </div>
     </div>
-  )
-}
-export default Navbar
+  );
+};
+export default Navbar;
