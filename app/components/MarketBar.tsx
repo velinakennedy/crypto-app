@@ -7,6 +7,8 @@ import { RootState } from "../redux/store";
 import { RiCoinsFill } from "react-icons/ri";
 import { GoTriangleUp } from "react-icons/go";
 import ProgressBar from "./ProgressBar";
+import formatCurrency from "@/utils/formatCurrency";
+import getPercentage from "@/utils/getPercentage";
 
 const MarketBar = () => {
     const {isLoading, data} = useGetMarketDataQuery("");
@@ -26,23 +28,11 @@ const MarketBar = () => {
         </div>
         <div className="flex items-center gap-2">
           <GoTriangleUp className="text-green-300" />{" "}
-          {new Intl.NumberFormat("en-US", {
-            maximumSignificantDigits: 3,
-            style: "currency",
-            currency: `${currency}`,
-            notation: "compact",
-            compactDisplay: "short",
-          }).format(data.data.total_market_cap[currency])}
+          {formatCurrency(currency, data.data.total_market_cap[currency])}
         </div>
         <div className="flex items-center gap-2">
-          {new Intl.NumberFormat("en-US", {
-            maximumSignificantDigits: 3,
-            style: "currency",
-            currency: `${currency}`,
-            notation: "compact",
-            compactDisplay: "short",
-          }).format(data.data.total_volume[currency])}
-          <ProgressBar percent={Math.floor((data.data.total_volume[currency]/data.data.total_market_cap[currency])*100)} fillColor="#ffffff" barColor="#8686a9" />
+          {formatCurrency(currency, data.data.total_volume[currency])}
+          <ProgressBar percent={getPercentage(data.data.total_volume[currency], data.data.total_market_cap[currency])} fillColor="#ffffff" barColor="#8686a9" />
         </div>
         <div className="flex items-center gap-2">
           {Math.floor(data.data.market_cap_percentage.btc)}%
@@ -50,7 +40,7 @@ const MarketBar = () => {
         </div>
         <div className="flex items-center gap-2">
           {Math.floor(data.data.market_cap_percentage.eth)}%
-          <ProgressBar percent={Math.floor(Math.floor(data.data.market_cap_percentage.eth))} fillColor="#849eff" barColor="#8686a9" />
+          <ProgressBar percent={Math.floor(data.data.market_cap_percentage.eth)} fillColor="#849eff" barColor="#8686a9" />
         </div>
       </div>
       )}
