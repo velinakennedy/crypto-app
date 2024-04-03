@@ -50,21 +50,34 @@ const Dropdown = () => {
     const storedCurrency: string | null = localStorage.getItem("currency");
     if (storedCurrency) dispatch(updateCurrency(storedCurrency));
   });
-  
+
   //finding symbol for main dropdown button
-  const currentSymbol: ReactNode = currencyTypes.find((element) => element.name == currency)!.symbol;
+  const currentSymbol: ReactNode = currencyTypes.find(
+    (element) => element.name == currency
+  )!.symbol;
 
   return (
-    <div className={`${isActive ? "rounded-t" : "rounded"} w-36 bg-purple-secondary`}>
-      <button className="flex items-center justify-center w-full h-full gap-1 rounded bg-purple-secondary hover:bg-purple-hover" onClick={handleToggle}>
+    <div
+      className={`${
+        isActive ? "rounded-t" : "rounded"
+      } w-36 bg-purple-secondary dark:bg-purple-secondary-dark`}
+    >
+      <button
+        className="flex items-center justify-center w-full h-full gap-1 rounded bg-purple-secondary dark:hover:bg-purple-hover-dark hover:bg-purple-hover dark:bg-purple-secondary-dark"
+        onClick={handleToggle}
+      >
         {currentSymbol}
         {currency.toUpperCase()}
       </button>
-      
-      <div className={`fixed flex flex-col gap-3 rounded-b w-36 bg-purple-secondary ${isActive ? "" : "hidden"}`}>
+
+      <div
+        className={`fixed flex flex-col gap-3 rounded-b w-36 bg-purple-secondary dark:bg-purple-secondary-dark ${
+          isActive ? "" : "hidden"
+        }`}
+      >
         {currencyTypes.map(({ name, symbol }) => (
           <button
-            className="flex items-center gap-1 p-5 px-10 rounded bg-purple-secondary hover:bg-purple-hover"
+            className="flex items-center gap-1 p-5 px-10 rounded bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark"
             key={name}
             onClick={() => handleSelect(name)}
           >

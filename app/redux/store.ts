@@ -6,7 +6,7 @@ import currencyReducer from "./features/currencySlice";
 export const store = configureStore({
     reducer: {
         [marketSlice.reducerPath]: marketSlice.reducer,
-        currency: currencyReducer,
+        currency: currencyReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(marketSlice.middleware),

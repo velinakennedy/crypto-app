@@ -6,6 +6,7 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "selector",
   theme: {
     extend: {
       backgroundImage: {
@@ -18,6 +19,10 @@ const config: Config = {
         "purple-primary": "#6161D6",
         "purple-secondary": "#EBEBFC",
         "purple-hover": "#CCCCFA",
+        "purple-secondary-dark": "#181825",
+        "bg-light": "#f3f5f9",
+        "bg-dark": "#13121a",
+        "purple-hover-dark": "#3c3d7e"
       },
     },
   },
