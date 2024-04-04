@@ -8,3 +8,7 @@ export interface CurrencyTypes {
     name: string,
     symbol: ReactNode
 }
+
+export interface ThemeType {
+    theme: "light" | "dark";
+}

@@ -14,8 +14,8 @@ import BitCoinIcon from "../../public/BitCoinIcon.svg";
 import EthereumIcon from "../../public/EthereumIcon.svg";
 
 const MarketBar = () => {
-    const {isLoading, data} = useGetMarketDataQuery("");
-    const currency = useSelector((state: RootState) => state.currency.value);
+  const { isLoading, data } = useGetMarketDataQuery("");
+  const currency = useSelector((state: RootState) => state.currency.value);
 
   return (
     <div>
