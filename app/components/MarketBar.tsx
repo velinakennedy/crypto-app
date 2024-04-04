@@ -9,6 +9,9 @@ import { GoTriangleUp } from "react-icons/go";
 import ProgressBar from "./ProgressBar";
 import formatCurrency from "@/utils/formatCurrency";
 import getPercentage from "@/utils/getPercentage";
+import MarketCapDisplay from "./MarketCapDisplay";
+import BitCoinIcon from "../../public/BitCoinIcon.svg";
+import EthereumIcon from "../../public/EthereumIcon.svg";
 
 const MarketBar = () => {
     const {isLoading, data} = useGetMarketDataQuery("");
@@ -34,14 +37,8 @@ const MarketBar = () => {
           {formatCurrency(currency, data.data.total_volume[currency])}
           <ProgressBar percent={getPercentage(data.data.total_volume[currency], data.data.total_market_cap[currency])} fillColor="#ffffff" barColor="#8686a9" />
         </div>
-        <div className="flex items-center gap-2">
-          {Math.floor(data.data.market_cap_percentage.btc)}%
-          <ProgressBar percent={Math.floor(data.data.market_cap_percentage.btc)} fillColor="#ea973d" barColor="#8686a9" />
-        </div>
-        <div className="flex items-center gap-2">
-          {Math.floor(data.data.market_cap_percentage.eth)}%
-          <ProgressBar percent={Math.floor(data.data.market_cap_percentage.eth)} fillColor="#849eff" barColor="#8686a9" />
-        </div>
+        <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.btc)} fillColor="#ea973d" barColor="#8686a9" icon={BitCoinIcon}/>
+        <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.eth)} fillColor="#849eff" barColor="#8686a9" icon={EthereumIcon}/>
       </div>
       )}
     </div>
