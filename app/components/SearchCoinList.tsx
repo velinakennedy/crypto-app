@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
@@ -37,19 +38,23 @@ const SearchCoinList = ({ data }: { data: any }) => {
         />
       </div>
       <div
-        className={`fixed flex flex-col gap-3 w-96 rounded-b bg-purple-secondary dark:bg-purple-secondary-dark h-96 overflow-y-scroll ${
+        className={`fixed flex flex-col gap-3 w-96 rounded-b bg-purple-secondary dark:bg-purple-secondary-dark ${
           isActive ? "" : "hidden" 
         }`} 
       >
-        {filteredList.map(({ id, name }: { id: string; name: string }) => (
-          <Link
-            className="flex gap-1 p-5 rounded bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark"
-            key={id}
-            onClick={() => setIsActive(false)} href={`/coin/${id}`}
-          >
-            {name}
-          </Link>
-        ))}
+        {filteredList.map(({ id, name }: { id: string; name: string }, index: number) => {
+          if (index < 10) {
+            return (
+            <Link
+              className="flex gap-1 p-5 rounded bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark"
+              key={id}
+              onClick={() => setIsActive(false)} href={`/coin/${id}`}
+            >
+              {name}
+            </Link>
+            );
+          }
+        })}
       </div>
     </div>
   );

@@ -2,12 +2,15 @@
 import MarketBar from "./MarketBar";
 import Dropdown from "./Dropdown";
 import SearchCoinList from "./SearchCoinList";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 import { useGetCoinListQuery } from "../redux/features/coinListSlice";
 import { GiCoins } from "react-icons/gi";
 import DarkModeButton from "./DarkModeButton";
 
 const Navbar = () => {
-  const { data } = useGetCoinListQuery("");
+  const currency = useSelector((state: RootState) => state.currency.value);
+  const { data } = useGetCoinListQuery(currency);
   
   return (
     <div>
