@@ -42,9 +42,7 @@ const SearchCoinList = ({ data }: { data: any }) => {
           isActive ? "" : "hidden" 
         }`} 
       >
-        {filteredList.map(({ id, name }: { id: string; name: string }, index: number) => {
-          if (index < 10) {
-            return (
+        {filteredList.slice(0, 10).map(({ id, name }: { id: string; name: string }) => (
             <Link
               className="flex gap-1 p-5 rounded bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark"
               key={id}
@@ -52,9 +50,7 @@ const SearchCoinList = ({ data }: { data: any }) => {
             >
               {name}
             </Link>
-            );
-          }
-        })}
+        ))}
       </div>
     </div>
   );
