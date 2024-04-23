@@ -22,7 +22,8 @@ const config: Config = {
         "purple-secondary-dark": "#181825",
         "bg-light": "#f3f5f9",
         "bg-dark": "#13121a",
-        "purple-hover-dark": "#3c3d7e"
+        "purple-hover-dark": "#3c3d7e",
+        "purple-market": "#1e1932",
       },
     },
   },

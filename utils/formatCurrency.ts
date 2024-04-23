@@ -1,10 +1,9 @@
-const formatCurrency = (currency: string, value: number): string => {
+const formatCurrency = (currency: string, value: number, maxSigFig: number, short: boolean): string => {
     const formattedCurrency = new Intl.NumberFormat("en-US", {
-        maximumSignificantDigits: 3,
+        maximumSignificantDigits: maxSigFig,
         style: "currency",
         currency,
-        notation: "compact",
-        compactDisplay: "short",
+        notation: short ? "compact" : "standard",
       }).format(value);
    return formattedCurrency;
 };
