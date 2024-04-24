@@ -24,6 +24,8 @@ const config: Config = {
         "bg-dark": "#13121a",
         "purple-hover-dark": "#3c3d7e",
         "purple-market": "#1e1932",
+        "teal-positive": "#00f1e3",
+        "red-negative": "#fe2364",
       },
     },
   },
