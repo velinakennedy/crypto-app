@@ -1,10 +1,16 @@
-const formatCurrency = (currency: string, value: number, maxSigFig: number, short: boolean): string => {
-    const formattedCurrency = new Intl.NumberFormat("en-US", {
+const formatCurrency = (value: number = 0, maxSigFig: number, short: boolean, currency?: string): string => {
+    if (currency) {
+      return new Intl.NumberFormat("en-US", {
         maximumSignificantDigits: maxSigFig,
         style: "currency",
         currency,
         notation: short ? "compact" : "standard",
       }).format(value);
-   return formattedCurrency;
+    } else {
+      return new Intl.NumberFormat("en-US", {
+        maximumSignificantDigits: maxSigFig,
+        notation: short ? "compact" : "standard",
+      }).format(value);
+    }
 };
 export default formatCurrency;

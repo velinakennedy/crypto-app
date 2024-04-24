@@ -31,10 +31,10 @@ const MarketBar = () => {
         </div>
         <div className="flex items-center gap-2">
           <GoTriangleUp className="text-green-300" />{" "}
-          {formatCurrency(currency, data.data.total_market_cap[currency], 3, true)}
+          {formatCurrency(data.data.total_market_cap[currency], 3, true, currency)}
         </div>
         <div className="flex items-center gap-2">
-          {formatCurrency(currency, data.data.total_volume[currency], 3, true)}
+          {formatCurrency(data.data.total_volume[currency], 3, true, currency)}
           <ProgressBar percent={getPercentage(data.data.total_volume[currency], data.data.total_market_cap[currency])} fillColor="#ffffff" barColor="#8686a9" />
         </div>
         <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.btc)} fillColor="#ea973d" barColor="#8686a9" icon={BitCoinIcon}/>
