@@ -1,15 +1,13 @@
 "use client";
 import Image from "next/image";
 import { useGetCoinQuery } from "../../redux/features/coinInfoSlice";
-import copyLink from "@/utils/copyLink";
 import formatDate from "@/utils/formatDate";
-import { IoCopyOutline } from "react-icons/io5";
-import { FaLink } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import PriceChange from "../../components/PriceChange";
 import formatCurrency from "@/utils/formatCurrency";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
+import CoinLink from "@/app/components/CoinLink";
 
 const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -19,7 +17,7 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   return (
     <div>
       {hasData && (
-        <div className="grid grid-cols-2 mx-20 my-7 gap-7 text-purple-text dark:text-white">
+        <div className="grid grid-cols-2 mx-20 mt-7 gap-7 text-purple-text dark:text-white">
           <div className="grid grid-cols-2 gap-7">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col items-center justify-center h-full p-10 rounded-lg dark:bg-purple-market bg-purple-secondary gap-7">
@@ -32,19 +30,7 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
                 />
                 <h1>{currentData.name}</h1>
               </div>
-              <div className="flex items-center justify-center gap-3 rounded-lg p-7 dark:bg-purple-market bg-purple-secondary">
-                <button
-                  onClick={() =>
-                    window.open(currentData.links.homepage[0], "_blank")
-                  }
-                >
-                  <FaLink />
-                </button>
-                {currentData.links.homepage[0]}
-                <button onClick={() => copyLink(currentData.links.homepage[0])}>
-                  <IoCopyOutline />
-                </button>
-              </div>
+              <CoinLink link={currentData.links.homepage[0]}/>
             </div>
             <div className="p-10 rounded-lg dark:bg-purple-market bg-purple-secondary">
               <div className="flex flex-wrap justify-center gap-3">
@@ -81,7 +67,10 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
               <p className="font-semibold">{formatCurrency(currentData.market_data.max_supply, 5, true)} {currentData.symbol.toUpperCase()}</p>
             </div>
           </div>
-        <p>{currentData.description.en}</p>
+          <div className="pt-28">
+            <h1 className="mb-10 text-2xl font-bold">Description </h1>
+          <div dangerouslySetInnerHTML={{ __html: currentData.description.en }}></div>
+          </div>
         </div>
       )}
     </div>
