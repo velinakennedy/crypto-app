@@ -8,6 +8,7 @@ import PriceChange from "../../components/PriceChange";
 import formatCurrency from "@/utils/formatCurrency";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import CoinLink from "@/app/components/CoinLink";
+import CoinMarketData from "@/app/components/CoinMarketData";
 
 const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -94,60 +95,16 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
               </div>
             </div>
             <div className="grid grid-cols-2 p-10 rounded-lg dark:bg-purple-market bg-purple-secondary">
-              <div className="flex flex-col items-center justify-center gap-7">
-                <h2 className="dark:font-thin">Market Cap</h2>
-                <p className="font-semibold">
-                  {formatCurrency(
-                    currentData.market_data.market_cap[currency],
-                    5,
-                    true,
-                    currency
-                  )}
-                </p>
-                <h2 className="dark:font-thin">Fully Diluted Valuation</h2>
-                <p className="font-semibold">
-                  {formatCurrency(
-                    currentData.market_data.fully_diluted_valuation[currency],
-                    5,
-                    true,
-                    currency
-                  )}
-                </p>
-                <h2 className="dark:font-thin">Volume/Market</h2>
-                <p className="font-semibold">
-                  {formatCurrency(
-                    currentData.market_data.market_cap[currency] /
-                      currentData.market_data.total_volume[currency],
-                    5,
-                    true,
-                    currency
-                  )}
-                </p>
+              <div className="flex flex-col gap-7">
+                <CoinMarketData title="Market Cap" value={currentData.market_data.market_cap[currency]} currency={currency} />
+                <CoinMarketData title="Fully Diluted Valuation" value={currentData.market_data.fully_diluted_valuation[currency]} currency={currency} />
+                <CoinMarketData title="Volume/Market" value={currentData.market_data.market_cap[currency] /
+                      currentData.market_data.total_volume[currency]} currency={currency} />
               </div>
-              <div className="flex flex-col items-center justify-center gap-7">
-                <h2 className="dark:font-thin">Total Volume</h2>
-                <p className="font-semibold">
-                  {formatCurrency(
-                    currentData.market_data.total_volume[currency],
-                    5,
-                    true,
-                    currency
-                  )}
-                </p>
-                <h2 className="dark:font-thin">Circulating Supply</h2>
-                <p className="font-semibold">
-                  {formatCurrency(
-                    currentData.market_data.circulating_supply,
-                    5,
-                    true
-                  )}{" "}
-                  {currentData.symbol.toUpperCase()}
-                </p>
-                <h2 className="dark:font-thin">Max Supply</h2>
-                <p className="font-semibold">
-                  {formatCurrency(currentData.market_data.max_supply, 5, true)}{" "}
-                  {currentData.symbol.toUpperCase()}
-                </p>
+              <div className="flex flex-col gap-7">
+              <CoinMarketData title="Total Volume" value={currentData.market_data.total_volume[currency]} currency={currency} />
+              <CoinMarketData title="Circulating Supply" value={currentData.market_data.circulating_supply} symbol={currentData.symbol.toUpperCase()} />
+              <CoinMarketData title="Max Supply" value={currentData.market_data.max_supply} symbol={currentData.symbol.toUpperCase()} />
               </div>
             </div>
           </div>
