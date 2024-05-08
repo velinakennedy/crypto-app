@@ -1,86 +1,76 @@
-"use client";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
-import { useGetChartDataQuery } from "../redux/features/coinChartInfoSlice";
-import { Line } from "react-chartjs-2";
+import { Chart } from "react-chartjs-2";
 import {
-  Chart,
+  Chart as ChartJS,
   CategoryScale,
   LineElement,
+  BarElement,
   LinearScale,
   PointElement,
   Legend,
   Tooltip,
   Filler,
 } from "chart.js";
-import formatChartLabel from "@/utils/formatChartLabel";
+import formatChartData from "@/utils/formatChartData";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { addCoin } from "../redux/features/activeCoinsSlice";
+import { useEffect } from "react";
+import { ChartCoinData } from "@/typings";
+import formatDate from "@/utils/formatDate";
 
-const CoinCharts = () => {
-  Chart.register(
+const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentData: ChartCoinData, hasData: boolean, id: string, currentDate: number, labels: string[]}) => {
+  ChartJS.register(
     CategoryScale,
     LineElement,
+    BarElement,
     LinearScale,
     PointElement,
     Legend,
     Tooltip,
     Filler
   );
-  const currency = useSelector((state: RootState) => state.currency.value);
-  const id = "bitcoin";
-  const to = Math.floor(Date.now() / 1000);
-  const from = to - 86400;
-  const { currentData, isSuccess } = useGetChartDataQuery({
-    id,
-    currency,
-    from,
-    to,
-  });
-  const hasData = currentData && isSuccess;
+  const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
+  const dispatch = useDispatch();
+  const data = hasData ? {
+    id: id,
+    data: currentData
+  }: null;
 
-  const options = {
-    maintainAspectRation: false,
-    scales: {
-        x: {
-            ticks: {
-                display: false,
-            },
-            grid: {
-                display: false
-            }
-        }
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        borderColor: "rgba(112, 114, 234, 1)"
-      },
-    },
-  };
+  useEffect(() => {
+    if (activeCoins.length < 3 && data) {
+      dispatch(addCoin(data));
+    }
+  });
+
+  const lineChartData = activeCoins.length > 0 ? formatChartData(activeCoins, "line") : null;
+  const barChartData = activeCoins.length > 0 ? formatChartData(activeCoins, "bar") : null;
+  const hasChartData = lineChartData && barChartData;
+  const date = formatDate(currentDate*1000);
   return (
     <div>
-      {hasData && (
-        <div className="w-full grid grid-cols-2">
-          <div className="w-full flex items-center relative h-[10vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
-          <Line
-            options={options}
-            data={{
-              labels: currentData.prices.map((element: number[]) =>
-                formatChartLabel(to, element[0])
-              ),
-              datasets: [
-                {
-                  backgroundColor: "rgba(113, 115, 235, 0.3)",
-                  borderColor: "rgba(112, 114, 234, 1)",
-                  pointStyle: false,
-                  fill: true,
-                  data: currentData.prices.map(
-                    (element: number[]) => element[1]
-                  ),
-                },
-              ],
-            }}
+      {hasChartData && (
+        <div className="w-full grid md:grid-rows-2 lg:grid-cols-2 gap-10 p-10">
+          <div className="w-full flex flex-col items-center justify-center relative sm:h-[10vh] md:h-[30vh] lg:h-[30vh] 2xl:h-[40vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
+            <h1 className="self-start pb-5 font-bold text-2xl md:text-lg text-purple-text dark:text-white">{date}</h1>
+          <Chart
+            type= "line"
+            options={lineChartData.options}
+            data={{labels: labels.map((element: string) =>
+              element
+            ), datasets: lineChartData.datasets}} height="100%"
+          />
+          </div>
+          <div className="w-full flex flex-col items-center justify-center relative sm:h-[10vh] md:h-[30vh] lg:h-[30vh] 2xl:h-[40vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
+          <div className="self-start pb-5 text-purple-text dark:text-white">
+          <h1 className="font-bold text-2xl md:text-lg">Volume 24h</h1>
+          <h2 className="text-lg md:text-sm font-thin">{date}</h2>
+          </div>
+          <Chart
+            type= "bar"
+            options={barChartData.options}
+            data={{labels: labels.map((element: string) =>
+              element
+            ), datasets: barChartData.datasets}} height="100%"
           />
           </div>
         </div>

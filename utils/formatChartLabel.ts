@@ -1,11 +1,9 @@
 const formatChartLabel = (currentTime: number, pastTime: number): string => {
-    const hours = Math.floor((currentTime-(pastTime/1000))/3600);
-    const minutes = Math.floor(((currentTime-(pastTime/1000))/60)%60);
-
+    const hours = Math.floor((currentTime-(pastTime))/3600);
     switch(hours) {
-        case 0: return `${minutes} mins ago`;
-        case 1: return `1 hr ${minutes} mins ago`;
-        default: return `${hours} hrs ${minutes} mins ago`;
+        case 0: return "Present";
+        case 1: return "1 hr ago";
+        default: return `${hours} hrs ago`;
     }
 };
 export default formatChartLabel;
