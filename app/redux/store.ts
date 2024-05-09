@@ -4,16 +4,20 @@ import { marketSlice } from "./features/marketDataSlice";
 import currencyReducer from "./features/currencySlice";
 import { coinListSlice } from "./features/coinListSlice";
 import { coinInfoSlice } from "./features/coinInfoSlice";
+import { coinChartInfoSlice } from "./features/coinChartInfoSlice";
+import coinsReducer from "./features/activeCoinsSlice";
 
 export const store = configureStore({
     reducer: {
         [marketSlice.reducerPath]: marketSlice.reducer,
         [coinListSlice.reducerPath]: coinListSlice.reducer,
         [coinInfoSlice.reducerPath]: coinInfoSlice.reducer,
-        currency: currencyReducer
+        [coinChartInfoSlice.reducerPath]: coinChartInfoSlice.reducer,
+        currency: currencyReducer,
+        activeCoins: coinsReducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(marketSlice.middleware, coinListSlice.middleware, coinInfoSlice.middleware),
+        getDefaultMiddleware().concat(marketSlice.middleware, coinListSlice.middleware, coinInfoSlice.middleware, coinChartInfoSlice.middleware),
   });
 
 setupListeners(store.dispatch);
