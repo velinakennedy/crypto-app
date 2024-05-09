@@ -9,13 +9,14 @@ import {
   Legend,
   Tooltip,
   Filler,
+  ChartDataset,
 } from "chart.js";
 import formatChartData from "@/utils/formatChartData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { addCoin } from "../redux/features/activeCoinsSlice";
-import { useEffect } from "react";
-import { ChartCoinData } from "@/typings";
+import { useEffect, useRef, useState } from "react";
+import { ChartCoinData, ChartDataOptions } from "@/typings";
 import formatDate from "@/utils/formatDate";
 
 const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentData: ChartCoinData, hasData: boolean, id: string, currentDate: number, labels: string[]}) => {
@@ -29,41 +30,54 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
     Tooltip,
     Filler
   );
+  const [lineChartData, setLineChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
+  const [barChartData, setBarChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
+  const [multiChartData, setMultiChartData] = useState<ChartDataset<"line" | "bar">[]>([]);
+  const chartRef = useRef<ChartJS>(null);
   const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
   const dispatch = useDispatch();
-  const data = hasData ? {
-    id: id,
-    data: currentData
-  }: null;
+  const chartDate = formatDate(currentDate*1000);
+  if (activeCoins.length < 3 && hasData) {
+    const data = {
+      id: id,
+      data: currentData
+    };
+    dispatch(addCoin(data));
+  }
 
   useEffect(() => {
-    if (activeCoins.length < 3 && data) {
-      dispatch(addCoin(data));
+    const isSuccess = activeCoins.length > 0 && chartRef.current;
+    if (isSuccess) {
+      const updatedLineData: ChartDataOptions = formatChartData(activeCoins, "line", chartRef);
+      const updatedBarData: ChartDataOptions = formatChartData(activeCoins, "bar", chartRef);
+      const updatedMultiData: ChartDataset<"line" | "bar">[] = [];
+      setLineChartData(updatedLineData);
+      setBarChartData(updatedBarData);
+      updatedLineData.datasets.forEach((dataset) => updatedMultiData.push(dataset));
+      updatedBarData.datasets.forEach((dataset) => updatedMultiData.push(dataset));
+      setMultiChartData(updatedMultiData);
     }
-  });
+  }, [activeCoins]);
 
-  const lineChartData = activeCoins.length > 0 ? formatChartData(activeCoins, "line") : null;
-  const barChartData = activeCoins.length > 0 ? formatChartData(activeCoins, "bar") : null;
-  const hasChartData = lineChartData && barChartData;
-  const date = formatDate(currentDate*1000);
   return (
     <div>
-      {hasChartData && (
-        <div className="w-full grid md:grid-rows-2 lg:grid-cols-2 gap-10 p-10">
-          <div className="w-full flex flex-col items-center justify-center relative sm:h-[10vh] md:h-[30vh] lg:h-[30vh] 2xl:h-[40vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
-            <h1 className="self-start pb-5 font-bold text-2xl md:text-lg text-purple-text dark:text-white">{date}</h1>
+        <div>
+          <div className="w-full grid-cols-2 gap-10 p-10 hidden xl:grid">
+          <div className="w-full flex flex-col items-center justify-center relative lg:h-[30vh] xl:h-[30vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
+            <h1 className="self-start pb-5 font-bold text-2xl md:text-lg text-purple-text dark:text-white">{chartDate}</h1>
           <Chart
             type= "line"
+            ref={chartRef}
             options={lineChartData.options}
             data={{labels: labels.map((element: string) =>
               element
             ), datasets: lineChartData.datasets}} height="100%"
           />
           </div>
-          <div className="w-full flex flex-col items-center justify-center relative sm:h-[10vh] md:h-[30vh] lg:h-[30vh] 2xl:h-[40vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
+          <div className="w-full flex flex-col items-center justify-center relative lg:h-[30vh] xl:h-[30vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
           <div className="self-start pb-5 text-purple-text dark:text-white">
           <h1 className="font-bold text-2xl md:text-lg">Volume 24h</h1>
-          <h2 className="text-lg md:text-sm font-thin">{date}</h2>
+          <h2 className="text-lg md:text-sm font-thin">{chartDate}</h2>
           </div>
           <Chart
             type= "bar"
@@ -74,7 +88,21 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
           />
           </div>
         </div>
-      )}
+        
+          <div className="m-10 flex flex-col items-center justify-center relative h-[30vh] sm:h-[30vh] md:h-[30vh] lg:h-[30vh] xl:hidden p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
+          <div className="self-start pb-5 text-purple-text dark:text-white">
+          <h1 className="font-bold text-2xl sm:text-xl">{chartDate}</h1>
+          </div>
+          <Chart
+            type= "line"
+            options={barChartData.options}
+            data={{labels: labels.map((element: string) =>
+              element
+            ), datasets: multiChartData}} height="100%"
+          />
+          </div>
+        
+        </div>
     </div>
   );
 };

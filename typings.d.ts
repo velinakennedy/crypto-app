@@ -1,4 +1,4 @@
-import { Align, ChartDataset, LayoutPosition } from "chart.js";
+import { Align, ChartDataset, ChartOptions, InteractionAxis, InteractionMode, LayoutPosition } from "chart.js";
 import { ReactNode } from "react";
 
 export interface CurrencyState {
@@ -32,40 +32,11 @@ export interface ActiveCoin {
 export interface CustomOptions {
     background: string;
     border: string;
-    yAxis: string;
-}
-
-export interface Option {
-    maintainAspectRation: boolean;
-    scales: {
-        x: {
-            ticks: {
-                display: boolean;
-            };
-            grid: {
-                display: boolean;
-            };
-        };
-        y: {
-            display: boolean;
-        };
-        y1: {
-            display: boolean;
-        };
-        y2: {
-            display: boolean;
-        };
-    };
-    plugins: {
-        legend: {
-            display: boolean,
-            position: LayoutPosition,
-            align: Align
-          };
-    }
+    lineYAxis: string;
+    barYAxis: string;
 }
 
 export interface ChartDataOptions {
     datasets: ChartDataset<"line" | "bar">[];
-    options: Option;
+    options: ChartOptions;
 }
