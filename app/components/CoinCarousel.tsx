@@ -29,8 +29,6 @@ const CoinCarousel = ({to, from}: {to: number, from: number}) => {
         } else if (activeCoins.length < 3 && !exists) {
             setId(name);
             setSkip(false);
-        } else {
-            return;
         }
     };
     
