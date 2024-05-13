@@ -10,6 +10,8 @@ import {
   Tooltip,
   Filler,
   ChartDataset,
+  LineController,
+  BarController
 } from "chart.js";
 import formatChartData from "@/utils/formatChartData";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +30,9 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
     PointElement,
     Legend,
     Tooltip,
-    Filler
+    Filler,
+    LineController,
+    BarController
   );
   const [lineChartData, setLineChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
   const [barChartData, setBarChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
