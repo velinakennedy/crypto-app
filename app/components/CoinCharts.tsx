@@ -37,13 +37,16 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
   const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
   const dispatch = useDispatch();
   const chartDate = formatDate(currentDate*1000);
-  if (activeCoins.length < 3 && hasData) {
-    const data = {
-      id: id,
-      data: currentData
-    };
-    dispatch(addCoin(data));
-  }
+  
+  useEffect(() => {
+    if (activeCoins.length < 3 && hasData) {
+      const data = {
+        id: id,
+        data: currentData
+      };
+      dispatch(addCoin(data));
+    }
+  }, [hasData, id, currentData, activeCoins, dispatch]);
 
   useEffect(() => {
     const isSuccess = activeCoins.length > 0 && chartRef.current;
@@ -56,6 +59,10 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
       updatedLineData.datasets.forEach((dataset) => updatedMultiData.push(dataset));
       updatedBarData.datasets.forEach((dataset) => updatedMultiData.push(dataset));
       setMultiChartData(updatedMultiData);
+    } else {
+      setLineChartData({datasets: [], options: {}});
+      setBarChartData({datasets: [], options: {}});
+      setMultiChartData([]);
     }
   }, [activeCoins]);
 
@@ -101,7 +108,6 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
             ), datasets: multiChartData}} height="100%"
           />
           </div>
-        
         </div>
     </div>
   );
