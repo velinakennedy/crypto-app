@@ -10,20 +10,18 @@ const CoinCarouselItem = ({ coin }: { coin: CoinMarketData }) => {
   const currency = useSelector((state: RootState) => state.currency.value);
   const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
   const [isSelected, setIsSelected] = useState<boolean>(false);
-  const handleToggle = (): void => {
-    if (activeCoins.length < 3) {
-        setIsSelected(!isSelected);
-    } else if (isSelected) {
-        setIsSelected(false);
-    }
-  };
 
   useEffect(() => {
-    if (coin.id === "bitcoin") setIsSelected(true);
-  }, []);
+    setIsSelected(false);
+    activeCoins.forEach((activeCoin) => {
+        if (activeCoin.id === coin.id) {
+            setIsSelected(true);
+        }
+    });
+  }, [activeCoins]);
 
   return (
-    <div onClick={handleToggle} className={`flex gap-2 ${isSelected ? "bg-purple-hover dark:bg-purple-hover-dark" : "bg-purple-secondary dark:bg-purple-secondary-dark"} max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}>
+    <div className={`flex gap-2 ${isSelected ? "bg-purple-hover dark:bg-purple-hover-dark" : "bg-purple-secondary dark:bg-purple-secondary-dark"} max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}>
       <div className="flex justify-center w-full min-w-10">
         <Image
           loader={() => `${coin.image}/w=auto`}
