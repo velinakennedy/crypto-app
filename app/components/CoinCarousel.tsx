@@ -11,6 +11,7 @@ import { useGetCoinListQuery } from "../redux/features/coinListSlice";
 import { useEffect, useState } from "react";
 import { CoinMarketData } from "@/typings";
 import CoinCarouselItem from "./CoinCarouselItem";
+import Image from "next/image";
 import {
   IoIosArrowDroprightCircle,
   IoIosArrowDropleftCircle,
@@ -19,7 +20,6 @@ import { CiCircleRemove } from "react-icons/ci";
 import "swiper/css";
 import "swiper/css/navigation";
 import "../globals.css";
-import Image from "next/image";
 
 const CoinCarousel = ({ to, from }: { to: number; from: number }) => {
   const [id, setId] = useState<string>("");
@@ -115,7 +115,7 @@ const CoinCarousel = ({ to, from }: { to: number; from: number }) => {
           <div className="flex gap-3 mt-7">
             {activeCoins.map((coin) => {
               const coinInfo = coinData.find(
-                (coinData: any) => coinData.id === coin.id
+                (coinData: CoinMarketData) => coinData.id === coin.id
               );
               return (
                 <div
