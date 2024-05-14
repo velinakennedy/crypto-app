@@ -8,7 +8,7 @@ import { useGetChartDataQuery } from "../redux/features/coinChartInfoSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useGetCoinListQuery } from "../redux/features/coinListSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CoinMarketData } from "@/typings";
 import CoinCarouselItem from "./CoinCarouselItem";
 import { IoIosArrowDroprightCircle } from "react-icons/io";
@@ -18,7 +18,8 @@ import "swiper/css/navigation";
 import "../globals.css";
 
 const CoinCarousel = ({to, from}: {to: number, from: number}) => {
-    const [id, setId] = useState<string>("bitcoin");
+    const [id, setId] = useState<string>("");
+    const [skip, setSkip] = useState<boolean>(true);
     const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
     const dispatch = useDispatch();
     const currency = useSelector((state: RootState) => state.currency.value);
@@ -29,7 +30,7 @@ const CoinCarousel = ({to, from}: {to: number, from: number}) => {
         currency,
         from,
         to,
-    });
+    }, {skip});
     const hasChartData: boolean = chartData && isSuccess;
     const hasCoinData: boolean = coinData && listIsSuccess && !listIsLoading;
 
@@ -37,8 +38,10 @@ const CoinCarousel = ({to, from}: {to: number, from: number}) => {
         const exists = activeCoins.find((coin) => coin.id == name);
         if (exists) {
             dispatch(removeCoin(name));
+            setSkip(true);
         } else if (activeCoins.length < 3 && !exists) {
             setId(name);
+            setSkip(false);
         }
     };
 
@@ -62,6 +65,10 @@ const CoinCarousel = ({to, from}: {to: number, from: number}) => {
             slidesPerView: 10,
         },
     };
+
+    useEffect(() => {
+        handleSelection("bitcoin");
+    }, []);
 
   return (
      <div>
