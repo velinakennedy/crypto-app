@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .swiper-button-prev,
+    .swiper-button-next {
+        color: rgba(142, 142, 251, 0.8);
+        width: 50px;
+        transition: all ease .3s;
+    }
+    .swiper-button-prev {
+        left: 0px;
+    }
+
+    .swiper-button-next {
+        right: 0px;
+    }
+
+    .swiper-button-prev:hover,
+    .swiper-button-next:hover {
+        width: 53px;
+        height: 53px;
+    }
+}
