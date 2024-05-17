@@ -10,6 +10,7 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@nextui-org/table": "^2.0.33",
     "@reduxjs/toolkit": "^2.2.1",
     "chart.js": "^4.4.2",
     "next": "14.1.0",
