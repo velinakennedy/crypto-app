@@ -36,9 +36,19 @@ export interface CustomOptions {
     barYAxis: string;
 }
 
+export interface ColorOptions {
+  background: string;
+  border: string;
+}
+
 export interface ChartDataOptions {
     datasets: ChartDataset<"line" | "bar">[];
     options: ChartOptions;
+}
+
+export interface MarketChartDataOptions {
+  dataset: ChartDataset<"line">[];
+  options: ChartOptions;
 }
 
 export interface CoinMarketData {
@@ -72,4 +82,25 @@ export interface CoinMarketData {
     "percentage": number
   } | null,
   "last_updated": string
+}
+
+export interface MarketTableData extends CoinMarketData {
+  "sparkline_in_7d": {
+    "price": number[]
+  },
+  "price_change_percentage_1h_in_currency": number,
+  "price_change_percentage_24h_in_currency": number,
+  "price_change_percentage_7d_in_currency": number
+}
+
+export interface MarketFormattedData {
+  marketCap: number,
+  name: string[],
+  price: number,
+  "1hPercentage": number,
+  "24hPercentage": number,
+  "7dPercentage": number,
+  "volumeDividedByCap": number[],
+  "circulatingDividedByTotalSupply": number[],
+  last7Days: [number, number[]]
 }
