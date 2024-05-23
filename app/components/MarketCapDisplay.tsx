@@ -6,7 +6,7 @@ const MarketCapDisplay = ({percentage, fillColor, barColor, icon}: {percentage: 
     <div className="flex items-center gap-2">
     <Image src={icon} alt="" />
     {percentage}%
-    <ProgressBar percent={percentage} fillColor={fillColor} barColor={barColor} />
+    <ProgressBar barWidth={"5rem"} percent={percentage} fillColor={fillColor} barColor={barColor} />
   </div>
   );
 };

@@ -37,7 +37,7 @@ const MarketTable = () => {
               <div className="flex justify-center w-full min-w-10">
                 <Image 
                 loader={() => `${cellValue[0]}/w=auto`}
-                src={cellValue[0].toString()}
+                src={cellValue[0] as string}
                 width={30}
                 height={30}
                 alt="coin logo"
@@ -68,7 +68,7 @@ const MarketTable = () => {
         return (
           <div>
             {hasArray && (
-              <MarketTableBar dividend={cellValue[0]} divisor={[cellValue[1]]}/>
+              <MarketTableBar dividend={cellValue[0] as number} divisor={ cellValue[1] as number} color={cellValue[2] as string}/>
             )}
           </div>
         );
@@ -76,7 +76,7 @@ const MarketTable = () => {
         return (
           <div className="flex justify-center">
             {hasArray && (
-              <MarketChart data={cellValue} />
+              <MarketChart data={cellValue as [number, number[]]} />
             )}
           </div>
         );

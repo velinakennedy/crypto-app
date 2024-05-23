@@ -100,7 +100,7 @@ export interface MarketFormattedData {
   "1hPercentage": number,
   "24hPercentage": number,
   "7dPercentage": number,
-  "volumeDividedByCap": number[],
-  "circulatingDividedByTotalSupply": number[],
+  "volumeDividedByCap": [number, number, string],
+  "circulatingDividedByTotalSupply": [number, number, string],
   last7Days: [number, number[]]
 }
