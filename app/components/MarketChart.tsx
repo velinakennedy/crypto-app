@@ -27,22 +27,29 @@ const MarketChart = ({data}: {data: [number, number[]]}) => {
     );
     const chartRef = useRef<ChartJS>(null);
     const [lineChartData, setLineChartData] = useState<MarketChartDataOptions>({dataset: [], options: {}});
+    const [everyThreeHours, setEveryThreeHours] = useState<number[]>([]);
 
     useEffect(() => {
+      const filteredData = data[1].filter((data, index) => {
+        if (index === 0 || index % 3 === 0) {
+          return data;
+        }
+      });
+      setEveryThreeHours(filteredData);
       if (chartRef.current) {
         const isPositive: boolean = data[0] >= 0;
-        const newLineData: MarketChartDataOptions = formatMarketChartData(data[1], isPositive, chartRef);
+        const newLineData: MarketChartDataOptions = formatMarketChartData(everyThreeHours, isPositive, chartRef);
         setLineChartData(newLineData);
       }
-    }, [data]);
+    }, [data, everyThreeHours]);
 
   return (
-    <div className=" w-[30vh] flex items-center justify-center relative h-[5vh] p-3 rounded-lg" >
+    <div className="w-[20vw] relative h-[8vh]" >
         <Chart
             type= "line"
             ref={chartRef}
             options={lineChartData.options}
-            data={{labels: data[1].map((price, index) => index), datasets: lineChartData.dataset}} height="100%"
+            data={{labels: everyThreeHours.map((price, index) => index), datasets: lineChartData.dataset}} height="100%"
         />
     </div>
   );

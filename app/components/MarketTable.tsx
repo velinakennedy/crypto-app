@@ -151,7 +151,8 @@ const MarketTable = () => {
   return (
     <div>
       {formattedData ? (
-        <InfiniteScroll
+        <div className="px-10 w-full">
+          <InfiniteScroll
           dataLength={formattedData.length}
           next={fetchData}
           hasMore={true}
@@ -162,7 +163,6 @@ const MarketTable = () => {
           sortDescriptor={sortDescriptor}
           onSortChange={setSortDescriptor}
           classNames={{
-            table: "px-10",
             th: "text-gray-400 font-thin bg-transparent text-sm",
             tr: "even:dark:bg-purple-secondary-dark even:bg-purple-secondary",
             sortIcon: "hidden",
@@ -193,6 +193,7 @@ const MarketTable = () => {
           </TableBody>
         </Table>
         </InfiniteScroll>
+        </div>
       ) : (
         <div className="w-full flex justify-center"><Spinner label="loading..." color="current" /></div>
       )}
