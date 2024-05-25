@@ -19,11 +19,14 @@ import formatCurrency from "@/utils/formatCurrency";
 import PriceChange from "./PriceChange";
 import MarketChart from "./MarketChart";
 import MarketTableBar from "./MarketTableBar";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {Spinner} from "@nextui-org/spinner";
 import { FaSort } from "react-icons/fa";
 
 const MarketTable = () => {
   const currency = useSelector((state: RootState) => state.currency.value);
-  const { currentData, isSuccess } = useGetCoinTableQuery(currency);
+  const [queryInfo, setQueryInfo] = useState<any>({skip: false, page: 1});
+  const { currentData, isSuccess } = useGetCoinTableQuery({currency, page: queryInfo.page}, { skip: queryInfo.skip });
   const [formattedData, setFormattedData] = useState<
     MarketFormattedData[] | null
   >(null);
@@ -135,21 +138,32 @@ const MarketTable = () => {
     [currency]
   );
 
+  const fetchData = () => {
+    setQueryInfo({page: queryInfo.page + 1, skip: false});
+  };
+
   useEffect(() => {
     if (currentData && isSuccess) {
-      setFormattedData(formatMarketTableData(currentData));
+      setFormattedData(formattedData ? [...formattedData, ...formatMarketTableData(currentData)]: formatMarketTableData(currentData));
+      setQueryInfo({...queryInfo, skip: true});
     }
-  }, [isSuccess, currentData]);
-
+  }, [isSuccess, currentData, queryInfo, formattedData]);
   return (
     <div>
       {formattedData ? (
-        <Table
+        <InfiniteScroll
+          dataLength={formattedData.length}
+          next={fetchData}
+          hasMore={true}
+          loader={<Spinner label="loading..." color="current" />}
+        >
+          <Table
+          removeWrapper
           sortDescriptor={sortDescriptor}
           onSortChange={setSortDescriptor}
           classNames={{
             table: "px-10",
-            th: "text-gray-400 font-thin",
+            th: "text-gray-400 font-thin bg-transparent text-sm",
             tr: "even:dark:bg-purple-secondary-dark even:bg-purple-secondary",
             sortIcon: "hidden",
             td: "first:rounded-l-lg last:rounded-r-lg",
@@ -159,7 +173,7 @@ const MarketTable = () => {
           <TableHeader columns={headers}>
             {(header) => (
               <TableColumn key={header.key} allowsSorting={header.sortable}>
-                <div className="flex gap-2 justify-center items-center">
+                <div className={`flex gap-2 justify-center items-center ${header.sortable ? "hover:cursor-pointer": ""}`}>
                   {header.title}
                   {header.sortable && <FaSort />}
                 </div>
@@ -178,8 +192,9 @@ const MarketTable = () => {
             )}
           </TableBody>
         </Table>
+        </InfiniteScroll>
       ) : (
-        <div>Loading...</div>
+        <div className="w-full flex justify-center"><Spinner label="loading..." color="current" /></div>
       )}
     </div>
   );
