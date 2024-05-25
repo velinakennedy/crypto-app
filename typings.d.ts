@@ -104,3 +104,15 @@ export interface MarketFormattedData {
   "circulatingDividedByTotalSupply": [number, number, string],
   last7Days: [number, number[]]
 }
+
+export interface SortDescriptor {
+  column: string | undefined,
+  direction: string | undefined
+}
+
+export type SortingTypes = string
+| number
+| number[]
+| string[]
+| [number, number[]]
+| [number, number, string];

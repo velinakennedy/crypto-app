@@ -37,7 +37,7 @@ const MarketChart = ({data}: {data: [number, number[]]}) => {
     }, [data]);
 
   return (
-    <div className=" w-[30vh] flex items-center justify-center relative h-[10vh] p-3 rounded-lg" >
+    <div className=" w-[30vh] flex items-center justify-center relative h-[5vh] p-3 rounded-lg" >
         <Chart
             type= "line"
             ref={chartRef}
