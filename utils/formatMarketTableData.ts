@@ -2,8 +2,8 @@ import { MarketFormattedData, MarketTableData } from "@/typings";
 
 const formatMarketTableData = (data: MarketTableData[]): MarketFormattedData[] => {
   const formattedData: MarketFormattedData[] = data.map((coin) => {
-    const colorOptions = ["194, 118, 33", "99, 117, 194", "48, 223, 161", "243, 234, 47", "77,238, 229", "240, 97, 66"];
-    const color = colorOptions[Math.floor(Math.random() * 6)];
+    const colorOptions = ["194, 118, 33", "99, 117, 194", "215, 29, 189", "39, 208, 208", "240, 97, 66"];
+    const color = colorOptions[Math.floor(Math.random() * 5)];
     const formattedCoin: MarketFormattedData = {
       marketCap: coin.market_cap_rank,
       name: [coin.image,`${coin.name} (${coin.symbol.toUpperCase()})`, coin.id],

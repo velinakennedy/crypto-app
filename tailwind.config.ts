@@ -1,4 +1,4 @@
-import {nextui} from '@nextui-org/theme';
+import {nextui} from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -26,7 +26,7 @@ const config: Config = {
         "bg-dark": "#13121a",
         "purple-hover-dark": "#3c3d7e",
         "purple-market": "#1e1932",
-        "teal-positive": "#00f1e3",
+        "teal-positive": "#27d0d0",
         "red-negative": "#fe2364",
       },
     },

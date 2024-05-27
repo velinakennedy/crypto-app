@@ -5,7 +5,7 @@ const formatMarketChartData = (priceData: number[], isPositive: boolean, chartRe
     const chart = chartRef.current;
     const pickColor = (): ColorOptions => {
         if (isPositive) {
-            return {background: "0, 241, 227", border: "rgba(0, 241, 227, 1)"};
+            return {background: "39, 208, 208", border: "rgba(39, 208, 208, 1)"};
         } else {
             return {background: "254, 35, 100", border: "rgba(254, 35, 100, 1)"};
         }

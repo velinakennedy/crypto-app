@@ -166,10 +166,11 @@ const MarketTable = () => {
           sortDescriptor={sortDescriptor}
           onSortChange={setSortDescriptor}
           classNames={{
-            th: "text-gray-400 font-thin bg-transparent text-sm",
-            tr: "even:dark:bg-purple-secondary-dark even:bg-purple-secondary",
+            table: "bg-purple-secondary rounded-lg dark:bg-transparent",
+            th: "dark:text-gray-400 font-thin bg-transparent text-sm",
+            tr: "even:dark:bg-purple-secondary-dark even:bg-[#3c3d7d15]",
             sortIcon: "hidden",
-            td: "first:rounded-l-lg last:rounded-r-lg",
+            td: "dark:first:rounded-l-lg dark:last:rounded-r-lg",
           }}
           aria-label="Coin market table"
         >
