@@ -6,7 +6,7 @@ const formatMarketTableData = (data: MarketTableData[]): MarketFormattedData[] =
     const color = colorOptions[Math.floor(Math.random() * 6)];
     const formattedCoin: MarketFormattedData = {
       marketCap: coin.market_cap_rank,
-      name: [`${coin.image}`,`${coin.name} (${coin.symbol.toUpperCase()})`],
+      name: [coin.image,`${coin.name} (${coin.symbol.toUpperCase()})`, coin.id],
       price: coin.current_price,
       "1hPercentage": coin.price_change_percentage_1h_in_currency,
       "24hPercentage": coin.price_change_percentage_24h_in_currency,

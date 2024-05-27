@@ -36,15 +36,18 @@ const MarketChart = ({data}: {data: [number, number[]]}) => {
         }
       });
       setEveryThreeHours(filteredData);
+    }, [data]);
+
+    useEffect(() => {
       if (chartRef.current) {
         const isPositive: boolean = data[0] >= 0;
         const newLineData: MarketChartDataOptions = formatMarketChartData(everyThreeHours, isPositive, chartRef);
         setLineChartData(newLineData);
       }
-    }, [data, everyThreeHours]);
+    }, [everyThreeHours, data]);
 
   return (
-    <div className="w-[20vw] relative h-[8vh]" >
+    <div className="w-[10vw] relative h-[4vh]" >
         <Chart
             type= "line"
             ref={chartRef}

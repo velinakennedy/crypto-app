@@ -22,6 +22,7 @@ import MarketTableBar from "./MarketTableBar";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {Spinner} from "@nextui-org/spinner";
 import { FaSort } from "react-icons/fa";
+import Link from "next/link";
 
 const MarketTable = () => {
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -76,22 +77,24 @@ const MarketTable = () => {
       switch (columnKey) {
         case "name":
           return (
-            <div>
+            <>
               {hasArray && (
-                <div className="flex gap-2 items-center justify-center w-full">
-                  <div className="min-w-10">
-                    <Image
-                      loader={() => `${cellValue[0]}/w=auto`}
-                      src={cellValue[0] as string}
-                      width={30}
-                      height={30}
-                      alt="coin logo"
-                    />
-                  </div>
-                  <h2>{cellValue[1]}</h2>
-                </div>
+                <Link href={`/coin/${cellValue[2]}`}>
+                    <div className="flex gap-2 items-center justify-center w-full">
+                      <div className="min-w-10">
+                      <Image
+                        loader={() => `${cellValue[0]}/w=auto`}
+                        src={cellValue[0] as string}
+                        width={30}
+                        height={30}
+                        alt="coin logo"
+                      />
+                      </div>
+                      <h2>{cellValue[1]}</h2>
+                    </div>
+                </Link>
               )}
-            </div>
+            </>
           );
         case "price":
           return (
@@ -184,7 +187,7 @@ const MarketTable = () => {
             {(item) => (
               <TableRow key={item.marketCap}>
                 {(columnKey) => (
-                  <TableCell className="p-5">
+                  <TableCell className="p-3">
                     {renderCell(item, columnKey)}
                   </TableCell>
                 )}
