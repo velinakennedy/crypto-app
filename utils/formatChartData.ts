@@ -23,7 +23,7 @@ const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: Re
         gradient.addColorStop(1, colorEnd);
       
         return gradient;
-    }
+    };
 
     const createDataset = (coinChoice: number): ChartDataset<"line" | "bar"> => {
         const custom = customOptions(coinChoice);
@@ -37,8 +37,8 @@ const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: Re
             fill: true,
             tension: 0.3,
             data: chartType === "line" ? coinData[coinChoice].data.prices.map(
-              (element: number[]) => element[1]
-            ): coinData[coinChoice].data.total_volumes.map(
+                (element: number[]) => element[1]
+              ): coinData[coinChoice].data.total_volumes.map(
                 (element: number[]) => element[1]
               ),
         };
@@ -57,10 +57,11 @@ const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: Re
             x: {
                 ticks: {
                     display: true,
+                    maxTicksLimit: 20
                 },
                 grid: {
-                    display: false
-                }
+                    display: false,
+                },
             },
             y: {
                 display: false
