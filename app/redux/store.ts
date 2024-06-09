@@ -6,6 +6,7 @@ import { coinListSlice } from "./features/coinListSlice";
 import { coinInfoSlice } from "./features/coinInfoSlice";
 import { coinChartInfoSlice } from "./features/coinChartInfoSlice";
 import coinsReducer from "./features/activeCoinsSlice";
+import timeframeReducer from "./features/chartTimeframeSlice";
 
 export const store = configureStore({
     reducer: {
@@ -14,7 +15,8 @@ export const store = configureStore({
         [coinInfoSlice.reducerPath]: coinInfoSlice.reducer,
         [coinChartInfoSlice.reducerPath]: coinChartInfoSlice.reducer,
         currency: currencyReducer,
-        activeCoins: coinsReducer
+        activeCoins: coinsReducer,
+        timeframe: timeframeReducer
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(marketSlice.middleware, coinListSlice.middleware, coinInfoSlice.middleware, coinChartInfoSlice.middleware),

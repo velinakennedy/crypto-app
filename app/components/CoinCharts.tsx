@@ -16,12 +16,13 @@ import {
 import formatChartData from "@/utils/formatChartData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { addCoin } from "../redux/features/activeCoinsSlice";
+import { addCoin, editCoin } from "../redux/features/activeCoinsSlice";
 import { useEffect, useRef, useState } from "react";
-import { ChartCoinData, ChartDataOptions } from "@/typings";
+import { ActiveCoin, ChartCoinData, ChartDataOptions } from "@/typings";
 import formatDate from "@/utils/formatDate";
+import chartLabels from "@/utils/chartLabels";
 
-const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentData: ChartCoinData, hasData: boolean, id: string, currentDate: number, labels: string[]}) => {
+const CoinCharts = ({currentData, hasData, id, currentDate}: {currentData: ChartCoinData, hasData: boolean, id: string, currentDate: number}) => {
   ChartJS.register(
     CategoryScale,
     LineElement,
@@ -37,20 +38,29 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
   const [lineChartData, setLineChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
   const [barChartData, setBarChartData] = useState<ChartDataOptions>({datasets: [], options: {}});
   const [multiChartData, setMultiChartData] = useState<ChartDataset<"line" | "bar">[]>([]);
+  const [labels, setLabels] = useState<string[]>([]);
   const chartRef = useRef<ChartJS>(null);
   const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
   const dispatch = useDispatch();
-  const chartDate = formatDate(currentDate*1000);
+  const chartDate = formatDate(currentDate);
+  const {status} = useSelector (
+    (state: RootState ) => state.timeframe
+  );
   
   useEffect(() => {
-    if (activeCoins.length < 3 && hasData) {
-      const data = {
+    if (hasData) {
+      const data: ActiveCoin = {
         id: id,
         data: currentData
       };
-      dispatch(addCoin(data));
+      if (activeCoins.find((coin: ActiveCoin) => coin.id === data.id)) {
+        dispatch(editCoin(data));
+      } else if (activeCoins.length < 3) {
+        dispatch(addCoin(data));
+      }
+      setLabels(chartLabels(currentData.prices, status));
     }
-  }, [hasData, id, currentData, activeCoins, dispatch]);
+  }, [hasData, id, currentData, activeCoins, dispatch, status]);
 
   useEffect(() => {
     const isSuccess = activeCoins.length > 0 && chartRef.current;
@@ -72,7 +82,7 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
 
   return (
     <div>
-        <div>
+          <div>
           <div className="w-full grid-cols-2 gap-10 p-10 hidden xl:grid">
           <div className="w-full flex flex-col items-center justify-center relative lg:h-[30vh] xl:h-[30vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
             <h1 className="self-start pb-5 font-bold text-2xl md:text-lg text-purple-text dark:text-white">{chartDate}</h1>
@@ -80,9 +90,7 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
             type= "line"
             ref={chartRef}
             options={lineChartData.options}
-            data={{labels: labels.map((element: string) =>
-              element
-            ), datasets: lineChartData.datasets}} height="100%"
+            data={{labels: labels, datasets: lineChartData.datasets}} height="100%"
           />
           </div>
           <div className="w-full flex flex-col items-center justify-center relative lg:h-[30vh] xl:h-[30vh] p-10 rounded-lg bg-purple-secondary dark:bg-purple-secondary-dark" >
@@ -93,9 +101,7 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
           <Chart
             type= "bar"
             options={barChartData.options}
-            data={{labels: labels.map((element: string) =>
-              element
-            ), datasets: barChartData.datasets}} height="100%"
+            data={{labels: labels, datasets: barChartData.datasets}} height="100%"
           />
           </div>
         </div>
@@ -107,9 +113,7 @@ const CoinCharts = ({currentData, hasData, id, currentDate, labels}: {currentDat
           <Chart
             type= "line"
             options={barChartData.options}
-            data={{labels: labels.map((element: string) =>
-              element
-            ), datasets: multiChartData}} height="100%"
+            data={{labels: labels, datasets: multiChartData}} height="100%"
           />
           </div>
         </div>

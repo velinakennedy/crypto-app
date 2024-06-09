@@ -73,3 +73,9 @@ export interface CoinMarketData {
   } | null,
   "last_updated": string
 }
+
+export interface chartTimeframe {
+  status: string,
+  to: number,
+  from: number
+}
