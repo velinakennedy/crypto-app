@@ -26,6 +26,7 @@ const config: Config = {
         "purple-market": "#1e1932",
         "teal-positive": "#00f1e3",
         "red-negative": "#fe2364",
+        "purple-border": "#7779f8"
       },
     },
   },
