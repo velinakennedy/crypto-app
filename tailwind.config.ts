@@ -1,3 +1,4 @@
+import {nextui} from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -5,6 +6,7 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/components/(spinner|table|checkbox|spacer).js"
   ],
   darkMode: "selector",
   theme: {
@@ -24,11 +26,11 @@ const config: Config = {
         "bg-dark": "#13121a",
         "purple-hover-dark": "#3c3d7e",
         "purple-market": "#1e1932",
-        "teal-positive": "#00f1e3",
+        "teal-positive": "#27d0d0",
         "red-negative": "#fe2364",
       },
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 };
 export default config;
