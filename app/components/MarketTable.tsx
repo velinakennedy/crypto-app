@@ -42,9 +42,9 @@ const MarketTable = () => {
     { key: "marketCap", title: "#", sortable: true },
     { key: "name", title: "Name", sortable: true },
     { key: "price", title: "Price", sortable: true },
-    { key: "1hPercentage", title: "1h%", sortable: true },
-    { key: "24hPercentage", title: "24h%", sortable: true },
-    { key: "7dPercentage", title: "7d%", sortable: true },
+    { key: "percent1h", title: "1h%", sortable: true },
+    { key: "percent24h", title: "24h%", sortable: true },
+    { key: "percent7d", title: "7d%", sortable: true },
     {
       key: "volumeDividedByCap",
       title: "24h Volume/Market Cap",
@@ -109,9 +109,9 @@ const MarketTable = () => {
               formatCurrency(cellValue, 3, true, currency)}
           </div>
         );
-      case "1hPercentage":
-      case "24hPercentage":
-      case "7dPercentage":
+      case "percent1h":
+      case "percent24h":
+      case "percent7d":
         return (
           <div className="flex justify-center">
             {typeof cellValue === "number" && <PriceChange value={cellValue} />}
