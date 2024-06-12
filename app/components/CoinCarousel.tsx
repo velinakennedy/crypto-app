@@ -1,14 +1,17 @@
 "use client";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { removeCoin } from "../redux/features/activeCoinsSlice";
+import { editCoins, removeCoin } from "../redux/features/activeCoinsSlice";
 import CoinCharts from "./CoinCharts";
-import { useGetChartDataQuery } from "../redux/features/coinChartInfoSlice";
+import {
+  useEditChartDataMutation,
+  useGetChartDataQuery,
+} from "../redux/features/coinChartInfoSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useGetCoinListQuery } from "../redux/features/coinListSlice";
 import { useEffect, useState } from "react";
-import { CoinMarketData } from "@/typings";
+import { ActiveCoin, ChartCoinData, CoinMarketData } from "@/typings";
 import CoinCarouselItem from "./CoinCarouselItem";
 import Image from "next/image";
 import {
@@ -26,8 +29,8 @@ const CoinCarousel = () => {
   const activeCoins = useSelector(
     (state: RootState) => state.activeCoins.value
   );
-  const {status, to, from} = useSelector (
-    (state: RootState ) => state.timeframe
+  const { prevStatus, status, to, from } = useSelector(
+    (state: RootState) => state.timeframe
   );
   const dispatch = useDispatch();
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -40,16 +43,19 @@ const CoinCarousel = () => {
     {
       id,
       currency,
-      from: Math.floor(from),
+      from: status === "1Y" ? Math.floor(from) : Math.floor(to - 2629743),
       to: Math.floor(to),
     },
     { skip }
   );
+  const [updateCoin, { isSuccess: updateSuccessful }] =
+    useEditChartDataMutation();
   const hasChartData: boolean = chartData && isSuccess;
   const hasCoinData: boolean = coinData && listIsSuccess && !listIsLoading;
+  const isUpdated = hasCoinData || updateSuccessful;
 
   const handleSelection = (name: string): void => {
-    const exists = activeCoins.find((coin) => coin.id == name);
+    const exists = activeCoins.find((coin: ActiveCoin) => coin.id == name);
     if (exists) {
       dispatch(removeCoin(name));
       setSkip(true);
@@ -59,11 +65,23 @@ const CoinCarousel = () => {
     }
   };
 
-  const handleTimeChange = () => {
-    activeCoins.map((coin) => (
-      setId(coin.id),
-      setSkip(false)
-    ));
+  const handleTimeChange = async () => {
+    const newCoinList: ActiveCoin[] = await Promise.all(
+      activeCoins.map(async (coin: ActiveCoin) => {
+        const response: ChartCoinData | any = await updateCoin({
+          id: coin.id,
+          currency,
+          from: status === "1Y" ? Math.floor(from) : Math.floor(to - 2629743),
+          to: Math.floor(to),
+        });
+        const newCoin: ActiveCoin = {
+          id: coin.id,
+          data: { ...response.data },
+        };
+        return newCoin;
+      })
+    );
+    dispatch(editCoins(newCoinList));
   };
 
   const mediaBreaks = {
@@ -92,12 +110,19 @@ const CoinCarousel = () => {
   }, []);
 
   useEffect(() => {
-    handleTimeChange();
+    if (status === "1Y" && prevStatus !== "1Y") handleTimeChange();
+    if (status !== "1Y" && prevStatus === "1Y") handleTimeChange();
   }, [status]);
+
+  useEffect(() => {
+    if (isSuccess && chartData) {
+      setSkip(true);
+    }
+  }, [isSuccess, chartData]);
 
   return (
     <div>
-      {hasCoinData ? (
+      {isUpdated ? (
         <div className="w-full px-10 pt-10">
           <Swiper
             modules={[Navigation, Autoplay]}
@@ -123,7 +148,7 @@ const CoinCarousel = () => {
             ))}
             <IoIosArrowDroprightCircle className="swiper-button-next" />
           </Swiper>
-          
+
           <div className="flex gap-3 mt-7">
             {activeCoins.map((coin) => {
               const coinInfo = coinData.find(
@@ -154,9 +179,8 @@ const CoinCarousel = () => {
       )}
       <CoinCharts
         id={id}
-        currentData={chartData}
+        currentData={chartData || updateCoin}
         hasData={hasChartData}
-        currentDate={to}
       />
     </div>
   );

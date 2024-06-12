@@ -17,15 +17,12 @@ export const activeCoinsSlice = createSlice({
         removeCoin: (state, action: PayloadAction<string>) => {
             state.value = state.value.filter((coin) => coin.id != action.payload);
         },
-        editCoin: (state, action: PayloadAction<ActiveCoin>) => {
-            const coin = state.value.find((element) => element.id === action.payload.id);
-            if (coin) {
-                coin.data = action.payload.data;
-            }
+        editCoins: (state, action: PayloadAction<ActiveCoin[]>) => {
+            state.value = action.payload;
         }
     }
 });
 
-export const { addCoin, removeCoin, editCoin } = activeCoinsSlice.actions;
+export const { addCoin, removeCoin, editCoins } = activeCoinsSlice.actions;
 
 export default activeCoinsSlice.reducer;

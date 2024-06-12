@@ -16,13 +16,14 @@ import {
 import formatChartData from "@/utils/formatChartData";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
-import { addCoin, editCoin } from "../redux/features/activeCoinsSlice";
+import { addCoin } from "../redux/features/activeCoinsSlice";
 import { useEffect, useRef, useState } from "react";
 import { ActiveCoin, ChartCoinData, ChartDataOptions } from "@/typings";
 import formatDate from "@/utils/formatDate";
 import chartLabels from "@/utils/chartLabels";
+// import { useGetChartDataQuery } from "../redux/features/coinChartInfoSlice";
 
-const CoinCharts = ({currentData, hasData, id, currentDate}: {currentData: ChartCoinData, hasData: boolean, id: string, currentDate: number}) => {
+const CoinCharts = ({currentData, hasData, id}: {currentData: ChartCoinData, hasData: boolean, id: string}) => {
   ChartJS.register(
     CategoryScale,
     LineElement,
@@ -42,31 +43,30 @@ const CoinCharts = ({currentData, hasData, id, currentDate}: {currentData: Chart
   const chartRef = useRef<ChartJS>(null);
   const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
   const dispatch = useDispatch();
-  const chartDate = formatDate(currentDate);
-  const {status} = useSelector (
+  const {status, to, from} = useSelector (
     (state: RootState ) => state.timeframe
   );
-  
+  const chartDate = to ? formatDate(to) : undefined;
+
   useEffect(() => {
-    if (hasData) {
+    if (activeCoins.length < 3 && hasData) {
       const data: ActiveCoin = {
         id: id,
         data: currentData
       };
-      if (activeCoins.find((coin: ActiveCoin) => coin.id === data.id)) {
-        dispatch(editCoin(data));
-      } else if (activeCoins.length < 3) {
-        dispatch(addCoin(data));
-      }
-      setLabels(chartLabels(currentData.prices, status));
+      dispatch(addCoin(data));
     }
-  }, [hasData, id, currentData, activeCoins, dispatch, status]);
+    if (activeCoins.length > 0) {
+      const newData = status === "1Y" ? activeCoins[0].data.prices : activeCoins[0].data.prices.filter((element: any) => element[0] >= from*1000);
+      setLabels(chartLabels(newData, status));
+    }
+  }, [hasData, id, currentData, activeCoins, dispatch, status, from]);
 
   useEffect(() => {
     const isSuccess = activeCoins.length > 0 && chartRef.current;
     if (isSuccess) {
-      const updatedLineData: ChartDataOptions = formatChartData(activeCoins, "line", chartRef);
-      const updatedBarData: ChartDataOptions = formatChartData(activeCoins, "bar", chartRef);
+      const updatedLineData: ChartDataOptions = formatChartData(activeCoins, "line", chartRef, from*1000);
+      const updatedBarData: ChartDataOptions = formatChartData(activeCoins, "bar", chartRef, from*1000);
       const updatedMultiData: ChartDataset<"line" | "bar">[] = [];
       setLineChartData(updatedLineData);
       setBarChartData(updatedBarData);
@@ -78,7 +78,7 @@ const CoinCharts = ({currentData, hasData, id, currentDate}: {currentData: Chart
       setBarChartData({datasets: [], options: {}});
       setMultiChartData([]);
     }
-  }, [activeCoins]);
+  }, [activeCoins, from]);
 
   return (
     <div>

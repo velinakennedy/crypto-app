@@ -75,6 +75,7 @@ export interface CoinMarketData {
 }
 
 export interface chartTimeframe {
+  prevStatus: string,
   status: string,
   to: number,
   from: number
