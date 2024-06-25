@@ -1,21 +1,20 @@
 import { ActiveCoin, ChartDataOptions, CustomOptions } from "@/typings";
-import {
-  Chart as ChartJS,
-  ChartArea,
-  ChartDataset,
-  ChartOptions,
-} from "chart.js";
+import { Chart as ChartJS, ChartDataset } from "chart.js";
 import { RefObject } from "react";
-const formatChartData = (
-  coinData: ActiveCoin[],
-  chartType: string,
-  chartRef: RefObject<ChartJS>,
-  startDate: number
-) => {
-  const chart = chartRef.current;
-  const customOptions = (coin: number): CustomOptions => {
-    switch (coin) {
-      case 1:
+import createGradient from "./createGradient";
+import chartConfig from "./chartConfig";
+const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: RefObject<ChartJS>) => {
+    const chart = chartRef.current;
+    const customOptions = (coin: number): CustomOptions => {
+        switch(coin) {
+            case 1: return {background: "1, 241, 227", border: "rgba(1, 241, 227, 1)", lineYAxis: "y1", barYAxis: "y4"};
+            case 2: return {background: "125, 64, 255", border: "rgba(125, 64, 255, 1)", lineYAxis: "y2", barYAxis: "y5"};
+            default: return {background: "227, 35, 255", border: "rgba(227, 35, 255, 1)", lineYAxis: "y", barYAxis: "y3"};
+        }
+    };
+
+    const createDataset = (coinChoice: number): ChartDataset<"line" | "bar"> => {
+        const custom = customOptions(coinChoice);
         return {
           background: "1, 241, 227",
           border: "rgba(1, 241, 227, 1)",
@@ -84,57 +83,9 @@ const formatChartData = (
     };
   };
 
-  const datasets: ChartDataset<"line" | "bar">[] = [];
-  if (coinData)
-    coinData.forEach((coin, index) => datasets.push(createDataset(index)));
-
-  const options: ChartOptions = {
-    maintainAspectRatio: false,
-    interaction: {
-      mode: "nearest",
-      axis: "x",
-    },
-    scales: {
-      x: {
-        ticks: {
-          display: true,
-          maxTicksLimit: 20,
-        },
-        grid: {
-          display: false,
-        },
-      },
-      y: {
-        display: false,
-      },
-      y1: {
-        display: false,
-      },
-      y2: {
-        display: false,
-      },
-      y3: {
-        display: false,
-      },
-      y4: {
-        display: false,
-      },
-      y5: {
-        display: false,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: "bottom",
-        align: "start",
-      },
-    },
-  };
-
   const chartData: ChartDataOptions = {
-    datasets,
-    options,
+      datasets,
+      options: chartConfig("large")
   };
 
   return chartData;
