@@ -3,18 +3,16 @@ import { Chart as ChartJS, ChartDataset } from "chart.js";
 import { RefObject } from "react";
 import createGradient from "./createGradient";
 import chartConfig from "./chartConfig";
-const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: RefObject<ChartJS>) => {
-    const chart = chartRef.current;
-    const customOptions = (coin: number): CustomOptions => {
-        switch(coin) {
-            case 1: return {background: "1, 241, 227", border: "rgba(1, 241, 227, 1)", lineYAxis: "y1", barYAxis: "y4"};
-            case 2: return {background: "125, 64, 255", border: "rgba(125, 64, 255, 1)", lineYAxis: "y2", barYAxis: "y5"};
-            default: return {background: "227, 35, 255", border: "rgba(227, 35, 255, 1)", lineYAxis: "y", barYAxis: "y3"};
-        }
-    };
-
-    const createDataset = (coinChoice: number): ChartDataset<"line" | "bar"> => {
-        const custom = customOptions(coinChoice);
+const formatChartData = (
+  coinData: ActiveCoin[],
+  chartType: string,
+  chartRef: RefObject<ChartJS>,
+  startDate: number
+) => {
+  const chart = chartRef.current;
+  const customOptions = (coin: number): CustomOptions => {
+    switch (coin) {
+      case 1:
         return {
           background: "1, 241, 227",
           border: "rgba(1, 241, 227, 1)",
@@ -36,24 +34,6 @@ const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: Re
           barYAxis: "y3",
         };
     }
-  };
-
-  const createGradient = (
-    ctx: CanvasRenderingContext2D,
-    area: ChartArea,
-    color: string
-  ): CanvasGradient => {
-    const colorStart = `rgba(${color}, 0.1)`;
-    const colorMid = `rgba(${color}, 0.4)`;
-    const colorEnd = `rgba(${color}, 0.7)`;
-
-    const gradient = ctx.createLinearGradient(0, area.bottom, 0, area.top);
-
-    gradient.addColorStop(0, colorStart);
-    gradient.addColorStop(0.5, colorMid);
-    gradient.addColorStop(1, colorEnd);
-
-    return gradient;
   };
 
   const createDataset = (coinChoice: number): ChartDataset<"line" | "bar"> => {
@@ -83,9 +63,13 @@ const formatChartData = (coinData: ActiveCoin[], chartType: string, chartRef: Re
     };
   };
 
+  const datasets: ChartDataset<"line" | "bar">[] = [];
+  if (coinData)
+    coinData.forEach((coin, index) => datasets.push(createDataset(index)));
+
   const chartData: ChartDataOptions = {
-      datasets,
-      options: chartConfig("large")
+    datasets,
+    options: chartConfig("large"),
   };
 
   return chartData;
