@@ -1,4 +1,4 @@
-const formatDate = (value: string | number): string => {
+const formatDate = (value: string | number, removeYear?: boolean): string => {
     const getMonth = (month: number): string => {
       switch(month) {
         case 0: return "January";
@@ -16,7 +16,7 @@ const formatDate = (value: string | number): string => {
         default: return "";
       }
     };
-    const date: Date = new Date(value);
+    const date: Date = new Date(typeof value === "number" ? value*1000 : value);
     if (typeof value === "string") {
       return new Intl.DateTimeFormat("en-GB", {
         dateStyle: "full",
@@ -24,9 +24,9 @@ const formatDate = (value: string | number): string => {
       }).format(date);
     } else if (typeof value === "number") {
       const month = getMonth(date.getMonth());
-      const day = date.getDay();
+      const day = date.getDate();
       const year = date.getFullYear();
-      return `${month} ${day}, ${year}`;
+      return removeYear ? `${month} ${day}` : `${month} ${day}, ${year}`;
     } else {
       return "";
     }

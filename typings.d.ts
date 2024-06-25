@@ -93,6 +93,13 @@ export interface MarketTableData extends CoinMarketData {
   price_change_percentage_7d_in_currency: number
 }
 
+export interface chartTimeframe {
+  prevStatus: string,
+  status: string,
+  to: number,
+  from: number
+}
+
 export interface MarketFormattedData {
   marketCap: number,
   name: string[],

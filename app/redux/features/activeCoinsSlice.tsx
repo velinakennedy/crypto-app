@@ -16,10 +16,13 @@ export const activeCoinsSlice = createSlice({
         },
         removeCoin: (state, action: PayloadAction<string>) => {
             state.value = state.value.filter((coin) => coin.id != action.payload);
+        },
+        editCoins: (state, action: PayloadAction<ActiveCoin[]>) => {
+            state.value = action.payload;
         }
     }
 });
 
-export const { addCoin, removeCoin } = activeCoinsSlice.actions;
+export const { addCoin, removeCoin, editCoins } = activeCoinsSlice.actions;
 
 export default activeCoinsSlice.reducer;
