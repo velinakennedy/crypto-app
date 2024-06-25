@@ -21,7 +21,8 @@ const CoinCarouselItem = ({ coin }: { coin: CoinMarketData }) => {
   }, [activeCoins]);
 
   return (
-    <div className={`flex gap-2 ${isSelected ? "bg-purple-hover dark:bg-purple-hover-dark" : "bg-purple-secondary dark:bg-purple-secondary-dark"} max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}>
+    <div className={`z-0 p-[1.3px] rounded-lg ${isSelected ? "bg-gradient-to-b from-purple-border dark:to-[#3c3d7e80] to-[#7779f880] shadow-lg dark:shadow-[#7779f833] shadow-[#7779f84d]" : ""}`}>
+    <div className={`flex gap-2 z-1 ${isSelected ? "dark:bg-purple-hover-dark bg-[#a2a4e8]" : "bg-purple-secondary dark:bg-purple-secondary-dark"} max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}>
       <div className="flex justify-center w-full min-w-10">
         <Image
           loader={() => `${coin.image}/w=auto`}
@@ -38,6 +39,7 @@ const CoinCarouselItem = ({ coin }: { coin: CoinMarketData }) => {
           <PriceChange value={coin.price_change_percentage_24h} />
         </div>
       </div>
+    </div>
     </div>
   );
 };

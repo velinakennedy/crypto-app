@@ -125,6 +125,7 @@ const CoinCarousel = () => {
       {isUpdated ? (
         <div className="w-full px-10 pt-10">
           <Swiper
+            className="pb-7"
             modules={[Navigation, Autoplay]}
             spaceBetween={10}
             autoplay={{
@@ -149,7 +150,7 @@ const CoinCarousel = () => {
             <IoIosArrowDroprightCircle className="swiper-button-next" />
           </Swiper>
 
-          <div className="flex gap-3 mt-7">
+          <div className="flex gap-3">
             {activeCoins.map((coin) => {
               const coinInfo = coinData.find(
                 (coinData: CoinMarketData) => coinData.id === coin.id
