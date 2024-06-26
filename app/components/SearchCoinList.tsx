@@ -14,6 +14,7 @@ const SearchCoinList = ({ data }: { data: any }) => {
   const handleBlur = (e: React.FocusEvent<HTMLDivElement>) => {
     if (!e.currentTarget.contains(e.relatedTarget)) {
       setIsActive(false);
+      setSearchValue("");
     }
   };
 
@@ -35,6 +36,7 @@ const SearchCoinList = ({ data }: { data: any }) => {
           placeholder="Search..."
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => setIsActive(true)}
+          value={searchValue}
         />
       </div>
       <div
