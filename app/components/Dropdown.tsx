@@ -60,7 +60,7 @@ const Dropdown = () => {
     <div
       className={`${
         isActive ? "rounded-t" : "rounded"
-      } w-36 bg-purple-secondary dark:bg-purple-secondary-dark`}
+      } w-36 bg-purple-secondary dark:bg-purple-secondary-dark z-10`}
     >
       <button
         className="flex items-center justify-center w-full h-full gap-1 rounded bg-purple-secondary dark:hover:bg-purple-hover-dark hover:bg-purple-hover dark:bg-purple-secondary-dark"

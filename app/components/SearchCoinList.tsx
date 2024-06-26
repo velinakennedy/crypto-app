@@ -38,7 +38,7 @@ const SearchCoinList = ({ data }: { data: any }) => {
         />
       </div>
       <div
-        className={`fixed flex flex-col gap-3 w-96 rounded-b bg-purple-secondary dark:bg-purple-secondary-dark ${
+        className={`z-10 fixed flex flex-col gap-3 w-96 rounded-b bg-purple-secondary dark:bg-purple-secondary-dark ${
           isActive ? "" : "hidden" 
         }`} 
       >
