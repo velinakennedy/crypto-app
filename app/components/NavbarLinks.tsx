@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 const NavbarLinks = () => {
-    const [isSelected, setIsSelected] = useState<string>("");
+  const [isSelected, setIsSelected] = useState<string>("home");
   return (
     <div className="flex gap-5 text-lg">
         <Link href={"/"} className={`flex gap-2 items-center ${isSelected === "home" ? "text-white" : "text-gray-400"}`} onClick={() => setIsSelected("home")}><RiHome5Fill /> Home</Link>
