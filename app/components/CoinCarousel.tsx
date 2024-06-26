@@ -107,6 +107,10 @@ const CoinCarousel = () => {
   }, []);
 
   useEffect(() => {
+    if (activeCoins.length < 1) handleSelection("bitcoin");
+  }, [activeCoins]);
+
+  useEffect(() => {
     if (status === "1Y" && prevStatus !== "1Y") handleTimeChange();
     if (status !== "1Y" && prevStatus === "1Y") handleTimeChange();
   }, [status]);
