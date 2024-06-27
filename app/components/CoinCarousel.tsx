@@ -85,22 +85,19 @@ const CoinCarousel = () => {
   };
 
   const mediaBreaks = {
-    640: {
+    680: {
       slidesPerView: 3,
     },
-    768: {
-      slidesPerView: 4,
-    },
-    1024: {
+    1200: {
       slidesPerView: 5,
     },
-    1300: {
+    1400: {
       slidesPerView: 6,
     },
     1680: {
       slidesPerView: 7,
     },
-    2100: {
+    2500: {
       slidesPerView: 10,
     },
   };
@@ -108,6 +105,10 @@ const CoinCarousel = () => {
   useEffect(() => {
     handleSelection("bitcoin");
   }, []);
+
+  useEffect(() => {
+    if (activeCoins.length < 1) handleSelection("bitcoin");
+  }, [activeCoins]);
 
   useEffect(() => {
     if (status === "1Y" && prevStatus !== "1Y") handleTimeChange();
@@ -125,6 +126,7 @@ const CoinCarousel = () => {
       {isUpdated ? (
         <div className="w-full px-10 pt-10">
           <Swiper
+            className="pb-7"
             modules={[Navigation, Autoplay]}
             spaceBetween={10}
             autoplay={{
@@ -149,7 +151,7 @@ const CoinCarousel = () => {
             <IoIosArrowDroprightCircle className="swiper-button-next" />
           </Swiper>
 
-          <div className="flex gap-3 mt-7">
+          <div className="flex gap-3">
             {activeCoins.map((coin) => {
               const coinInfo = coinData.find(
                 (coinData: CoinMarketData) => coinData.id === coin.id

@@ -5,21 +5,22 @@
 @layer components {
     .swiper-button-prev,
     .swiper-button-next {
-        color: rgba(142, 142, 251, 0.8);
-        width: 50px;
-        transition: all ease .3s;
+        color: rgba(142, 142, 251, 0.8) !important;
+        width: 50px !important;
+        transition: all ease .3s !important;
+        top: calc(50% - .875rem) !important;
     }
     .swiper-button-prev {
-        left: 0px;
+        left: 0px !important;
     }
 
     .swiper-button-next {
-        right: 0px;
+        right: 0px !important;
     }
 
     .swiper-button-prev:hover,
     .swiper-button-next:hover {
-        width: 53px;
-        height: 53px;
+        width: 53px !important;
+        height: 53px !important;
     }
 }
