@@ -126,7 +126,7 @@ const CoinCarousel = () => {
       {isUpdated ? (
         <div className="w-full px-10 pt-10">
           <Swiper
-            className="pb-7"
+            className="!pb-7"
             modules={[Navigation, Autoplay]}
             spaceBetween={10}
             autoplay={{
