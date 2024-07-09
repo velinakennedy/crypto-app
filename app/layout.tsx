@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
       <html lang="en">
-        <body className={`${space.className} bg-bg-light dark:bg-bg-dark transition-all duration-700`}>
+        <body className={`${space.className} bg-bg-light dark:bg-bg-dark transition-all duration-700 h-[100vh]`}>
           <StoreProvider>
           <Navbar/>
           {children}
