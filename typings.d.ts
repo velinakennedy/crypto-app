@@ -123,3 +123,19 @@ export type SortingTypes = string
 | string[]
 | [number, number[]]
 | [number, number, string];
+
+export interface PurchaseInfo {
+  coin: {
+    name: string,
+    id: string,
+    image: string
+  },
+  amount: number | null,
+  date: string
+}
+
+export interface Coin {
+  name: string,
+    id: string,
+    image: string
+}

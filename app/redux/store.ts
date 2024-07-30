@@ -8,24 +8,32 @@ import { coinChartInfoSlice } from "./features/coinChartInfoSlice";
 import coinsReducer from "./features/activeCoinsSlice";
 import timeframeReducer from "./features/chartTimeframeSlice";
 import { coinTableSlice } from "./features/coinTableSlice";
+import coinListReducer from "./features/searchBarCoinList";
 
 export const store = configureStore({
-    reducer: {
-        [marketSlice.reducerPath]: marketSlice.reducer,
-        [coinListSlice.reducerPath]: coinListSlice.reducer,
-        [coinInfoSlice.reducerPath]: coinInfoSlice.reducer,
-        [coinChartInfoSlice.reducerPath]: coinChartInfoSlice.reducer,
-        [coinTableSlice.reducerPath]: coinTableSlice.reducer,
-        currency: currencyReducer,
-        activeCoins: coinsReducer,
-        timeframe: timeframeReducer
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(marketSlice.middleware, coinListSlice.middleware, coinInfoSlice.middleware, coinChartInfoSlice.middleware, coinTableSlice.middleware),
-  });
+  reducer: {
+    [marketSlice.reducerPath]: marketSlice.reducer,
+    [coinListSlice.reducerPath]: coinListSlice.reducer,
+    [coinInfoSlice.reducerPath]: coinInfoSlice.reducer,
+    [coinChartInfoSlice.reducerPath]: coinChartInfoSlice.reducer,
+    [coinTableSlice.reducerPath]: coinTableSlice.reducer,
+    currency: currencyReducer,
+    activeCoins: coinsReducer,
+    timeframe: timeframeReducer,
+    coinList: coinListReducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(
+      marketSlice.middleware,
+      coinListSlice.middleware,
+      coinInfoSlice.middleware,
+      coinChartInfoSlice.middleware,
+      coinTableSlice.middleware
+    ),
+});
 
 setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

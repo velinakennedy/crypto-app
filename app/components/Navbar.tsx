@@ -2,38 +2,47 @@
 import MarketBar from "./MarketBar";
 import Dropdown from "./Dropdown";
 import SearchCoinList from "./SearchCoinList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useGetCoinListQuery } from "../redux/features/coinListSlice";
 import { GiCoins } from "react-icons/gi";
 import DarkModeButton from "./DarkModeButton";
 import Link from "next/link";
 import NavbarLinks from "./NavbarLinks";
+import { useEffect } from "react";
+import { updateList } from "../redux/features/searchBarCoinList";
 
 const Navbar = () => {
   const currency = useSelector((state: RootState) => state.currency.value);
   const { data } = useGetCoinListQuery(currency);
-  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (data) dispatch(updateList(data));
+  }, [data]);
+
   return (
     <div>
-      {data && (<div>
-      <MarketBar />
-      <div className="flex items-center justify-between h-full p-5 px-10 text-purple-text dark:text-gray-300 bg-white dark:bg-[#13121a]">
-        <h1>
-          <Link href={"/"} className="flex gap-1 text-2xl font-bold dark:text-white">
-            <GiCoins className="text-3xl dark:text-white" /> CoinTrade
-          </Link>
-        </h1>
+      {data && (
         <div>
-          <NavbarLinks />
+          <MarketBar />
+          <div className="flex justify-between items-center bg-white dark:bg-[#13121a] px-10 p-5 h-full text-purple-text dark:text-gray-300">
+            <h1>
+              <Link href={"/"} className="flex gap-1 font-bold text-2xl dark:text-white">
+                <GiCoins className="text-3xl dark:text-white" /> CoinTrade
+              </Link>
+            </h1>
+            <div>
+              <NavbarLinks />
+            </div>
+            <div className="flex gap-7">
+              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96" clearInput={true} />
+              <Dropdown />
+              <DarkModeButton />
+            </div>
+          </div>
         </div>
-        <div className="flex gap-7">
-          <SearchCoinList data={data}/>
-          <Dropdown />
-          <DarkModeButton />
-        </div>
-      </div>
-    </div>)}
+      )}
     </div>
   );
 };

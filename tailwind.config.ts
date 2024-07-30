@@ -28,7 +28,13 @@ const config: Config = {
         "purple-market": "#1e1932",
         "teal-positive": "#27d0d0",
         "red-negative": "#fe2364",
-        "purple-border": "#7779f8"
+        "purple-border": "#7779f8",
+        "dark-modal": "#13121a",
+        "light-modal": "#D0CDFD",
+        "dark-modal-container": "#191932",
+        "light-modal-container": "#a2a4e899",
+        "dark-modal-icon": "#2c2c4a",
+        "light-modal-icon": "#7a7aab"
       },
     },
   },
