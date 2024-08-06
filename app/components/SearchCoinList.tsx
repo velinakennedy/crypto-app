@@ -24,7 +24,7 @@ const SearchCoinList = ({
   const dropdown = useRef<HTMLDivElement | null>(null);
   const data = useSelector((state: RootState) => state.coinList.value);
 
-  const handleSelection = (data?: { name: string; id: string; image: string }) => {
+  const handleSelection = (data?: CoinMarketData) => {
     if (!isSearchBar && data) {
       if (handleCoin) handleCoin("coin", data);
       setSearchValue(data.name);
@@ -83,23 +83,23 @@ const SearchCoinList = ({
               isSearchBar ? "bg-purple-secondary" : "bg-white"
             } dark:bg-purple-secondary-dark ${isActive ? "" : "hidden"}`}
           >
-            {filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map(({ id, name, image }: { id: string; name: string; image: string }) => {
+            {filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map((data: CoinMarketData) => {
               return isSearchBar ? (
                 <Link
                   className="flex gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded"
-                  key={id}
+                  key={data.id}
                   onClick={() => handleSelection()}
-                  href={`/coin/${id}`}
+                  href={`/coin/${data.id}`}
                 >
-                  {name}
+                  {data.name}
                 </Link>
               ) : (
                 <div
                   className="flex gap-1 bg-white hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded"
-                  key={id}
-                  onClick={() => handleSelection({ id, name, image })}
+                  key={data.id}
+                  onClick={() => handleSelection(data)}
                 >
-                  {name}
+                  {data.name}
                 </div>
               );
             })}

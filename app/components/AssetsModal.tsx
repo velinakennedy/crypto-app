@@ -7,7 +7,15 @@ import SearchCoinList from "./SearchCoinList";
 import { Coin, PurchaseInfo } from "@/typings";
 import { FaCoins } from "react-icons/fa";
 
-const AssetsModal = ({ handleAssetToggle, onAddAsset }: { handleAssetToggle: VoidFunction; onAddAsset: boolean }) => {
+const AssetsModal = ({
+  handleAssetToggle,
+  onAddAsset,
+  handleNewCoin,
+}: {
+  handleAssetToggle: VoidFunction;
+  onAddAsset: boolean;
+  handleNewCoin: CallableFunction;
+}) => {
   const [purchaseInfo, setPurchaseInfo] = useState<PurchaseInfo>({
     coin: { name: "No coin selected...", id: "", image: "" },
     amount: null,
@@ -102,12 +110,12 @@ const AssetsModal = ({ handleAssetToggle, onAddAsset }: { handleAssetToggle: Voi
                 }`}
                 onChange={(e) => handleCoin("date", e.target.value)}
                 value={purchaseInfo.date}
-                type="datetime-local"
+                type="date"
               />
               <div className="flex gap-3">
                 <GradientButton title="Cancel" action={handleAssetToggle} />
                 {isValid ? (
-                  <GradientButton title="Save and Continue" action={() => alert("saved!")} width="w-full" />
+                  <GradientButton title="Save and Continue" action={() => handleNewCoin(purchaseInfo)} width="w-full" />
                 ) : (
                   <button className="bg-light-modal-container dark:bg-purple-secondary-dark p-[1.3px] rounded-lg w-full dark:text-gray-400" disabled>
                     Save and Continue
