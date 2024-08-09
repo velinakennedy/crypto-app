@@ -9,6 +9,7 @@ import coinsReducer from "./features/activeCoinsSlice";
 import timeframeReducer from "./features/chartTimeframeSlice";
 import { coinTableSlice } from "./features/coinTableSlice";
 import coinListReducer from "./features/searchBarCoinList";
+import { historicalCoinSlice } from "./features/historicalCoinSlice";
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     [coinInfoSlice.reducerPath]: coinInfoSlice.reducer,
     [coinChartInfoSlice.reducerPath]: coinChartInfoSlice.reducer,
     [coinTableSlice.reducerPath]: coinTableSlice.reducer,
+    [historicalCoinSlice.reducerPath]: historicalCoinSlice.reducer,
     currency: currencyReducer,
     activeCoins: coinsReducer,
     timeframe: timeframeReducer,
@@ -28,7 +30,8 @@ export const store = configureStore({
       coinListSlice.middleware,
       coinInfoSlice.middleware,
       coinChartInfoSlice.middleware,
-      coinTableSlice.middleware
+      coinTableSlice.middleware,
+      historicalCoinSlice.middleware
     ),
 });
 

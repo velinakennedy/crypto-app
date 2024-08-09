@@ -1,4 +1,4 @@
-import {nextui} from "@nextui-org/theme";
+import { nextui } from "@nextui-org/theme";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -6,15 +6,14 @@ const config: Config = {
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/components/(spinner|table|checkbox|spacer).js"
+    "./node_modules/@nextui-org/theme/dist/components/(spinner|table|checkbox|spacer).js",
   ],
   darkMode: "selector",
   theme: {
     extend: {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
         "purple-text": "#424286",
@@ -34,7 +33,8 @@ const config: Config = {
         "dark-modal-container": "#191932",
         "light-modal-container": "#a2a4e899",
         "dark-modal-icon": "#2c2c4a",
-        "light-modal-icon": "#7a7aab"
+        "light-modal-icon": "#7a7aab",
+        "light-asset": "#a2a4e833",
       },
     },
   },
