@@ -15,21 +15,26 @@ const PortfolioPage = () => {
 
   const handleNewCoin = (coin: PurchaseInfo) => {
     setNewCoin(coin);
+    setOnAddAsset(false);
   };
 
   return (
     <div className="px-10">
       <AssetsModal handleAssetToggle={handleAssetToggle} onAddAsset={onAddAsset} handleNewCoin={handleNewCoin} />
       <div className="flex justify-between pt-10">
-        <h2>Your Statistics</h2>
+        <h2 className="text-xl">Your Statistics</h2>
         <div className="flex gap-5">
           <GradientButton title="Investments Calculator" action={() => ""} />
           <GradientButton title="Add Assets" action={() => setOnAddAsset(true)} />
         </div>
       </div>
-      {newCoin && (
+      {newCoin ? (
         <div>
           <AssetList purchaseInfo={newCoin} />
+        </div>
+      ) : (
+        <div>
+          <AssetList />
         </div>
       )}
     </div>

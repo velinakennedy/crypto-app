@@ -132,6 +132,10 @@ export interface PurchaseInfo {
 }
 
 export interface CoinAsset {
+  name: string;
+  id: string;
+  symbol: string;
+  image: string;
   currentPrice: number;
   priceChange24: number;
   marketVsVolume: number;
