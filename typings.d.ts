@@ -6,8 +6,8 @@ export interface CurrencyState {
 }
 
 export interface ActiveCoinsState {
-    value: ActiveCoin[];
-  }
+  value: ActiveCoin[];
+}
 
 export interface CurrencyTypes {
   name: string;
@@ -30,10 +30,10 @@ export interface ActiveCoin {
 }
 
 export interface CustomOptions {
-    background: string;
-    border: string;
-    lineYAxis: string;
-    barYAxis: string;
+  background: string;
+  border: string;
+  lineYAxis: string;
+  barYAxis: string;
 }
 
 export interface ColorOptions {
@@ -42,8 +42,8 @@ export interface ColorOptions {
 }
 
 export interface ChartDataOptions {
-    datasets: ChartDataset<"line" | "bar">[];
-    options: ChartOptions;
+  datasets: ChartDataset<"line" | "bar">[];
+  options: ChartOptions;
 }
 
 export interface MarketChartDataOptions {
@@ -52,90 +52,96 @@ export interface MarketChartDataOptions {
 }
 
 export interface CoinMarketData {
-  id: string,
-  symbol: string,
-  name: string,
-  image: string,
-  current_price: number,
-  market_cap: number,
-  market_cap_rank: number,
-  fully_diluted_valuation: number,
-  total_volume: number,
-  high_24h: number,
-  low_24h: number,
-  price_change_24h: number,
-  price_change_percentage_24h: number,
-  market_cap_change_24h: number,
-  market_cap_change_percentage_24h: number,
-  circulating_supply: number,
-  total_supply: number,
-  max_supply: number | null,
-  ath: number,
-  ath_change_percentage: number,
-  ath_date: string,
-  atl: number,
-  atl_change_percentage:number,
-  atl_date: string,
+  id: string;
+  symbol: string;
+  name: string;
+  image: string;
+  current_price: number;
+  market_cap: number;
+  market_cap_rank: number;
+  fully_diluted_valuation: number;
+  total_volume: number;
+  high_24h: number;
+  low_24h: number;
+  price_change_24h: number;
+  price_change_percentage_24h: number;
+  market_cap_change_24h: number;
+  market_cap_change_percentage_24h: number;
+  circulating_supply: number;
+  total_supply: number;
+  max_supply: number | null;
+  ath: number;
+  ath_change_percentage: number;
+  ath_date: string;
+  atl: number;
+  atl_change_percentage: number;
+  atl_date: string;
   roi: {
-    times: number,
-    currency: string,
-    percentage: number
-  } | null,
-  last_updated: string
+    times: number;
+    currency: string;
+    percentage: number;
+  } | null;
+  last_updated: string;
 }
 
 export interface MarketTableData extends CoinMarketData {
   sparkline_in_7d: {
-    price: number[]
-  },
-  price_change_percentage_1h_in_currency: number,
-  price_change_percentage_24h_in_currency: number,
-  price_change_percentage_7d_in_currency: number
+    price: number[];
+  };
+  price_change_percentage_1h_in_currency: number;
+  price_change_percentage_24h_in_currency: number;
+  price_change_percentage_7d_in_currency: number;
 }
 
 export interface chartTimeframe {
-  prevStatus: string,
-  status: string,
-  to: number,
-  from: number
+  prevStatus: string;
+  status: string;
+  to: number;
+  from: number;
 }
 
 export interface MarketFormattedData {
-  marketCap: number,
-  name: string[],
-  price: number,
-  percent1h: number,
-  percent24h: number,
-  percent7d: number,
-  volumeDividedByCap: [number, number, string],
-  circulatingDividedByTotalSupply: [number, number, string],
-  last7Days: [number, number[]]
+  marketCap: number;
+  name: string[];
+  price: number;
+  percent1h: number;
+  percent24h: number;
+  percent7d: number;
+  volumeDividedByCap: [number, number, string];
+  circulatingDividedByTotalSupply: [number, number, string];
+  last7Days: [number, number[]];
 }
 
 export interface SortDescriptor {
-  column: string | undefined,
-  direction: string | undefined
+  column: string | undefined;
+  direction: string | undefined;
 }
 
-export type SortingTypes = string
-| number
-| number[]
-| string[]
-| [number, number[]]
-| [number, number, string];
-
-export interface PurchaseInfo {
-  coin: {
-    name: string,
-    id: string,
-    image: string
-  },
-  amount: number | null,
-  date: string
-}
+export type SortingTypes = string | number | number[] | string[] | [number, number[]] | [number, number, string];
 
 export interface Coin {
-  name: string,
-    id: string,
-    image: string
+  name: string;
+  id: string;
+  image: string;
+}
+
+export interface PurchaseInfo {
+  coin: Coin | CoinMarketData;
+  amount: number | null;
+  date: string;
+}
+
+export interface CoinAsset {
+  name: string;
+  id: string;
+  symbol: string;
+  image: string;
+  currentPrice: number;
+  priceChange24: number;
+  marketVsVolume: number;
+  circVsMaxSupply: number | string;
+  amount: number;
+  amountValue: number;
+  gainLoss: number;
+  purchaseDate: string;
 }
