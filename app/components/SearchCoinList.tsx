@@ -26,7 +26,7 @@ const SearchCoinList = ({
 
   const handleSelection = (data?: CoinMarketData) => {
     if (!isSearchBar && data) {
-      if (handleCoin) handleCoin("coin", data);
+      if (handleCoin) handleCoin(data);
       setSearchValue(data.name);
     } else {
       setSearchValue("");
@@ -36,7 +36,6 @@ const SearchCoinList = ({
 
   const handleChange = (value: string) => {
     setSearchValue(value);
-    if (handleCoin) handleCoin("coin", value);
   };
 
   const filteredList = data?.filter((element: CoinMarketData) => element.name.toLowerCase().includes(searchValue.toLowerCase()));
