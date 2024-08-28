@@ -23,7 +23,11 @@ const AssetsModal = ({
   });
   const [isValid, setIsValid] = useState<boolean>(false);
 
-  const handleCoin = (infoType: string, data?: Coin | number | string): void => {
+  const handleCoin = (coin: Coin) => {
+    handleInfo("coin", coin);
+  };
+
+  const handleInfo = (infoType: string, data?: Coin | number | string): void => {
     if (infoType === "coin") {
       if (typeof data === "object" && data.id.length > 0 && data.image.length > 0) {
         setPurchaseInfo({ ...purchaseInfo, coin: data });
@@ -101,14 +105,14 @@ const AssetsModal = ({
                 onFocus={(e) => (e.target.placeholder = "e.g. 1")}
                 onBlur={(e) => (e.target.placeholder = "Purchased Amount")}
                 value={purchaseInfo.amount ? purchaseInfo.amount : ""}
-                onChange={(e) => handleCoin("amount", +e.target.value)}
+                onChange={(e) => handleInfo("amount", +e.target.value)}
                 className="dark:bg-purple-secondary-dark p-4 rounded-lg w-full dark:placeholder-gray-400 placeholder-purple-text"
               />
               <input
                 className={`p-4 w-full rounded-lg dark:bg-purple-secondary-dark !text-purple-text ${
                   purchaseInfo.date.length > 0 ? "dark:!text-white" : "dark:!text-gray-400"
                 }`}
-                onChange={(e) => handleCoin("date", e.target.value)}
+                onChange={(e) => handleInfo("date", e.target.value)}
                 value={purchaseInfo.date}
                 type="date"
               />
