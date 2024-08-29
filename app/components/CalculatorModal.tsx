@@ -9,6 +9,7 @@ import GradientButton from "./GradientButton";
 import CalculatorItem from "./CalculatorItem";
 import TooltipItem from "./TooltipItem";
 import { calculateInvestment, intervalPrices } from "@/utils/calculateInvestment";
+import { vcaText, dcaText, tooltipText } from "@/utils/investmentText";
 import { Chart } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -183,10 +184,6 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
       calculatorInput.interval &&
       calculatorInput.investment &&
       calculatorInput.growth &&
-      calculatorInput.interval > 0 &&
-      calculatorInput.investment > 0 &&
-      calculatorInput.growth > 0 &&
-      coin.id.length > 0 &&
       coinPriceData
     ) {
       setIsValid(true);
@@ -262,12 +259,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <FaChartLine />
           </button>
           <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
-            <TooltipItem
-              content="Start date and time of investments."
-              placement="right-start"
-              color="dark:!bg-teal-700 !bg-teal-500"
-              iconColor="purple-button"
-            />
+            <TooltipItem content={tooltipText.start} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
             <input
               className="bg-transparent text-teal-500 dark:text-teal-positive"
               type="datetime-local"
@@ -276,12 +268,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             />
           </div>
           <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
-            <TooltipItem
-              content="End date and time of investments."
-              placement="right-start"
-              color="dark:!bg-teal-700 !bg-teal-500"
-              iconColor="purple-button"
-            />
+            <TooltipItem content={tooltipText.end} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
             <input
               className="bg-transparent text-teal-500 dark:text-teal-positive"
               type="datetime-local"
@@ -310,7 +297,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <CalculatorItem
               title="Contribution interval, days"
               isInput={true}
-              content="The number of days between each investment."
+              content={tooltipText.interval}
               action={handleCalculatorInput}
               placeholder="Minimum 1"
               inputType="interval"
@@ -319,7 +306,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <CalculatorItem
               title="Initial investment, $"
               isInput={true}
-              content="The amount of money you invest at the beginning of the period."
+              content={tooltipText.investment}
               action={handleCalculatorInput}
               placeholder="Minimum $1"
               inputType="investment"
@@ -328,25 +315,14 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <CalculatorItem
               title={calculatorType === "VCA" ? "Grow rate per interval, %" : "Funds added per interval, $"}
               isInput={true}
-              content="The rate at which your investment grows, during one interval. If market growth is more than this rate, you will add less money to your investment."
+              content={tooltipText.growth}
               action={handleCalculatorInput}
               placeholder={calculatorType === "VCA" ? "Minimum 1%" : "Minimum $1"}
               inputType="growth"
               value={calculatorInput.growth}
             />
-            <CalculatorItem
-              title="Total amount spent on investments"
-              isInput={false}
-              content="The total amount of money you've spent on investments. Negative value means that you returned your investment completely, and have received returns above it."
-              result={calcResult.totalInvested}
-            />
-            <CalculatorItem
-              title="Coins value, $"
-              isInput={false}
-              content="The value of all your coins at the end of the investments period."
-              result={calcResult.coinsValue}
-              isLast
-            />
+            <CalculatorItem title="Total amount spent on investments" isInput={false} content={tooltipText.total} result={calcResult.totalInvested} />
+            <CalculatorItem title="Coins value, $" isInput={false} content={tooltipText.value} result={calcResult.coinsValue} isLast />
           </div>
         </div>
 
@@ -361,11 +337,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           </button>
         )}
 
-        <p className="opacity-70 font-thin text-sm">
-          {calculatorType === "VCA"
-            ? "Value-cost averaging (VCA) -- is an investment strategy focuses on the value of the investment rather than the number of coins purchased. In VCA, investors aim to invest a consistent amount of money at regular intervals, but instead of buying a fixed quantity of assets each time."
-            : "Dollar-cost averaging (DCA) -- is to reduce the impact of market volatility on the average cost of acquiring the investment. By consistently investing over time, investors may be able to lower their average cost per coin and potentially benefit from long-term market appreciation"}
-        </p>
+        <p className="opacity-70 font-thin text-sm">{calculatorType === "VCA" ? vcaText : dcaText}</p>
       </div>
     </div>
   );
