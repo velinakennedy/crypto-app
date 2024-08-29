@@ -201,7 +201,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
         onCalculator ? "" : "hidden"
       } z-10 h-full w-full fixed flex justify-center dark:text-white text-purple-text top-0 left-0 items-center backdrop-blur-sm dark:backdrop-brightness-125`}
     >
-      <div className="z-20 flex flex-col gap-5 bg-purple-secondary dark:bg-dark-modal p-10 rounded-xl sm:w-[36rem] md:w-[46rem] lg:w-[56rem] h-[85vh] sm:max-h-[70rem] lg:max-h-[54rem] overflow-scroll scrollbar-hide">
+      <div className="z-20 flex flex-col gap-5 bg-white dark:bg-dark-modal p-10 rounded-xl sm:w-[36rem] md:w-[46rem] lg:w-[56rem] h-[85vh] sm:max-h-[70rem] lg:max-h-[54rem] overflow-scroll scrollbar-hide">
         <div className="flex justify-between">
           <h2 className="text-2xl">Investments Calculator</h2>
           <button className="font-thin text-2xl" onClick={handleCalculatorToggle}>
@@ -210,8 +210,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
         </div>
 
         <div className="flex justify-between">
-          <div className="flex justify-center items-center gap-4 bg-light-modal-container dark:bg-dark-modal-container p-2 rounded-lg w-1/3">
-            <div className="bg-light-modal-icon dark:bg-dark-modal-icon dark:bg-opacity-30 p-1 rounded-lg">
+          <div className="flex justify-center items-center gap-4 bg-purple-secondary dark:bg-dark-modal-container p-2 rounded-lg w-1/3">
+            <div className="bg-purple-button dark:bg-dark-modal-icon dark:bg-opacity-30 p-1 rounded-lg">
               {coin.image.length > 0 ? (
                 <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" />
               ) : (
@@ -224,6 +224,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             isSearchBar={false}
             placeholderText="Select Coin"
             width="w-[33rem] sm:w-[20rem] md:w-[27rem] lg:w-[33rem]"
+            color="bg-purple-secondary"
             handleCoin={handleCoin}
             clearInput={!onCalculator}
           />
@@ -234,7 +235,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <GradientButton title="Value Cost Averaging" action={() => handleCalculatorType("VCA")} width="w-full" />
           ) : (
             <button
-              className="bg-light-modal-container dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400"
+              className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400"
               onClick={() => handleCalculatorType("VCA")}
             >
               Value Cost Averaging
@@ -244,7 +245,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
             <GradientButton title="Dollar Cost Averaging" action={() => handleCalculatorType("DCA")} width="w-full" />
           ) : (
             <button
-              className="bg-light-modal-container dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400"
+              className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400"
               onClick={() => handleCalculatorType("DCA")}
             >
               Dollar Cost Averaging
@@ -254,25 +255,35 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
 
         <div className="flex lg:flex-row sm:flex-col gap-4">
           <button
-            className="flex justify-center items-center bg-light-modal-container dark:bg-dark-modal-container px-3 py-3 rounded-lg w-20 sm:w-full lg:w-20 dark:text-teal-positive"
+            className="flex justify-center items-center bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-20 sm:w-full lg:w-20 text-teal-500 dark:text-teal-positive"
             onClick={() => setShowChart(!showChart)}
             disabled={calcResult.coinsValue === 0 && calcResult.totalInvested === 0}
           >
             <FaChartLine />
           </button>
-          <div className="flex justify-center items-center gap-3 bg-light-modal-container dark:bg-dark-modal-container px-3 py-3 rounded-lg">
-            <TooltipItem content="Start date and time of investments." placement="right-start" color="bg-teal-700" />
+          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+            <TooltipItem
+              content="Start date and time of investments."
+              placement="right-start"
+              color="dark:!bg-teal-700 !bg-teal-500"
+              iconColor="purple-button"
+            />
             <input
-              className="bg-transparent dark:text-teal-positive"
+              className="bg-transparent text-teal-500 dark:text-teal-positive"
               type="datetime-local"
               onChange={(e) => handleCalculatorInput("from", e.target.value)}
               value={calculatorInput.from}
             />
           </div>
-          <div className="flex justify-center items-center gap-3 bg-light-modal-container dark:bg-dark-modal-container px-3 py-3 rounded-lg">
-            <TooltipItem content="End date and time of investments." placement="right-start" color="bg-teal-700" />
+          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+            <TooltipItem
+              content="End date and time of investments."
+              placement="right-start"
+              color="dark:!bg-teal-700 !bg-teal-500"
+              iconColor="purple-button"
+            />
             <input
-              className="bg-transparent dark:text-teal-positive"
+              className="bg-transparent text-teal-500 dark:text-teal-positive"
               type="datetime-local"
               onChange={(e) => handleCalculatorInput("to", e.target.value)}
               value={calculatorInput.to}
@@ -280,7 +291,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 bg-light-modal-container dark:bg-purple-market px-6 py-4 rounded-lg">
+        <div className="flex flex-col gap-3 bg-slate-100 dark:bg-purple-market px-6 py-4 rounded-lg">
           <div
             className={`relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full h-[20vh] ${
               showChart ? "" : "hidden"
@@ -342,7 +353,10 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
         {isValid ? (
           <GradientButton title={`Calculate (${calculatorType})`} action={handleCalculation} width="w-full" />
         ) : (
-          <button className="bg-light-modal-container dark:bg-purple-secondary-dark p-[0.83rem] rounded-lg w-full dark:text-gray-400" disabled>
+          <button
+            className="bg-light-modal-container dark:bg-purple-secondary-dark opacity-70 p-[0.83rem] rounded-lg w-full dark:text-gray-400"
+            disabled
+          >
             {`Calculate (${calculatorType})`}
           </button>
         )}

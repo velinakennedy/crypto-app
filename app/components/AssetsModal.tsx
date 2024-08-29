@@ -98,7 +98,14 @@ const AssetsModal = ({
               </div>
             </div>
             <div className="flex flex-col gap-5 w-2/3">
-              <SearchCoinList isSearchBar={false} placeholderText="Select Coin" width="w-[33rem]" handleCoin={handleCoin} clearInput={!onAddAsset} />
+              <SearchCoinList
+                isSearchBar={false}
+                placeholderText="Select Coin"
+                width="w-[33rem]"
+                color="bg-white"
+                handleCoin={handleCoin}
+                clearInput={!onAddAsset}
+              />
               <input
                 type="text"
                 placeholder="Purchased Amount"

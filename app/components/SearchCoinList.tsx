@@ -12,10 +12,12 @@ const SearchCoinList = ({
   width,
   handleCoin,
   clearInput,
+  color,
 }: {
   isSearchBar: boolean;
   placeholderText: string;
   width: string;
+  color: string;
   handleCoin?: Function;
   clearInput: boolean;
 }) => {
@@ -59,13 +61,13 @@ const SearchCoinList = ({
     <div>
       {filteredList && (
         <div
-          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${isSearchBar ? "bg-purple-secondary" : "bg-white"} dark:bg-purple-secondary-dark`}
+          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${isSearchBar ? "bg-purple-secondary" : `${color}`} dark:bg-purple-secondary-dark`}
           ref={dropdown}
         >
           <div
-            className={`flex items-center h-full gap-3 p-4 rounded-lg ${width} ${
-              isSearchBar ? "bg-purple-secondary" : "bg-white"
-            } placeholder-purple-text ${isSearchBar ? "hover:bg-purple-hover dark:hover:bg-purple-hover-dark" : ""} dark:bg-purple-secondary-dark`}
+            className={`flex items-center h-full gap-3 p-4 rounded-lg ${width} ${color} placeholder-purple-text ${
+              isSearchBar ? "hover:bg-purple-hover dark:hover:bg-purple-hover-dark" : ""
+            } dark:bg-purple-secondary-dark`}
           >
             {isSearchBar && <CiSearch className="text-2xl" />}
             <input
@@ -78,9 +80,9 @@ const SearchCoinList = ({
             />
           </div>
           <div
-            className={`z-10 fixed flex flex-col gap-3 ${width} rounded-b ${
-              isSearchBar ? "bg-purple-secondary" : "bg-white"
-            } dark:bg-purple-secondary-dark ${isActive ? "" : "hidden"}`}
+            className={`z-10 fixed flex flex-col gap-3 ${width} rounded-b ${isSearchBar ? "bg-purple-secondary " : `${color}`} ${
+              isActive ? "" : "hidden"
+            } dark:bg-purple-secondary-dark`}
           >
             {filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map((data: CoinMarketData) => {
               return isSearchBar ? (
@@ -94,7 +96,7 @@ const SearchCoinList = ({
                 </Link>
               ) : (
                 <div
-                  className="flex gap-1 bg-white hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded"
+                  className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
                   key={data.id}
                   onClick={() => handleSelection(data)}
                 >

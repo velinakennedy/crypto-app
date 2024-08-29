@@ -24,19 +24,19 @@ const CalculatorItem = ({
   return (
     <div
       className={`flex justify-between items-center h-1/5 p-3 ${
-        isLast ? "" : "border-b-gray-200 border-b-small dark:border-b-gray-700"
+        isLast ? "" : "border-b-purple-text border-b-small dark:border-b-gray-700"
       } sm:flex-col sm:items-start sm:gap-2 lg:flex-row lg:items-center lg:gap-0`}
     >
       <div className="flex sm:justify-between lg:justify-normal gap-2 sm:w-full">
         <p>{title}</p>
-        <TooltipItem content={content} placement="right-start" color="bg-indigo-900" />
+        <TooltipItem content={content} placement="right-start" color="dark:!bg-indigo-900 !bg-purple-button" iconColor="purple-button" />
       </div>
       <div>
         {isInput && action ? (
           <input
             type="number"
             min={1}
-            className="dark:bg-dark-modal-icon dark:bg-opacity-50 p-2 rounded-lg w-full sm:w-32 md:w-full lg:w-full dark:placeholder-gray-400 placeholder-purple-text"
+            className="border-1 border-purple-text bg-transparent dark:bg-dark-modal-icon dark:bg-opacity-50 p-2 border-dashed rounded-lg w-full sm:w-32 md:w-full lg:w-full outline-none dark:placeholder-gray-400 placeholder-purple-text"
             placeholder={placeholder}
             onChange={(e) => action(inputType, +e.target.value)}
             value={value === undefined ? "" : value}
