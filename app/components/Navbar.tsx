@@ -36,7 +36,7 @@ const Navbar = () => {
               <NavbarLinks />
             </div>
             <div className="flex gap-7">
-              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96" clearInput={true} />
+              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96" color="bg-purple-secondary" clearInput={true} />
               <Dropdown />
               <DarkModeButton />
             </div>
