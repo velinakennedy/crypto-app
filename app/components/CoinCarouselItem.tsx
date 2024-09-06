@@ -14,32 +14,40 @@ const CoinCarouselItem = ({ coin }: { coin: CoinMarketData }) => {
   useEffect(() => {
     setIsSelected(false);
     activeCoins.forEach((activeCoin) => {
-        if (activeCoin.id === coin.id) {
-            setIsSelected(true);
-        }
+      if (activeCoin.id === coin.id) {
+        setIsSelected(true);
+      }
     });
   }, [activeCoins]);
 
   return (
-    <div className={`z-0 p-[1.3px] rounded-lg ${isSelected ? "bg-gradient-to-b from-purple-border dark:to-[#3c3d7e80] to-[#7779f880] shadow-lg dark:shadow-[#7779f833] shadow-[#7779f84d]" : ""}`}>
-    <div className={`flex gap-2 z-1 ${isSelected ? "dark:bg-purple-hover-dark bg-[#a2a4e8]" : "bg-purple-secondary dark:bg-purple-secondary-dark"} max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}>
-      <div className="flex justify-center w-full min-w-10">
-        <Image
-          loader={() => `${coin.image}/w=auto`}
-          src={coin.image}
-          width={30}
-          height={30}
-          alt="coin logo"
-        />
-      </div>
-      <div className="flex flex-col items-center w-full gap-2">
-        <h2>{`${coin.name} (${coin.symbol.toUpperCase()})`}</h2>
-        <div className="flex gap-2">
-          <h3>{formatCurrency(coin.current_price, 6, false, currency)}</h3>
-          <PriceChange value={coin.price_change_percentage_24h} />
+    <div
+      className={`z-0 p-[1.3px] rounded-lg ${
+        isSelected
+          ? "bg-gradient-to-b from-purple-border dark:to-[#3c3d7e80] to-[#7779f880] shadow-lg dark:shadow-[#7779f833] shadow-[#7779f84d]"
+          : ""
+      }`}
+    >
+      <div
+        className={`flex gap-2 z-1 ${
+          isSelected ? "dark:bg-purple-hover-dark bg-[#a2a4e8]" : "bg-purple-secondary dark:bg-purple-secondary-dark"
+        } max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}
+      >
+        <div className="flex justify-center w-full min-w-10">
+          <Image loader={() => `${coin.image}/w=auto`} src={coin.image} width={30} height={30} alt="coin logo" />
+        </div>
+        <div className="flex flex-col items-center gap-2 w-full">
+          <h2>{`${coin.name} (${coin.symbol.toUpperCase()})`}</h2>
+          <div className="flex gap-2">
+            <h3>
+              {formatCurrency(coin.current_price, 6, false, currency).length > 10
+                ? `${formatCurrency(coin.current_price, 6, false, currency).slice(0, 9)}...`
+                : formatCurrency(coin.current_price, 6, false, currency)}
+            </h3>
+            <PriceChange value={coin.price_change_percentage_24h} />
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
