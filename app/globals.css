@@ -24,3 +24,9 @@
         height: 53px !important;
     }
 }
+
+@layer base {
+  :root {
+        --radius: 0.5rem;
+    }
+}

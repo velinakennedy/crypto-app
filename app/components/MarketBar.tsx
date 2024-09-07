@@ -21,25 +21,29 @@ const MarketBar = () => {
     <div>
       {isLoading && <div>Loading...</div>}
       {data && (
-        <div className="flex items-center justify-center h-full gap-10 p-3 px-10 text-white bg-purple-text text-sm dark:bg-[#1e1932]">
-        <div className="flex gap-2">
-          <span className="flex items-center h-full gap-1 font-thin">
-            <RiCoinsFill />
-            Coins
-          </span>{" "}
-          {data.data.active_cryptocurrencies}
+        <div className="flex sm:flex justify-center items-center gap-10 bg-purple-text dark:bg-[#1e1932] px-10 p-3 h-full text-sm text-white">
+          <div className="flex md:flex gap-2 xs:hidden">
+            <span className="flex items-center gap-1 h-full font-thin">
+              <RiCoinsFill />
+              Coins
+            </span>{" "}
+            {data.data.active_cryptocurrencies}
+          </div>
+          <div className="flex md:flex items-center gap-2 xs:hidden">
+            <GoTriangleUp className="text-green-300" /> {formatCurrency(data.data.total_market_cap[currency], 3, true, currency)}
+          </div>
+          <div className="flex sm:flex items-center gap-2 xs:hidden">
+            {formatCurrency(data.data.total_volume[currency], 3, true, currency)}
+            <ProgressBar
+              barWidth={"5rem"}
+              percent={getPercentage(data.data.total_volume[currency], data.data.total_market_cap[currency])}
+              fillColor="#ffffff"
+              barColor="#8686a9"
+            />
+          </div>
+          <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.btc)} fillColor="#ea973d" barColor="#8686a9" icon={BitCoinIcon} />
+          <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.eth)} fillColor="#849eff" barColor="#8686a9" icon={EthereumIcon} />
         </div>
-        <div className="flex items-center gap-2">
-          <GoTriangleUp className="text-green-300" />{" "}
-          {formatCurrency(data.data.total_market_cap[currency], 3, true, currency)}
-        </div>
-        <div className="flex items-center gap-2">
-          {formatCurrency(data.data.total_volume[currency], 3, true, currency)}
-          <ProgressBar barWidth={"5rem"} percent={getPercentage(data.data.total_volume[currency], data.data.total_market_cap[currency])} fillColor="#ffffff" barColor="#8686a9" />
-        </div>
-        <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.btc)} fillColor="#ea973d" barColor="#8686a9" icon={BitCoinIcon}/>
-        <MarketCapDisplay percentage={Math.floor(data.data.market_cap_percentage.eth)} fillColor="#849eff" barColor="#8686a9" icon={EthereumIcon}/>
-      </div>
       )}
     </div>
   );

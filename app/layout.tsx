@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import {StoreProvider} from "./StoreProvider";
+import { StoreProvider } from "./StoreProvider";
 import Navbar from "./components/Navbar";
+import MobileNav from "./components/MobileNav";
 
 const space = Space_Grotesk({ subsets: ["latin"] });
 
@@ -17,13 +18,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <html lang="en">
-        <body className={`${space.className} bg-bg-light dark:bg-bg-dark transition-all duration-700 h-[100vh]`}>
-          <StoreProvider>
-          <Navbar/>
+    <html lang="en">
+      <body className={`${space.className} bg-bg-light dark:bg-bg-dark transition-all duration-700 min-h-screen`}>
+        <StoreProvider>
+          <Navbar />
+          <div className="xs:inline-block md:hidden">
+            <MobileNav />
+          </div>
           {children}
-          </StoreProvider>
-        </body>
-      </html>
+        </StoreProvider>
+      </body>
+    </html>
   );
 }

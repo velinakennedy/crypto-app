@@ -52,32 +52,22 @@ const Dropdown = () => {
   });
 
   //finding symbol for main dropdown button
-  const currentSymbol: ReactNode = currencyTypes.find(
-    (element) => element.name == currency
-  )!.symbol;
+  const currentSymbol: ReactNode = currencyTypes.find((element) => element.name == currency)!.symbol;
 
   return (
-    <div
-      className={`${
-        isActive ? "rounded-t" : "rounded"
-      } w-36 bg-purple-secondary dark:bg-purple-secondary-dark z-10`}
-    >
+    <div className={`${isActive ? "rounded-t" : "rounded"} w-36 xs:w-20 lg:w-36 bg-purple-secondary dark:bg-purple-secondary-dark z-10`}>
       <button
-        className="flex items-center justify-center w-full h-full gap-1 rounded bg-purple-secondary dark:hover:bg-purple-hover-dark hover:bg-purple-hover dark:bg-purple-secondary-dark"
+        className="flex justify-center items-center gap-1 bg-purple-secondary dark:hover:bg-purple-hover-dark hover:bg-purple-hover dark:bg-purple-secondary-dark rounded w-full h-full"
         onClick={handleToggle}
       >
         {currentSymbol}
-        {currency.toUpperCase()}
+        <div className="lg:inline-block xs:hidden">{currency.toUpperCase()}</div>
       </button>
 
-      <div
-        className={`fixed flex flex-col gap-3 rounded-b w-36 bg-purple-secondary dark:bg-purple-secondary-dark ${
-          isActive ? "" : "hidden"
-        }`}
-      >
+      <div className={`fixed flex flex-col gap-3 rounded-b w-36 bg-purple-secondary dark:bg-purple-secondary-dark ${isActive ? "" : "hidden"}`}>
         {currencyTypes.map(({ name, symbol }) => (
           <button
-            className="flex items-center gap-1 p-5 px-10 rounded bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark"
+            className="flex items-center gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark px-10 p-5 rounded"
             key={name}
             onClick={() => handleSelect(name)}
           >

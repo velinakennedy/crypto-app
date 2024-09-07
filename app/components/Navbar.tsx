@@ -26,19 +26,21 @@ const Navbar = () => {
       {data && (
         <div>
           <MarketBar />
-          <div className="flex justify-between items-center bg-white dark:bg-[#13121a] px-10 p-5 h-full text-purple-text dark:text-gray-300">
+          <div className="flex justify-between items-center sm:gap-0 xs:gap-3 bg-white dark:bg-[#13121a] px-10 p-5 h-full text-purple-text dark:text-gray-300">
             <h1>
               <Link href={"/"} className="flex gap-1 font-bold text-2xl dark:text-white">
-                <GiCoins className="text-3xl dark:text-white" /> CoinTrade
+                <GiCoins className="text-3xl dark:text-white" /> <span className="lg:inline-block xs:hidden">CoinTrade</span>
               </Link>
             </h1>
-            <div>
+            <div className="md:inline-block xs:hidden">
               <NavbarLinks />
             </div>
-            <div className="flex gap-7">
-              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96" color="bg-purple-secondary" clearInput={true} />
+            <div className="flex gap-7 sm:gap-5 md:gap-7 xs:gap-3">
+              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96 xs:w-40 md:w-60 lg:w-72 xl:w-96" clearInput={true} />
               <Dropdown />
-              <DarkModeButton />
+              <div className="md:inline-block xs:hidden">
+                <DarkModeButton />
+              </div>
             </div>
           </div>
         </div>

@@ -3,6 +3,7 @@ import { ChartOptions } from "chart.js";
 const chartConfig = (type: string): ChartOptions => {
   if (type === "large") {
     const options: ChartOptions = {
+      responsive: true,
       maintainAspectRatio: false,
       interaction: {
         mode: "nearest",
@@ -12,6 +13,10 @@ const chartConfig = (type: string): ChartOptions => {
         x: {
           ticks: {
             display: true,
+            callback: function (_, index: number) {
+              const labels = this.getLabels();
+              return labels[index].split(" ").slice(2).join(" ");
+            },
           },
           grid: {
             display: false,
