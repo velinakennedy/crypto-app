@@ -145,3 +145,28 @@ export interface CoinAsset {
   gainLoss: number;
   purchaseDate: string;
 }
+
+export interface CalculatorInput {
+  from: string;
+  to: string;
+  interval: number | undefined;
+  investment: number | undefined;
+  growth: number | undefined;
+}
+
+export interface CalcResult {
+  totalInvested: number;
+  coinsValue: number;
+}
+
+export interface CoinPriceData {
+  market_caps: number[][];
+  prices: number[][];
+  total_volumes: number[][];
+}
+
+export interface ModalChartDataOptions {
+  dataset: ChartDataset<"line">[];
+  options: ChartOptions;
+  labels: string[];
+}
