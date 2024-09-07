@@ -36,7 +36,13 @@ const Navbar = () => {
               <NavbarLinks />
             </div>
             <div className="flex gap-7 sm:gap-5 md:gap-7 xs:gap-3">
-              <SearchCoinList isSearchBar={true} placeholderText="Search..." width="w-96 xs:w-40 md:w-60 lg:w-72 xl:w-96" clearInput={true} />
+              <SearchCoinList
+                isSearchBar={true}
+                placeholderText="Search..."
+                width="w-96 xs:w-40 md:w-60 lg:w-72 xl:w-96"
+                clearInput={true}
+                color="bg-purple-secondary"
+              />
               <Dropdown />
               <div className="md:inline-block xs:hidden">
                 <DarkModeButton />
