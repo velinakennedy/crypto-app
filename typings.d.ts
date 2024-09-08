@@ -170,3 +170,8 @@ export interface ModalChartDataOptions {
   options: ChartOptions;
   labels: string[];
 }
+
+export interface CoinChartData {
+  day: number;
+  [x: string]: number;
+}
