@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Spinner } from "@nextui-org/spinner";
 import { FaSort } from "react-icons/fa";
 import Link from "next/link";
+import { headers } from "@/utils/tableHeaders";
 
 const MarketTable = () => {
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -25,25 +26,7 @@ const MarketTable = () => {
     column: undefined,
     direction: undefined,
   });
-  const headers = [
-    { key: "marketCap", title: "#", sortable: true },
-    { key: "name", title: "Name", sortable: true },
-    { key: "price", title: "Price", sortable: true },
-    { key: "percent1h", title: "1h%", sortable: true },
-    { key: "percent24h", title: "24h%", sortable: true },
-    { key: "percent7d", title: "7d%", sortable: true },
-    {
-      key: "volumeDividedByCap",
-      title: "24h Volume/Market Cap",
-      sortable: false,
-    },
-    {
-      key: "circulatingDividedByTotalSupply",
-      title: "Circulating/Total Supply",
-      sortable: false,
-    },
-    { key: "last7Days", title: "Last 7d", sortable: false },
-  ];
+
   const sortedData = useMemo(() => {
     if (formattedData) {
       if (sortDescriptor.column && sortDescriptor.direction) {
@@ -62,6 +45,22 @@ const MarketTable = () => {
     }
   }, [sortDescriptor, formattedData]);
 
+  const tableStyles = (header: string | Key) => {
+    switch (header) {
+      case "volumeDividedByCap":
+      case "circulatingDividedByTotalSupply":
+        return "xl:table-cell hidden";
+      case "percent7d":
+      case "marketCap":
+        return "md:table-cell hidden";
+      case "percent1h":
+      case "percent24h":
+        return "sm:table-cell hidden";
+      default:
+        return "table-cell";
+    }
+  };
+
   const renderCell = (item: MarketFormattedData, columnKey: Key) => {
     const cellValue = item[columnKey as keyof MarketFormattedData];
     const hasArray = Array.isArray(cellValue);
@@ -70,12 +69,21 @@ const MarketTable = () => {
         return (
           <div>
             {hasArray && (
-              <Link href={`/coin/${cellValue[2]}`}>
+              <Link href={`/coin/${cellValue[3]}`}>
                 <div className="flex justify-center items-center gap-2 w-full">
-                  <div className="min-w-10">
+                  <div className="sm:table-cell hidden min-w-10">
                     <Image loader={() => `${cellValue[0]}/w=auto`} src={cellValue[0] as string} width={30} height={30} alt="coin logo" />
                   </div>
-                  <h2>{cellValue[1]}</h2>
+                  <div className="sm:hidden text-center">
+                    <Image loader={() => `${cellValue[0]}/w=auto`} src={cellValue[0] as string} width={20} height={20} alt="coin logo" />
+                  </div>
+                  <h2 className="sm:table-cell hidden">
+                    {cellValue[1]}({cellValue[2]})
+                  </h2>
+                  <div className="sm:hidden text-center">
+                    <h2>{cellValue[2]}</h2>
+                    <p className="xs:text-[9px]">{cellValue[1]}</p>
+                  </div>
                 </div>
               </Link>
             )}
@@ -86,16 +94,20 @@ const MarketTable = () => {
       case "percent1h":
       case "percent24h":
       case "percent7d":
-        return <div className="flex lg:flex justify-center xs:hidden">{typeof cellValue === "number" && <PriceChange value={cellValue} />}</div>;
+        return <div className="flex justify-center">{typeof cellValue === "number" && <PriceChange value={cellValue} />}</div>;
       case "volumeDividedByCap":
       case "circulatingDividedByTotalSupply":
         return (
-          <div className="md:inline-block xs:hidden">
+          <div>
             {hasArray && <MarketTableBar dividend={cellValue[0] as number} divisor={cellValue[1] as number} color={cellValue[2] as string} />}
           </div>
         );
       case "last7Days":
-        return <div className="flex md:flex justify-center xs:hidden">{hasArray && <MarketChart data={cellValue as [number, number[]]} />}</div>;
+        return (
+          <div className="flex justify-center">
+            {hasArray && <MarketChart data={cellValue.slice(0, 2) as [number, number[]]} color={cellValue[2] as string} />}
+          </div>
+        );
       default:
         return <div className="flex justify-center">{cellValue}</div>;
     }
@@ -123,17 +135,17 @@ const MarketTable = () => {
               onSortChange={setSortDescriptor}
               classNames={{
                 table: "bg-purple-secondary rounded-lg dark:bg-transparent",
-                th: "dark:text-gray-400 font-thin bg-transparent text-sm xs:hidden lg:table-cell",
+                th: "dark:text-gray-400 font-thin bg-transparent text-sm",
                 tr: "even:dark:bg-purple-secondary-dark even:bg-[#3c3d7d15]",
                 sortIcon: "hidden",
-                td: "dark:first:rounded-l-lg dark:last:rounded-r-lg md:p-1 xs:p-3",
+                td: "md:dark:first:rounded-l-lg md:dark:[&:nth-child(2)]:rounded-none dark:[&:nth-child(2)]:rounded-l-lg dark:last:rounded-r-lg md:p-1",
               }}
               aria-label="Coin market table"
             >
               <TableHeader columns={headers}>
                 {(header) => (
-                  <TableColumn key={header.key} allowsSorting={header.sortable}>
-                    <div className={`flex gap-2 justify-center items-center ${header.sortable ? "hover:cursor-pointer" : ""}`}>
+                  <TableColumn key={header.key} allowsSorting={header.sortable} className={`${tableStyles(header.key)}`}>
+                    <div className={`flex sm:gap-2 justify-center items-center ${header.sortable ? "hover:cursor-pointer" : ""}`}>
                       {header.title}
                       {header.sortable && <FaSort />}
                     </div>
@@ -142,7 +154,11 @@ const MarketTable = () => {
               </TableHeader>
               <TableBody items={sortedData}>
                 {(item) => (
-                  <TableRow key={item.marketCap}>{(columnKey) => <TableCell className="p-3">{renderCell(item, columnKey)}</TableCell>}</TableRow>
+                  <TableRow key={item.marketCap}>
+                    {(columnKey) => (
+                      <TableCell className={`sm:p-3 text-xs md:text-base ${tableStyles(columnKey)}`}>{renderCell(item, columnKey)}</TableCell>
+                    )}
+                  </TableRow>
                 )}
               </TableBody>
             </Table>
