@@ -3,21 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { editCoins, removeCoin } from "../redux/features/activeCoinsSlice";
 import CoinCharts from "./CoinCharts";
-import {
-  useEditChartDataMutation,
-  useGetChartDataQuery,
-} from "../redux/features/coinChartInfoSlice";
+import { useEditChartDataMutation, useGetChartDataQuery } from "../redux/features/coinChartInfoSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import { useGetCoinListQuery } from "../redux/features/coinListSlice";
 import { useEffect, useState } from "react";
-import { ActiveCoin, ChartCoinData, CoinMarketData } from "@/typings";
+import { ActiveCoin, CoinChartData, CoinMarketData } from "@/typings";
 import CoinCarouselItem from "./CoinCarouselItem";
 import Image from "next/image";
-import {
-  IoIosArrowDroprightCircle,
-  IoIosArrowDropleftCircle,
-} from "react-icons/io";
+import { IoIosArrowDroprightCircle, IoIosArrowDropleftCircle } from "react-icons/io";
 import { CiCircleRemove } from "react-icons/ci";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -26,19 +20,11 @@ import "../globals.css";
 const CoinCarousel = () => {
   const [id, setId] = useState<string>("");
   const [skip, setSkip] = useState<boolean>(true);
-  const activeCoins = useSelector(
-    (state: RootState) => state.activeCoins.value
-  );
-  const { prevStatus, status, to, from } = useSelector(
-    (state: RootState) => state.timeframe
-  );
+  const activeCoins = useSelector((state: RootState) => state.activeCoins.value);
+  const { prevStatus, status, to, from } = useSelector((state: RootState) => state.timeframe);
   const dispatch = useDispatch();
   const currency = useSelector((state: RootState) => state.currency.value);
-  const {
-    data: coinData,
-    isSuccess: listIsSuccess,
-    isLoading: listIsLoading,
-  } = useGetCoinListQuery(currency);
+  const { data: coinData, isSuccess: listIsSuccess, isLoading: listIsLoading } = useGetCoinListQuery(currency);
   const { currentData: chartData, isSuccess } = useGetChartDataQuery(
     {
       id,
@@ -48,8 +34,7 @@ const CoinCarousel = () => {
     },
     { skip }
   );
-  const [updateCoin, { isSuccess: updateSuccessful }] =
-    useEditChartDataMutation();
+  const [updateCoin, { isSuccess: updateSuccessful }] = useEditChartDataMutation();
   const hasChartData: boolean = chartData && isSuccess;
   const hasCoinData: boolean = coinData && listIsSuccess && !listIsLoading;
   const isUpdated = hasCoinData || updateSuccessful;
@@ -68,7 +53,7 @@ const CoinCarousel = () => {
   const handleTimeChange = async () => {
     const newCoinList: ActiveCoin[] = await Promise.all(
       activeCoins.map(async (coin: ActiveCoin) => {
-        const response: ChartCoinData | any = await updateCoin({
+        const response: CoinChartData | any = await updateCoin({
           id: coin.id,
           currency,
           from: status === "1Y" ? Math.floor(from) : Math.floor(to - 2629743),
@@ -124,7 +109,7 @@ const CoinCarousel = () => {
   return (
     <div>
       {isUpdated ? (
-        <div className="w-full px-10 pt-10">
+        <div className="px-10 pt-10 w-full">
           <Swiper
             className="!pb-7"
             modules={[Navigation, Autoplay]}
@@ -141,10 +126,7 @@ const CoinCarousel = () => {
           >
             <IoIosArrowDropleftCircle className="swiper-button-prev" />
             {coinData.map((coin: CoinMarketData) => (
-              <SwiperSlide
-                key={coin.id}
-                onClick={() => handleSelection(coin.id)}
-              >
+              <SwiperSlide key={coin.id} onClick={() => handleSelection(coin.id)}>
                 <CoinCarouselItem coin={coin} />
               </SwiperSlide>
             ))}
@@ -153,22 +135,14 @@ const CoinCarousel = () => {
 
           <div className="flex gap-3">
             {activeCoins.map((coin) => {
-              const coinInfo = coinData.find(
-                (coinData: CoinMarketData) => coinData.id === coin.id
-              );
+              const coinInfo = coinData.find((coinData: CoinMarketData) => coinData.id === coin.id);
               return (
                 <div
                   onClick={() => handleSelection(coin.id)}
                   key={coin.id}
-                  className="flex items-center gap-2 p-2 rounded-lg bg-purple-hover dark:bg-purple-hover-dark"
+                  className="flex items-center gap-2 bg-purple-hover dark:bg-purple-hover-dark p-2 rounded-lg"
                 >
-                  <Image
-                    loader={() => `${coinInfo.image}/w=auto`}
-                    src={coinInfo.image}
-                    width={20}
-                    height={20}
-                    alt="coin logo"
-                  />
+                  <Image loader={() => `${coinInfo.image}/w=auto`} src={coinInfo.image} width={20} height={20} alt="coin logo" />
                   <h3 className="text-sm">{coinInfo.name}</h3>
                   <CiCircleRemove />
                 </div>
@@ -179,11 +153,7 @@ const CoinCarousel = () => {
       ) : (
         <div>Loading...</div>
       )}
-      <CoinCharts
-        id={id}
-        currentData={chartData || updateCoin}
-        hasData={hasChartData}
-      />
+      <CoinCharts id={id} currentData={chartData || updateCoin} hasData={hasChartData} />
     </div>
   );
 };
