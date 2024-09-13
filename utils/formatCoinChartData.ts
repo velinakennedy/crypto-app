@@ -1,15 +1,16 @@
 import { ActiveCoin, CoinChartData } from "@/typings";
+import chartLabels from "./chartLabels";
 
-const formatCoinChartData = (data: ActiveCoin[], dataType: string, startDate: number) => {
+const formatCoinChartData = (data: ActiveCoin[], dataType: string, startDate: number, status: string) => {
   const formattedCoinData: CoinChartData[] = [];
 
   if (dataType === "price" || dataType === "volume") {
     const type = dataType === "price" ? "prices" : "total_volumes";
     const formatFirstCoin = (element: number[]) => {
       if (element[0] >= startDate) {
-        const item = {
-          day: element[0],
-          [data[0].id]: element[1],
+        const item: CoinChartData = {
+          day: chartLabels(element[0], status),
+          [`${dataType}${data[0].id[0].toUpperCase()}${data[0].id.slice(1)}`]: element[1],
         };
         formattedCoinData.push(item);
       }
@@ -17,7 +18,7 @@ const formatCoinChartData = (data: ActiveCoin[], dataType: string, startDate: nu
 
     const formatCoins = (element: number[], index: number, id: string) => {
       if (element[0] >= startDate) {
-        formattedCoinData[index] = { ...formattedCoinData[index], [id]: element[1] };
+        formattedCoinData[index] = { ...formattedCoinData[index], [`${dataType}${id[0].toUpperCase()}${id.slice(1)}`]: element[1] };
         return ++index;
       }
       return index;
@@ -32,7 +33,9 @@ const formatCoinChartData = (data: ActiveCoin[], dataType: string, startDate: nu
       slicedData.forEach((coin) => {
         let index = 0;
         coin.data[type].filter((element: number[]) => {
-          index = formatCoins(element, index, coin.id);
+          if (index < formattedCoinData.length) {
+            index = formatCoins(element, index, coin.id);
+          }
         });
       });
     }

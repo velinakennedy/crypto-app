@@ -1,36 +1,19 @@
-import { MarketChartDataOptions } from "@/typings";
-import { Chart as ChartJS, ChartDataset } from "chart.js";
-import { RefObject } from "react";
-import pickColor from "./pickColor";
-import createGradient from "./createGradient";
-import chartConfig from "./chartConfig";
-const formatMarketChartData = (priceData: number[], isPositive: boolean, chartRef: RefObject<ChartJS>) => {
-    const chart = chartRef.current;
+const formatMarketChartData = (data: number[]) => {
+  const formattedData: { daysAgo: string; price: number }[] = [];
+  let daysAgo = 7;
 
-    const createDataset = (): ChartDataset<"line"> => {
-        const custom = pickColor(isPositive);
-        return {
-            type: "line" as const,
-            backgroundColor: chart ? createGradient(chart.ctx, chart.chartArea, custom.background) : `rgba(${custom.background}, 0.5)`,
-            borderColor: custom.border,
-            pointStyle: false,
-            fill: true,
-            tension: 0.3,
-            data: priceData.map(
-              (price: number) => price
-            ),
-        };
-    };
+  const everyThreeHours = data.filter((data, index) => {
+    if (index === 0 || index % 3 === 0) {
+      return data;
+    }
+  });
 
-    const dataset: ChartDataset<"line">[]  = [];
-    dataset.push(createDataset());
+  everyThreeHours.forEach((element, index) => {
+    if (index !== 0 && index % 8 === 0) daysAgo -= 1;
+    const recent = daysAgo === 1 ? "Yesterday" : "Today";
+    formattedData.push({ daysAgo: `${daysAgo < 2 ? recent : `${daysAgo} days ago`}`, price: element });
+  });
 
-    const chartData: MarketChartDataOptions = {
-        dataset,
-        options: chartConfig("small")
-    };
-
-    return chartData;
-  
+  return formattedData;
 };
 export default formatMarketChartData;
