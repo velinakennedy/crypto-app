@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useGetPricesQuery } from "../redux/features/historicalCoinPriceSlice";
@@ -10,30 +10,20 @@ import CalculatorItem from "./CalculatorItem";
 import TooltipItem from "./TooltipItem";
 import { calculateInvestment, intervalPrices } from "@/utils/calculateInvestment";
 import { vcaText, dcaText, tooltipText } from "@/utils/investmentText";
-import { Chart } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Legend,
-  Tooltip as ChartTooltip,
-  Filler,
-  LineController,
-} from "chart.js";
-import formatModalChartData from "@/utils/formatModalChartData";
 import { FaCoins } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
 import { GoXCircle } from "react-icons/go";
-import { CalcResult, CalculatorInput, Coin, CoinMarketData, CoinPriceData, ModalChartDataOptions } from "@/typings";
+import { CalcResult, CalculatorChartData, CalculatorInput, Coin, CoinMarketData, CoinData } from "@/typings";
+import chartLabels from "@/utils/chartLabels";
+import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
+import CalculatorChartTooltip from "./CalculatorChartTooltip";
 
 const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalculatorToggle: VoidFunction; onCalculator: boolean }) => {
   const [coin, setCoin] = useState<CoinMarketData | Coin>({ name: "", id: "", image: "" });
   const [calculatorType, setCalculatorType] = useState<string>("VCA");
   const [skip, setSkip] = useState<boolean>(true);
   const [calcResult, setCalcResult] = useState<CalcResult>({ totalInvested: 0, coinsValue: 0 });
-  const [coinPriceData, setCoinPriceData] = useState<CoinPriceData | undefined>(undefined);
+  const [CoinData, setCoinData] = useState<CoinData | undefined>(undefined);
   const [isValid, setIsValid] = useState<boolean>(false);
   const [showChart, setShowChart] = useState<boolean>(false);
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -44,11 +34,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
     investment: undefined,
     growth: undefined,
   });
-  const chartRef = useRef<ChartJS>(null);
-  const [lineChartData, setLineChartData] = useState<ModalChartDataOptions>({ dataset: [], options: {}, labels: [] });
+  const [lineChartData, setLineChartData] = useState<CalculatorChartData[]>([]);
   const date = Date.now();
-  ChartJS.register(CategoryScale, LineElement, LinearScale, PointElement, Legend, ChartTooltip, Filler, LineController);
-
   const { currentData, isSuccess, isFetching } = useGetPricesQuery(
     {
       id: coin.id,
@@ -122,23 +109,22 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
   };
 
   const handleCalculation = () => {
-    if (
-      isValid &&
-      coinPriceData &&
-      calculatorInput.interval &&
-      calculatorInput.investment &&
-      calculatorInput.growth &&
-      chartRef &&
-      chartRef.current
-    ) {
+    if (isValid && CoinData && calculatorInput.interval && calculatorInput.investment && calculatorInput.growth) {
       const pricesEachInterval = intervalPrices(
-        coinPriceData.prices,
+        CoinData.prices,
         Date.parse(calculatorInput.from),
         Date.parse(calculatorInput.to),
         calculatorInput.interval
       );
-      const chartData = formatModalChartData(pricesEachInterval.priceArray, chartRef, coin.name);
-      setLineChartData(chartData);
+      const data: CalculatorChartData[] = [];
+      pricesEachInterval.priceArray.forEach((price) => {
+        const dataItem: CalculatorChartData = {
+          day: chartLabels(price[0], "7d"),
+          price: price[1],
+        };
+        data.push(dataItem);
+      });
+      setLineChartData(data);
       const calcResult = calculateInvestment(calculatorType, calculatorInput.investment, pricesEachInterval.intervalCoins, calculatorInput.growth);
       setCalcResult({ totalInvested: calcResult.totalInvested, coinsValue: calcResult.coinsValue });
     }
@@ -155,10 +141,10 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
         growth: undefined,
       });
       setCalcResult({ totalInvested: 0, coinsValue: 0 });
-      setCoinPriceData(undefined);
+      setCoinData(undefined);
       setSkip(true);
       setShowChart(false);
-      setLineChartData({ dataset: [], options: {}, labels: [] });
+      setLineChartData([]);
     }
   }, [onCalculator]);
 
@@ -168,14 +154,14 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
 
   useEffect(() => {
     if (isSuccess && currentData && !isFetching) {
-      setCoinPriceData(currentData);
+      setCoinData(currentData);
       setSkip(true);
     }
   }, [currentData, isSuccess]);
 
   useEffect(() => {
-    if (isFetching) setCoinPriceData(undefined);
-  }, [isFetching, coinPriceData]);
+    if (isFetching) setCoinData(undefined);
+  }, [isFetching, CoinData]);
 
   useEffect(() => {
     if (
@@ -184,13 +170,13 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
       calculatorInput.interval &&
       calculatorInput.investment &&
       calculatorInput.growth &&
-      coinPriceData
+      CoinData
     ) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
-  }, [calculatorInput, coinPriceData, coin]);
+  }, [calculatorInput, CoinData, coin]);
 
   return (
     <div
@@ -280,18 +266,26 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
 
         <div className="flex flex-col gap-3 bg-slate-100 dark:bg-purple-market px-6 py-4 rounded-lg">
           <div
-            className={`relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full h-[20vh] ${
+            className={`relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full h-[30vh] min-h-72 ${
               showChart ? "" : "hidden"
             }`}
           >
             <h1 className="pb-5 font-bold text-2xl text-purple-text md:text-lg dark:text-white self-start">{coin.name}</h1>
-            <Chart
-              type="line"
-              ref={chartRef}
-              options={lineChartData.options}
-              data={{ labels: lineChartData.labels, datasets: lineChartData.dataset }}
-              height="100%"
-            />
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={lineChartData}>
+                <defs>
+                  <linearGradient id="gradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#04bfb4" stopOpacity={0.8} />
+                    <stop offset="95%" stopColor="#04bfb4" stopOpacity={0.1} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="day" />
+                <YAxis dataKey="price" domain={["auto", "dataMax"]} hide />
+                <Tooltip content={<CalculatorChartTooltip />} />
+                <Legend />
+                <Area dataKey="price" type="natural" fill="url(#gradient)" fillOpacity={0.4} stroke="#04bfb4" />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
           <div className={`${showChart ? "hidden" : ""}`}>
             <CalculatorItem

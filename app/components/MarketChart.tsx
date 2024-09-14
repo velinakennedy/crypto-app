@@ -1,59 +1,52 @@
 "use client";
-import { Chart } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LineElement,
-  LinearScale,
-  PointElement,
-  Legend,
-  Tooltip,
-  Filler,
-  LineController
-} from "chart.js";
-import { useEffect, useRef, useState } from "react";
+import { XAxis, YAxis, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { useEffect, useState } from "react";
 import formatMarketChartData from "@/utils/formatMarketChartData";
-import { MarketChartDataOptions } from "@/typings";
-const MarketChart = ({data}: {data: [number, number[]]}) => {
-    ChartJS.register(
-        CategoryScale,
-        LineElement,
-        LinearScale,
-        PointElement,
-        Legend,
-        Tooltip,
-        Filler,
-        LineController
-    );
-    const chartRef = useRef<ChartJS>(null);
-    const [lineChartData, setLineChartData] = useState<MarketChartDataOptions>({dataset: [], options: {}});
-    const [everyThreeHours, setEveryThreeHours] = useState<number[]>([]);
+import MarketChartTooltip from "./MarketChartTooltip";
 
-    useEffect(() => {
-      const filteredData = data[1].filter((data, index) => {
-        if (index === 0 || index % 3 === 0) {
-          return data;
-        }
-      });
-      setEveryThreeHours(filteredData);
-    }, [data]);
+const MarketChart = ({ data, color }: { data: [number, number[]]; color: string }) => {
+  const [lineChartData, setLineChartData] = useState<{ daysAgo: string; price: number }[] | undefined>(undefined);
 
-    useEffect(() => {
-      if (chartRef.current) {
-        const isPositive: boolean = data[0] >= 0;
-        const newLineData: MarketChartDataOptions = formatMarketChartData(everyThreeHours, isPositive, chartRef);
-        setLineChartData(newLineData);
-      }
-    }, [everyThreeHours, data]);
+  useEffect(() => {
+    setLineChartData(formatMarketChartData(data[1]));
+  }, [data]);
 
   return (
-    <div className="w-[10vw] relative h-[4vh]" >
-        <Chart
-            type= "line"
-            ref={chartRef}
-            options={lineChartData.options}
-            data={{labels: everyThreeHours.map((price, index) => index), datasets: lineChartData.dataset}} height="100%"
-        />
+    <div>
+      {lineChartData && (
+        <div className="relative w-[10vw] min-w-20 sm:min-w-24 h-[4vh] min-h-10">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={lineChartData}>
+              <defs>
+                <linearGradient id="#c27621" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#c27621" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#c27621" stopOpacity={0.1} />
+                </linearGradient>
+                <linearGradient id="#6375c2" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#6375c2" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#6375c2" stopOpacity={0.1} />
+                </linearGradient>
+                <linearGradient id="#d71dbd" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#d71dbd" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#d71dbd" stopOpacity={0.1} />
+                </linearGradient>
+                <linearGradient id="#27d0d0" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#27d0d0" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#27d0d0" stopOpacity={0.1} />
+                </linearGradient>
+                <linearGradient id="#f06142" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#f06142" stopOpacity={0.8} />
+                  <stop offset="95%" stopColor="#f06142" stopOpacity={0.1} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="daysAgo" hide />
+              <YAxis dataKey="price" domain={["auto", "dataMax"]} hide />
+              <Tooltip content={<MarketChartTooltip color={color} />} />
+              <Area dataKey="price" type="natural" fill={`url(#${color})`} fillOpacity={0.4} stroke={color} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      )}
     </div>
   );
 };

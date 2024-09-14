@@ -1,5 +1,6 @@
 import { ChartDataset, ChartOptions } from "chart.js";
 import { ReactNode } from "react";
+import { TooltipProps } from "recharts";
 
 export interface CurrencyState {
   value: string;
@@ -18,7 +19,7 @@ export interface ThemeType {
   theme: "light" | "dark";
 }
 
-export interface ChartCoinData {
+export interface CoinData {
   prices: [[number, number]];
   market_caps: [[number, number]];
   total_volumes: [[number, number]];
@@ -26,29 +27,7 @@ export interface ChartCoinData {
 
 export interface ActiveCoin {
   id: string;
-  data: ChartCoinData;
-}
-
-export interface CustomOptions {
-  background: string;
-  border: string;
-  lineYAxis: string;
-  barYAxis: string;
-}
-
-export interface ColorOptions {
-  background: string;
-  border: string;
-}
-
-export interface ChartDataOptions {
-  datasets: ChartDataset<"line" | "bar">[];
-  options: ChartOptions;
-}
-
-export interface MarketChartDataOptions {
-  dataset: ChartDataset<"line">[];
-  options: ChartOptions;
+  data: CoinData;
 }
 
 export interface CoinMarketData {
@@ -109,7 +88,7 @@ export interface MarketFormattedData {
   percent7d: number;
   volumeDividedByCap: [number, number, string];
   circulatingDividedByTotalSupply: [number, number, string];
-  last7Days: [number, number[]];
+  last7Days: [number, number[], string];
 }
 
 export interface SortDescriptor {
@@ -117,7 +96,7 @@ export interface SortDescriptor {
   direction: string | undefined;
 }
 
-export type SortingTypes = string | number | number[] | string[] | [number, number[]] | [number, number, string];
+export type SortingTypes = string | number | number[] | string[] | [number, number[], string] | [number, number, string];
 
 export interface Coin {
   name: string;
@@ -159,14 +138,21 @@ export interface CalcResult {
   coinsValue: number;
 }
 
-export interface CoinPriceData {
-  market_caps: number[][];
-  prices: number[][];
-  total_volumes: number[][];
+export interface CoinChartData {
+  day: string;
+  [x: any]: number;
 }
 
-export interface ModalChartDataOptions {
-  dataset: ChartDataset<"line">[];
-  options: ChartOptions;
-  labels: string[];
+export interface AllCoinChartData {
+  priceData: CoinChartData[];
+  volumeData: CoinChartData[];
+}
+
+export interface CalculatorChartData {
+  day: string;
+  price: number;
+}
+
+export interface MarketTooltip extends TooltipProps<number, string> {
+  color: string;
 }
