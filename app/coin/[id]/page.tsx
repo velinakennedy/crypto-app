@@ -9,6 +9,7 @@ import formatCurrency from "@/utils/formatCurrency";
 import { IoMdArrowDropup, IoMdArrowDropdown } from "react-icons/io";
 import CoinLink from "@/app/components/CoinLink";
 import CoinMarketData from "@/app/components/CoinMarketData";
+import Link from "next/link";
 
 const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   const currency = useSelector((state: RootState) => state.currency.value);
@@ -18,17 +19,21 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   return (
     <div>
       {hasData && (
-        <div className="gap-7 grid grid-rows-[20rem_10rem_20rem] mx-20 mt-7 text-purple-text dark:text-white">
-          <div className="gap-7 grid grid-cols-2 row-start-1">
-            <div className="gap-7 grid grid-cols-2">
-              <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 2xl:gap-7 px-10 xl:px-20 py-7 text-purple-text dark:text-white">
+          <div className="flex 2xl:flex-row flex-col gap-3 2xl:gap-7">
+            <div className="flex sm:flex-row flex-col gap-3 2xl:gap-7 2xl:grid 2xl:grid-cols-2 w-full">
+              <div className="flex flex-col gap-3 2xl:gap-4">
                 <div className="flex flex-col justify-center items-center gap-7 bg-purple-secondary dark:bg-purple-market p-10 rounded-lg h-full">
-                  <Image loader={() => currentData.image.large} src={currentData.image.large} width={80} height={80} alt="coin logo" />
+                  <Link href={currentData.links.homepage[0]} target="_blank">
+                    <Image loader={() => currentData.image.large} src={currentData.image.large} width={80} height={80} alt="coin logo" />
+                  </Link>
                   <h1>{currentData.name}</h1>
                 </div>
-                <CoinLink link={currentData.links.homepage[0]} />
+                <div className="md:inline-block hidden">
+                  <CoinLink link={currentData.links.homepage[0]} />
+                </div>
               </div>
-              <div className="bg-purple-secondary dark:bg-purple-market p-10 rounded-lg">
+              <div className="bg-purple-secondary dark:bg-purple-market p-10 rounded-lg w-full">
                 <div className="flex flex-wrap justify-center gap-3">
                   <span className="font-semibold text-3xl">
                     {formatCurrency(currentData.market_data.current_price[currency], 6, false, currency)}
@@ -57,8 +62,8 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
                 </div>
               </div>
             </div>
-            <div className="grid grid-cols-2 bg-purple-secondary dark:bg-purple-market p-10 rounded-lg">
-              <div className="flex flex-col gap-7">
+            <div className="grid grid-cols-2 bg-purple-secondary dark:bg-purple-market p-5 2xl:p-10 rounded-lg w-full">
+              <div className="flex flex-col gap-3 2xl:gap-7">
                 <CoinMarketData title="Market Cap" value={currentData.market_data.market_cap[currency]} currency={currency} />
                 <CoinMarketData
                   title="Fully Diluted Valuation"
@@ -71,7 +76,7 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
                   currency={currency}
                 />
               </div>
-              <div className="flex flex-col gap-7">
+              <div className="flex flex-col gap-3 2xl:gap-7">
                 <CoinMarketData title="Total Volume" value={currentData.market_data.total_volume[currency]} currency={currency} />
                 <CoinMarketData
                   title="Circulating Supply"
@@ -82,10 +87,12 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
               </div>
             </div>
           </div>
-          <h1 className="flex items-end font-bold text-2xl">Description </h1>
-          <div className="gap-7 grid grid-cols-2 row-start-3">
-            <div dangerouslySetInnerHTML={{ __html: currentData.description.en }}></div>
-            <div className="flex flex-col gap-7">
+          <div className="gap-3 2xl:gap-7 grid md:grid-cols-2 row-start-3 pb-20 md:pb-0">
+            <div>
+              <h1 className="flex items-end font-bold text-lg lg:text-xl 2xl:text-2xl">Description </h1>
+              <div className="text-xs lg:text-sm 2xl:text-base" dangerouslySetInnerHTML={{ __html: currentData.description.en }}></div>
+            </div>
+            <div className="flex flex-col gap-3 2xl:gap-7">
               <CoinLink link={currentData.links.blockchain_site[1]} />
               <CoinLink link={currentData.links.blockchain_site[2]} />
               <CoinLink link={currentData.links.blockchain_site[3]} />
