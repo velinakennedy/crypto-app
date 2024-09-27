@@ -60,11 +60,11 @@ const AssetList = ({ purchaseInfo }: { purchaseInfo?: PurchaseInfo }) => {
   }, []);
 
   return (
-    <div>
+    <div className="pb-20 md:pb-10">
       {assets.length > 0 ? (
         <div className="flex flex-col gap-5 py-10">
-          {assets.map((asset) => (
-            <AssetItem key={asset.symbol} asset={asset} removeAsset={removeAsset} edit={editActive} />
+          {assets.map((asset, index) => (
+            <AssetItem key={asset.symbol} asset={asset} removeAsset={removeAsset} edit={editActive} index={index} />
           ))}
         </div>
       ) : (

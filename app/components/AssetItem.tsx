@@ -1,5 +1,5 @@
-import { CoinAsset } from "@/typings";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import AssetDetail from "./AssetDetail";
 import ProgressBar from "./ProgressBar";
 import { GoXCircle } from "react-icons/go";
@@ -8,12 +8,16 @@ import formatCurrency from "@/utils/formatCurrency";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import PriceChange from "./PriceChange";
+import { CoinAsset } from "@/typings";
 
-const AssetItem = ({ asset, removeAsset, edit }: { asset: CoinAsset; removeAsset: CallableFunction; edit: boolean }) => {
+const AssetItem = ({ asset, removeAsset, edit, index }: { asset: CoinAsset; removeAsset: CallableFunction; edit: boolean; index: number }) => {
   const currency = useSelector((state: RootState) => state.currency.value);
   return (
-    <div className="relative flex gap-10 bg-light-asset dark:bg-dark-modal-container rounded-lg text-purple-text dark:text-slate-50">
-      <div className="flex flex-col justify-center gap-4 p-5">
+    <motion.div
+      animate={edit ? { rotate: index % 2 === 0 ? [0, 0.5, 0] : [0, -0.5, 0], transition: { repeat: Infinity, duration: 1 } } : { rotate: [0] }}
+      className="relative flex gap-10 bg-light-asset dark:bg-dark-modal-container rounded-lg text-purple-text dark:text-slate-50"
+    >
+      <div className="flex flex-col justify-center gap-4 p-5 w-1/3">
         <div className="flex items-center gap-4">
           <Link href={`/coin/${asset.id}`}>
             <Image loader={() => asset.image} src={asset.image} width={35} height={35} alt="coin logo" />
@@ -53,7 +57,7 @@ const AssetItem = ({ asset, removeAsset, edit }: { asset: CoinAsset; removeAsset
           <GoXCircle />
         </div>
       )}
-    </div>
+    </motion.div>
   );
 };
 export default AssetItem;
