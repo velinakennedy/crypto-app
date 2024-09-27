@@ -70,14 +70,16 @@ const AssetList = ({ purchaseInfo }: { purchaseInfo?: PurchaseInfo }) => {
       ) : (
         <div className="p-10 text-center text-gray-500">Your portfolio is empty.</div>
       )}
-      <div className="w-full text-center">
-        <button
-          className="bg-purple-button dark:bg-purple-hover-dark p-4 hover:bg-purple-border rounded-full"
-          onClick={() => setEditActive(!editActive)}
-        >
-          <MdEdit />
-        </button>
-      </div>
+      {assets.length > 0 && (
+        <div className="w-full text-center">
+          <button
+            className="bg-purple-button dark:bg-purple-hover-dark p-4 hover:bg-purple-border rounded-full"
+            onClick={() => setEditActive(!editActive)}
+          >
+            <MdEdit />
+          </button>
+        </div>
+      )}
     </div>
   );
 };
