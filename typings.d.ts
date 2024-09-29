@@ -102,6 +102,7 @@ export interface Coin {
   name: string;
   id: string;
   image: string;
+  symbol: string;
 }
 
 export interface PurchaseInfo {
