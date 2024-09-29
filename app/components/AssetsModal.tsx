@@ -17,7 +17,7 @@ const AssetsModal = ({
   handleNewCoin: CallableFunction;
 }) => {
   const [purchaseInfo, setPurchaseInfo] = useState<PurchaseInfo>({
-    coin: { name: "No coin selected...", id: "", image: "" },
+    coin: { name: "No coin selected...", id: "", image: "", symbol: "" },
     amount: null,
     date: "",
   });
@@ -64,12 +64,13 @@ const AssetsModal = ({
   useEffect(() => {
     if (!onAddAsset) {
       setPurchaseInfo({
-        coin: { name: "No coin selected...", id: "", image: "" },
+        coin: { name: "No coin selected...", id: "", image: "", symbol: "" },
         amount: null,
         date: "",
       });
     }
   }, [onAddAsset]);
+
   return (
     <div>
       <div
@@ -77,31 +78,43 @@ const AssetsModal = ({
           onAddAsset ? "" : "hidden"
         }`}
       >
-        <div className={`z-20 dark:bg-dark-modal bg-purple-secondary h-[28rem] w-[56rem] p-10 rounded-xl  ${onAddAsset ? "" : "hidden"}`}>
+        <div
+          className={`z-20 dark:bg-dark-modal bg-purple-secondary w-[80vw] lg:w-[56rem] sm:h-[65vh] max-h-[70rem] lg:max-h-[28rem] p-10 rounded-xl text-sm lg:text-base  ${
+            onAddAsset ? "" : "hidden"
+          }`}
+        >
           <div className="flex justify-between">
             <h2 className="text-xl">Select coins</h2>
             <button className="font-thin text-2xl" onClick={handleAssetToggle}>
               <GoXCircle />
             </button>
           </div>
-          <div className="flex justify-between gap-6 py-7">
-            <div className="flex flex-col justify-center items-center gap-4 bg-light-modal-container dark:bg-dark-modal-container p-10 rounded-lg w-1/3">
-              <div className="bg-light-modal-icon dark:bg-dark-modal-icon dark:bg-opacity-30 p-5 rounded-lg">
+          <div className="flex lg:flex-row flex-col justify-center lg:justify-between items-center lg:items-stretch gap-6 py-7 w-full h-full">
+            <div className="flex flex-col justify-center items-center gap-4 bg-light-modal-container dark:bg-dark-modal-container p-6 lg:p-10 rounded-lg w-2/3 sm:w-1/2 lg:w-1/3 h-1/3 lg:h-auto">
+              <div className="bg-light-modal-icon dark:bg-dark-modal-icon dark:bg-opacity-30 p-2 lg:p-5 rounded-lg">
                 {purchaseInfo.coin.image.length > 0 ? (
-                  <Image loader={() => purchaseInfo.coin.image} src={purchaseInfo.coin.image} width={40} height={40} alt="coin logo" />
+                  <Image
+                    loader={() => purchaseInfo.coin.image}
+                    src={purchaseInfo.coin.image}
+                    width={40}
+                    height={40}
+                    alt="coin logo"
+                    className="min-w-10 min-h-10"
+                  />
                 ) : (
-                  <FaCoins className="w-[40px] h-[40px] text-white" />
+                  <FaCoins className="lg:w-[40px] min-w-8 lg:h-[40px] min-h-8 text-white" />
                 )}
               </div>
               <div className="text-center">
-                {purchaseInfo.coin.name} <span className={`${purchaseInfo.coin.id ? "" : "hidden"}`}>({purchaseInfo.coin.id})</span>
+                {purchaseInfo.coin.name}{" "}
+                <span className={`${purchaseInfo.coin.symbol ? "" : "hidden"}`}>({purchaseInfo.coin.symbol.toUpperCase()})</span>
               </div>
             </div>
-            <div className="flex flex-col gap-5 w-2/3">
+            <div className="flex flex-col justify-between gap-5 w-full sm:w-2/3">
               <SearchCoinList
                 isSearchBar={false}
                 placeholderText="Select Coin"
-                width="w-[33rem]"
+                width="w-full"
                 color="bg-white"
                 handleCoin={handleCoin}
                 clearInput={!onAddAsset}
@@ -124,7 +137,7 @@ const AssetsModal = ({
                 type="date"
               />
               <div className="flex gap-3">
-                <GradientButton title="Cancel" action={handleAssetToggle} />
+                <GradientButton title="Cancel" action={handleAssetToggle} width="w-full" />
                 {isValid ? (
                   <GradientButton title="Save and Continue" action={() => handleNewCoin(purchaseInfo)} width="w-full" />
                 ) : (

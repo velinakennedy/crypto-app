@@ -4,22 +4,22 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useGetPricesQuery } from "../redux/features/historicalCoinPriceSlice";
+import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
 import SearchCoinList from "./SearchCoinList";
 import GradientButton from "./GradientButton";
 import CalculatorItem from "./CalculatorItem";
 import TooltipItem from "./TooltipItem";
+import CalculatorChartTooltip from "./CalculatorChartTooltip";
 import { calculateInvestment, intervalPrices } from "@/utils/calculateInvestment";
 import { vcaText, dcaText, tooltipText } from "@/utils/investmentText";
+import chartLabels from "@/utils/chartLabels";
 import { FaCoins } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
 import { GoXCircle } from "react-icons/go";
 import { CalcResult, CalculatorChartData, CalculatorInput, Coin, CoinMarketData, CoinData } from "@/typings";
-import chartLabels from "@/utils/chartLabels";
-import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
-import CalculatorChartTooltip from "./CalculatorChartTooltip";
 
 const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalculatorToggle: VoidFunction; onCalculator: boolean }) => {
-  const [coin, setCoin] = useState<CoinMarketData | Coin>({ name: "", id: "", image: "" });
+  const [coin, setCoin] = useState<CoinMarketData | Coin>({ name: "", id: "", image: "", symbol: "" });
   const [calculatorType, setCalculatorType] = useState<string>("VCA");
   const [skip, setSkip] = useState<boolean>(true);
   const [calcResult, setCalcResult] = useState<CalcResult>({ totalInvested: 0, coinsValue: 0 });
@@ -132,7 +132,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
 
   useEffect(() => {
     if (!onCalculator) {
-      setCoin({ name: "", id: "", image: "" });
+      setCoin({ name: "", id: "", image: "", symbol: "" });
       setCalculatorInput({
         from: "",
         to: "",
@@ -182,9 +182,9 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
     <div
       className={`${
         onCalculator ? "" : "hidden"
-      } z-10 h-full w-full fixed flex justify-center dark:text-white text-purple-text top-0 left-0 items-center backdrop-blur-sm dark:backdrop-brightness-125`}
+      } z-10 h-full w-full fixed flex text-sm md:text-base justify-center dark:text-white text-purple-text top-0 left-0 items-center backdrop-blur-sm dark:backdrop-brightness-125`}
     >
-      <div className="z-20 flex flex-col gap-5 bg-white dark:bg-dark-modal p-10 rounded-xl sm:w-[36rem] md:w-[46rem] lg:w-[56rem] h-[85vh] sm:max-h-[70rem] lg:max-h-[54rem] overflow-scroll scrollbar-hide">
+      <div className="z-20 flex flex-col gap-5 bg-white dark:bg-dark-modal p-10 rounded-xl w-[36rem] md:w-[46rem] lg:w-[56rem] h-[85vh] max-h-[70rem] lg:max-h-[54rem] overflow-scroll scrollbar-hide">
         <div className="flex justify-between">
           <h2 className="text-2xl">Investments Calculator</h2>
           <button className="font-thin text-2xl" onClick={handleCalculatorToggle}>
@@ -192,28 +192,30 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           </button>
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-2">
           <div className="flex justify-center items-center gap-4 bg-purple-secondary dark:bg-dark-modal-container p-2 rounded-lg w-1/3">
-            <div className="bg-purple-button dark:bg-dark-modal-icon dark:bg-opacity-30 p-1 rounded-lg">
+            <div className="flex justify-center items-center bg-purple-button dark:bg-dark-modal-icon dark:bg-opacity-30 p-2 rounded-lg">
               {coin.image.length > 0 ? (
-                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" />
+                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" className="w-10 h-10" />
               ) : (
                 <FaCoins className="w-[20px] h-[20px] text-white" />
               )}
             </div>
-            <div className="text-center">{coin.name}</div>
+            <div className="md:inline-block hidden text-center">{coin.name}</div>
           </div>
-          <SearchCoinList
-            isSearchBar={false}
-            placeholderText="Select Coin"
-            width="w-[33rem] sm:w-[20rem] md:w-[27rem] lg:w-[33rem]"
-            color="bg-purple-secondary"
-            handleCoin={handleCoin}
-            clearInput={!onCalculator}
-          />
+          <div className="w-full">
+            <SearchCoinList
+              isSearchBar={false}
+              placeholderText="Select Coin"
+              width="w-full"
+              color="bg-purple-secondary"
+              handleCoin={handleCoin}
+              clearInput={!onCalculator}
+            />
+          </div>
         </div>
 
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 w-full text-sm md:text-base">
           {calculatorType === "VCA" ? (
             <GradientButton title="Value Cost Averaging" action={() => handleCalculatorType("VCA")} width="w-full" />
           ) : (
@@ -236,9 +238,9 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           )}
         </div>
 
-        <div className="flex lg:flex-row sm:flex-col gap-4">
+        <div className="flex lg:flex-row flex-col gap-4">
           <button
-            className="flex justify-center items-center bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-20 sm:w-full lg:w-20 text-teal-500 dark:text-teal-positive"
+            className="flex justify-center items-center bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-full lg:w-20 text-teal-500 dark:text-teal-positive"
             onClick={() => setShowChart(!showChart)}
             disabled={calcResult.coinsValue === 0 && calcResult.totalInvested === 0}
           >
@@ -331,7 +333,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           </button>
         )}
 
-        <p className="opacity-70 font-thin text-sm">{calculatorType === "VCA" ? vcaText : dcaText}</p>
+        <p className="opacity-70 font-thin text-xs md:text-sm">{calculatorType === "VCA" ? vcaText : dcaText}</p>
       </div>
     </div>
   );

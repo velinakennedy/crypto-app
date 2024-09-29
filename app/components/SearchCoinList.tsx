@@ -61,7 +61,9 @@ const SearchCoinList = ({
     <div>
       {filteredList && (
         <div
-          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${isSearchBar ? "bg-purple-secondary" : `${color}`} dark:bg-purple-secondary-dark`}
+          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${
+            isSearchBar ? "bg-purple-secondary" : `${color}`
+          } dark:bg-purple-secondary-dark relative ${width}`}
           ref={dropdown}
         >
           <div
@@ -80,7 +82,7 @@ const SearchCoinList = ({
             />
           </div>
           <div
-            className={`z-10 fixed flex flex-col gap-3 ${width} rounded-b ${isSearchBar ? "bg-purple-secondary " : `${color}`} ${
+            className={`z-10 absolute flex flex-col gap-3 ${width} rounded-b ${isSearchBar ? "bg-purple-secondary " : `${color}`} ${
               isActive ? "" : "hidden"
             } dark:bg-purple-secondary-dark`}
           >
