@@ -7,11 +7,11 @@ const CoinLink = ({ link }: { link: string }) => {
   return (
     <div>
       {link && (
-        <div className="flex items-center justify-center rounded-lg gap-7 p-7 dark:bg-purple-market bg-purple-secondary">
+        <div className="flex justify-center items-center gap-3 lg:gap-7 bg-purple-secondary dark:bg-purple-market p-5 md:p-7 rounded-lg">
           <Link href={link} target="_blank">
             <FaLink />
           </Link>
-          <p className="overflow-clip">{link}</p>
+          <p className="text-sm lg:text-base overflow-clip">{link}</p>
           <button onClick={() => copyLink(link)}>
             <IoCopyOutline />
           </button>

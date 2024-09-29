@@ -1,4 +1,3 @@
-import { ChartDataset, ChartOptions } from "chart.js";
 import { ReactNode } from "react";
 import { TooltipProps } from "recharts";
 
