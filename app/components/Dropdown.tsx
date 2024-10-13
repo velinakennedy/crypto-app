@@ -7,12 +7,13 @@ import { PiCurrencyBtcFill, PiCurrencyGbpFill } from "react-icons/pi";
 import { FaEthereum } from "react-icons/fa";
 import { AiFillEuroCircle } from "react-icons/ai";
 import { CurrencyTypes } from "@/typings";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 
 const Dropdown = () => {
   const [isActive, setIsActive] = useState(false);
   const currency = useSelector((state: RootState) => state.currency.value);
   const dispatch = useDispatch();
+  const dropdown = useRef<HTMLDivElement | null>(null);
 
   const handleToggle = () => {
     setIsActive(!isActive);
@@ -26,55 +27,70 @@ const Dropdown = () => {
   const currencyTypes: CurrencyTypes[] = [
     {
       name: "usd",
-      symbol: <HiCurrencyDollar className="text-2xl" />,
+      symbol: <HiCurrencyDollar />,
     },
     {
       name: "btc",
-      symbol: <PiCurrencyBtcFill className="text-2xl" />,
+      symbol: <PiCurrencyBtcFill />,
     },
     {
       name: "eth",
-      symbol: <FaEthereum className="text-2xl" />,
+      symbol: <FaEthereum />,
     },
     {
       name: "gbp",
-      symbol: <PiCurrencyGbpFill className="text-2xl" />,
+      symbol: <PiCurrencyGbpFill />,
     },
     {
       name: "eur",
-      symbol: <AiFillEuroCircle className="text-2xl" />,
+      symbol: <AiFillEuroCircle />,
     },
   ];
 
   useEffect(() => {
     const storedCurrency: string | null = localStorage.getItem("currency");
     if (storedCurrency) dispatch(updateCurrency(storedCurrency));
-  });
+  }, []);
 
-  //finding symbol for main dropdown button
+  useEffect(() => {
+    const closeDropdown = (e: MouseEvent) => {
+      if (!dropdown.current?.contains(e.target as Node)) {
+        setIsActive(false);
+      }
+    };
+    document.body.addEventListener("click", closeDropdown);
+    return () => document.body.removeEventListener("click", closeDropdown);
+  }, []);
+
   const currentSymbol: ReactNode = currencyTypes.find((element) => element.name == currency)!.symbol;
 
   return (
-    <div className={`${isActive ? "rounded-t" : "rounded"} w-36 xs:w-20 lg:w-36 bg-purple-secondary dark:bg-purple-secondary-dark z-10`}>
+    <div
+      className={`${isActive ? "rounded-t" : "rounded"} w-36 xs:w-20 lg:w-36 bg-purple-secondary dark:bg-purple-secondary-dark z-10 relative`}
+      ref={dropdown}
+    >
       <button
         className="flex justify-center items-center gap-1 bg-purple-secondary dark:hover:bg-purple-hover-dark hover:bg-purple-hover dark:bg-purple-secondary-dark rounded w-full h-full"
         onClick={handleToggle}
       >
-        {currentSymbol}
+        <span className="text-2xl">{currentSymbol}</span>
         <div className="lg:inline-block xs:hidden">{currency.toUpperCase()}</div>
       </button>
 
-      <div className={`fixed flex flex-col gap-3 rounded-b w-36 bg-purple-secondary dark:bg-purple-secondary-dark ${isActive ? "" : "hidden"}`}>
-        {currencyTypes.map(({ name, symbol }) => (
-          <button
-            className="flex items-center gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark px-10 p-5 rounded"
-            key={name}
-            onClick={() => handleSelect(name)}
-          >
-            {symbol}
-            {name.toUpperCase()}
-          </button>
-        ))}
+      <div className={`absolute flex flex-col gap-3 rounded-b w-full bg-purple-secondary dark:bg-purple-secondary-dark ${isActive ? "" : "hidden"}`}>
+        {currencyTypes.map(({ name, symbol }) => {
+          if (currency !== name)
+            return (
+              <button
+                className="flex justify-center items-center gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded text-xs lg:text-base"
+                key={name}
+                onClick={() => handleSelect(name)}
+              >
+                <span className="text-lg lg:text-2xl">{symbol}</span>
+                {name.toUpperCase()}
+              </button>
+            );
+        })}
       </div>
     </div>
   );
