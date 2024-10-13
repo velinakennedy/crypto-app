@@ -7,8 +7,8 @@ const GradientButton = ({ title, action, width }: { title: string; action: Mouse
       onClick={action}
     >
       <h3
-        className={`cursor-pointer flex gap-2 z-1 dark:bg-purple-hover-dark bg-purple-button justify-center items-center ${
-          width ? width : "w-60"
+        className={`cursor-pointer flex gap-2 z-1 dark:bg-purple-hover-dark bg-purple-button justify-center items-center text-center ${
+          width ? width : "md:w-60 w-40"
         } h-12 rounded-lg`}
       >
         {title}

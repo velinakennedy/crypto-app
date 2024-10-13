@@ -28,11 +28,11 @@ const PortfolioPage = () => {
     <div className="px-10">
       <AssetsModal handleAssetToggle={handleAssetToggle} onAddAsset={onAddAsset} handleNewCoin={handleNewCoin} />
       <CalculatorModal handleCalculatorToggle={handleCalculatorToggle} onCalculator={onCalculator} />
-      <div className="flex justify-between pt-10">
+      <div className="flex md:flex-row flex-col md:justify-between gap-4 pt-3 md:pt-10">
         <h2 className="text-xl">Your Statistics</h2>
-        <div className="flex gap-5">
-          <GradientButton title="Investments Calculator" action={() => setOnCalculator(true)} />
-          <GradientButton title="Add Assets" action={() => setOnAddAsset(true)} />
+        <div className="flex gap-3 md:gap-5 text-xs md:text-base">
+          <GradientButton title="Investments Calculator" action={() => setOnCalculator(true)} width="w-full md:w-60" />
+          <GradientButton title="Add Assets" action={() => setOnAddAsset(true)} width="w-full md:w-60" />
         </div>
       </div>
       {newCoin ? (

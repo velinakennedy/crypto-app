@@ -25,9 +25,9 @@ const CalculatorItem = ({
     <div
       className={`flex justify-between items-center h-1/5 p-3 ${
         isLast ? "" : "border-b-purple-text border-b-small dark:border-b-gray-700"
-      } sm:flex-col sm:items-start sm:gap-2 lg:flex-row lg:items-center lg:gap-0`}
+      } gap-2 lg:flex-row lg:items-center lg:gap-0`}
     >
-      <div className="flex sm:justify-between lg:justify-normal gap-2 sm:w-full">
+      <div className="flex justify-between lg:justify-normal gap-2 w-full">
         <p>{title}</p>
         <TooltipItem content={content} placement="right-start" color="dark:!bg-indigo-900 !bg-purple-button" iconColor="purple-button" />
       </div>
