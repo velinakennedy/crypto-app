@@ -10,7 +10,7 @@ const ChartTimeframe = () => {
 
   return (
     <div className="p-10 w-full xs:text-sm">
-      <div className="flex justify-center gap-8 bg-purple-secondary dark:bg-purple-secondary-dark p-2 rounded-lg md:w-[35rem] xs:w-full">
+      <div className="flex justify-center gap-4 md:gap-8 bg-purple-secondary dark:bg-purple-secondary-dark p-2 rounded-lg md:w-[35rem] xs:w-full">
         {timeframes.map((time) => {
           return (
             <div
@@ -22,7 +22,7 @@ const ChartTimeframe = () => {
               <div
                 className={`${
                   status === time ? "dark:bg-purple-hover-dark dark:shadow-[#7779f833] shadow-[#7779f84d] bg-[#a2a4e8] shadow-md" : ""
-                } z-1 cursor-pointer xs:px-2 sm:px-6 px-6 py-2 rounded-lg`}
+                } z-1 cursor-pointer w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg`}
                 onClick={() => dispatch(updateTimeframe(time))}
               >
                 {time}
