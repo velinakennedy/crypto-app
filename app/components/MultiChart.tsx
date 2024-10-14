@@ -13,9 +13,9 @@ const MultiChart = ({ data, chartDate }: { data: AllCoinChartData; chartDate: st
   const { coinIdList, priceIdList, volumeIdList } = formatIdList(combinedData[0]);
   return (
     <div>
-      <div className="relative flex flex-col justify-center items-center xl:hidden bg-purple-secondary dark:bg-purple-secondary-dark m-10 p-10 rounded-lg h-[30vh] xs:h-[30vh] min-h-72">
-        <div className="pb-5 text-purple-text dark:text-white self-start">
-          <h1 className="font-bold lg:text-2xl xs:text-xl">{chartDate}</h1>
+      <div className="relative flex flex-col justify-center items-center xl:hidden bg-purple-secondary dark:bg-purple-secondary-dark mx-10 my-5 px-5 py-3 rounded-lg h-[30vh] min-h-72">
+        <div className="pb-2 md:pb-5 text-purple-text dark:text-white self-start">
+          <h1 className="font-bold text-md sm:text-xl lg:text-2xl">{chartDate}</h1>
         </div>
         <ResponsiveContainer width="100%">
           <ComposedChart data={combinedData}>
