@@ -133,7 +133,7 @@ const CoinCarousel = () => {
             <IoIosArrowDroprightCircle className="swiper-button-next" />
           </Swiper>
 
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             {activeCoins.map((coin) => {
               const coinInfo = coinData.find((coinData: CoinMarketData) => coinData.id === coin.id);
               return (
