@@ -1,10 +1,20 @@
 import { RiHome5Fill } from "react-icons/ri";
 import { FiLayers } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const NavbarLinks = ({ isFooterLink }: { isFooterLink?: boolean }) => {
   const [isSelected, setIsSelected] = useState<string>("home");
+
+  const updateSelected = () => {
+    const url = window.location.href;
+    if (url.split("/").includes("portfolio")) setIsSelected("portfolio");
+  };
+
+  useEffect(() => {
+    updateSelected();
+  }, []);
+
   return (
     <div className="flex gap-5 text-lg">
       <Link
