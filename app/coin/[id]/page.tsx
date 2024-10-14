@@ -43,9 +43,9 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
               </div>
             </div>
           </div>
-          <div className="gap-3 2xl:gap-7 grid md:grid-cols-2 row-start-3 pb-20 md:pb-0">
+          <div className="flex md:flex-row flex-col gap-3 2xl:gap-7 pb-20 md:pb-0">
             <CoinDescription description={currentData.description.en} />
-            <div className="flex flex-col gap-3 2xl:gap-7">
+            <div className="flex flex-col gap-3 2xl:gap-7 w-full md:w-1/2">
               <CoinLink link={currentData.links.blockchain_site[1]} />
               <CoinLink link={currentData.links.blockchain_site[2]} />
               <CoinLink link={currentData.links.blockchain_site[3]} />

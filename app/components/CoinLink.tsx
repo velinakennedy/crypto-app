@@ -5,13 +5,13 @@ import Link from "next/link";
 
 const CoinLink = ({ link }: { link: string }) => {
   return (
-    <div>
+    <div className="bg-purple-secondary dark:bg-purple-market p-5 md:p-7 rounded-lg w-full">
       {link && (
-        <div className="flex justify-center items-center gap-3 lg:gap-7 bg-purple-secondary dark:bg-purple-market p-5 md:p-7 rounded-lg">
+        <div className="flex justify-center items-center gap-3 lg:gap-7">
           <Link href={link} target="_blank">
             <FaLink />
           </Link>
-          <p className="text-sm lg:text-base overflow-clip">{link}</p>
+          <p className="w-2/3 text-center text-sm lg:text-base break-words">{link}</p>
           <button onClick={() => copyLink(link)}>
             <IoCopyOutline />
           </button>
