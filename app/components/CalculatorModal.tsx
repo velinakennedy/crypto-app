@@ -246,23 +246,36 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           >
             <FaChartLine />
           </button>
-          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+          <div className="flex items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-full min-h-6 appearance-none">
             <TooltipItem content={tooltipText.start} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
-            <input
-              className="bg-transparent text-teal-500 dark:text-teal-positive"
-              type="datetime-local"
-              onChange={(e) => handleCalculatorInput("from", e.target.value)}
-              value={calculatorInput.from}
-            />
+            <div className="flex-col w-full">
+              <label htmlFor="startDate" className="text-sm">
+                Enter start date
+              </label>
+              <input
+                id="startDate"
+                className="block bg-transparent w-full min-h-6 text-teal-500 dark:text-teal-positive appearance-none"
+                type="datetime-local"
+                placeholder="start date here"
+                onChange={(e) => handleCalculatorInput("from", e.target.value)}
+                value={calculatorInput.from}
+              />
+            </div>
           </div>
-          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+          <div className="flex items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-full min-h-6 appearance-none">
             <TooltipItem content={tooltipText.end} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
-            <input
-              className="bg-transparent text-teal-500 dark:text-teal-positive"
-              type="datetime-local"
-              onChange={(e) => handleCalculatorInput("to", e.target.value)}
-              value={calculatorInput.to}
-            />
+            <div className="flex-col w-full">
+              <label htmlFor="endDate" className="text-sm">
+                Enter end date
+              </label>
+              <input
+                id="endDate"
+                className="block bg-transparent w-full min-h-6 text-teal-500 dark:text-teal-positive appearance-none"
+                type="datetime-local"
+                onChange={(e) => handleCalculatorInput("to", e.target.value)}
+                value={calculatorInput.to}
+              />
+            </div>
           </div>
         </div>
 
