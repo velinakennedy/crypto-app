@@ -196,7 +196,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           <div className="flex justify-center items-center gap-4 bg-purple-secondary dark:bg-dark-modal-container p-2 rounded-lg w-1/3">
             <div className="flex justify-center items-center bg-purple-button dark:bg-dark-modal-icon dark:bg-opacity-30 p-2 rounded-lg">
               {coin.image.length > 0 ? (
-                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" className="w-10 h-10" />
+                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" className="w-[20px] h-[20px]" />
               ) : (
                 <FaCoins className="w-[20px] h-[20px] text-white" />
               )}
