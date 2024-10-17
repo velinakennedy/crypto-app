@@ -19,7 +19,7 @@ const AssetsModal = ({
   const [purchaseInfo, setPurchaseInfo] = useState<PurchaseInfo>({
     coin: { name: "No coin selected...", id: "", image: "", symbol: "" },
     amount: null,
-    date: "",
+    date: new Date(Date.now()).toISOString().slice(0, 10).toString(),
   });
   const [isValid, setIsValid] = useState<boolean>(false);
 
@@ -66,7 +66,7 @@ const AssetsModal = ({
       setPurchaseInfo({
         coin: { name: "No coin selected...", id: "", image: "", symbol: "" },
         amount: null,
-        date: "",
+        date: new Date(Date.now()).toISOString().slice(0, 10).toString(),
       });
     }
   }, [onAddAsset]);
@@ -129,7 +129,7 @@ const AssetsModal = ({
                 className="dark:bg-purple-secondary-dark p-4 rounded-lg w-full dark:placeholder-gray-400 placeholder-purple-text"
               />
               <input
-                className={`p-4 w-full rounded-lg dark:bg-purple-secondary-dark !text-purple-text ${
+                className={`p-4 block w-full rounded-lg dark:bg-purple-secondary-dark !text-purple-text min-h-14 appearance-none ${
                   purchaseInfo.date.length > 0 ? "dark:!text-white" : "dark:!text-gray-400"
                 }`}
                 onChange={(e) => handleInfo("date", e.target.value)}

@@ -28,8 +28,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
   const [showChart, setShowChart] = useState<boolean>(false);
   const currency = useSelector((state: RootState) => state.currency.value);
   const [calculatorInput, setCalculatorInput] = useState<CalculatorInput>({
-    from: "",
-    to: "",
+    from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
+    to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
     interval: undefined,
     investment: undefined,
     growth: undefined,
@@ -134,8 +134,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
     if (!onCalculator) {
       setCoin({ name: "", id: "", image: "", symbol: "" });
       setCalculatorInput({
-        from: "",
-        to: "",
+        from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
+        to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
         interval: undefined,
         investment: undefined,
         growth: undefined,
@@ -196,7 +196,7 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           <div className="flex justify-center items-center gap-4 bg-purple-secondary dark:bg-dark-modal-container p-2 rounded-lg w-1/3">
             <div className="flex justify-center items-center bg-purple-button dark:bg-dark-modal-icon dark:bg-opacity-30 p-2 rounded-lg">
               {coin.image.length > 0 ? (
-                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" className="w-10 h-10" />
+                <Image loader={() => coin.image} src={coin.image} width={30} height={30} alt="coin logo" className="w-[20px] h-[20px]" />
               ) : (
                 <FaCoins className="w-[20px] h-[20px] text-white" />
               )}
@@ -246,23 +246,36 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
           >
             <FaChartLine />
           </button>
-          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+          <div className="flex items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-full min-h-6 appearance-none">
             <TooltipItem content={tooltipText.start} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
-            <input
-              className="bg-transparent text-teal-500 dark:text-teal-positive"
-              type="datetime-local"
-              onChange={(e) => handleCalculatorInput("from", e.target.value)}
-              value={calculatorInput.from}
-            />
+            <div className="flex-col w-full">
+              <label htmlFor="startDate" className="text-sm">
+                Enter start date
+              </label>
+              <input
+                id="startDate"
+                className="block bg-transparent w-full min-h-6 text-teal-500 dark:text-teal-positive appearance-none"
+                type="datetime-local"
+                placeholder="start date here"
+                onChange={(e) => handleCalculatorInput("from", e.target.value)}
+                value={calculatorInput.from}
+              />
+            </div>
           </div>
-          <div className="flex justify-center items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg">
+          <div className="flex items-center gap-3 bg-slate-100 dark:bg-dark-modal-container px-3 py-3 rounded-lg w-full min-h-6 appearance-none">
             <TooltipItem content={tooltipText.end} placement="right-start" color="dark:!bg-teal-700 !bg-teal-500" iconColor="purple-button" />
-            <input
-              className="bg-transparent text-teal-500 dark:text-teal-positive"
-              type="datetime-local"
-              onChange={(e) => handleCalculatorInput("to", e.target.value)}
-              value={calculatorInput.to}
-            />
+            <div className="flex-col w-full">
+              <label htmlFor="endDate" className="text-sm">
+                Enter end date
+              </label>
+              <input
+                id="endDate"
+                className="block bg-transparent w-full min-h-6 text-teal-500 dark:text-teal-positive appearance-none"
+                type="datetime-local"
+                onChange={(e) => handleCalculatorInput("to", e.target.value)}
+                value={calculatorInput.to}
+              />
+            </div>
           </div>
         </div>
 
