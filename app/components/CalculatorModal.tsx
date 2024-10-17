@@ -28,8 +28,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
   const [showChart, setShowChart] = useState<boolean>(false);
   const currency = useSelector((state: RootState) => state.currency.value);
   const [calculatorInput, setCalculatorInput] = useState<CalculatorInput>({
-    from: "",
-    to: "",
+    from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
+    to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
     interval: undefined,
     investment: undefined,
     growth: undefined,
@@ -134,8 +134,8 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
     if (!onCalculator) {
       setCoin({ name: "", id: "", image: "", symbol: "" });
       setCalculatorInput({
-        from: "",
-        to: "",
+        from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
+        to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
         interval: undefined,
         investment: undefined,
         growth: undefined,
