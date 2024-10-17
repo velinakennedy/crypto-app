@@ -129,7 +129,7 @@ const AssetsModal = ({
                 className="dark:bg-purple-secondary-dark p-4 rounded-lg w-full dark:placeholder-gray-400 placeholder-purple-text"
               />
               <input
-                className={`p-4 block w-full rounded-lg dark:bg-purple-secondary-dark !text-purple-text min-h-14 appearance-none text-left ${
+                className={`p-4 block w-full rounded-lg dark:bg-purple-secondary-dark !text-purple-text min-h-14 appearance-none ${
                   purchaseInfo.date.length > 0 ? "dark:!text-white" : "dark:!text-gray-400"
                 }`}
                 onChange={(e) => handleInfo("date", e.target.value)}
