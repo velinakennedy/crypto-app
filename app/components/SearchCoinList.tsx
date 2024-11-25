@@ -86,26 +86,32 @@ const SearchCoinList = ({
               isActive ? "" : "hidden"
             } dark:bg-purple-secondary-dark`}
           >
-            {filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map((data: CoinMarketData) => {
-              return isSearchBar ? (
-                <Link
-                  className="flex gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded"
-                  key={data.id}
-                  onClick={() => handleSelection()}
-                  href={`/coin/${data.id}`}
-                >
-                  {data.name}
-                </Link>
-              ) : (
-                <div
-                  className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
-                  key={data.id}
-                  onClick={() => handleSelection(data)}
-                >
-                  {data.name}
-                </div>
-              );
-            })}
+            {filteredList.length > 0 ? (
+              filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map((data: CoinMarketData) => {
+                return isSearchBar ? (
+                  <Link
+                    className="flex gap-1 bg-purple-secondary hover:bg-purple-hover dark:hover:bg-purple-hover-dark dark:bg-purple-secondary-dark p-5 rounded"
+                    key={data.id}
+                    onClick={() => handleSelection()}
+                    href={`/coin/${data.id}`}
+                  >
+                    {data.name}
+                  </Link>
+                ) : (
+                  <div
+                    className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
+                    key={data.id}
+                    onClick={() => handleSelection(data)}
+                  >
+                    {data.name}
+                  </div>
+                );
+              })
+            ) : (
+              <div className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}>
+                No results...
+              </div>
+            )}
           </div>
         </div>
       )}
