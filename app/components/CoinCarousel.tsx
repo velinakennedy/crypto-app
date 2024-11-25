@@ -88,11 +88,7 @@ const CoinCarousel = () => {
   };
 
   useEffect(() => {
-    handleSelection("bitcoin");
-  }, []);
-
-  useEffect(() => {
-    if (activeCoins.length < 1) handleSelection("bitcoin");
+    if (activeCoins.length === 0) handleSelection("bitcoin");
   }, [activeCoins]);
 
   useEffect(() => {
