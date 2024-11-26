@@ -50,7 +50,7 @@ const CoinCarousel = () => {
     }
   };
 
-  const handleTimeChange = async () => {
+  const handleDatasetUpdate = async () => {
     const newCoinList: ActiveCoin[] = await Promise.all(
       activeCoins.map(async (coin: ActiveCoin) => {
         const response: CoinChartData | any = await updateCoin({
@@ -92,8 +92,8 @@ const CoinCarousel = () => {
   }, [activeCoins]);
 
   useEffect(() => {
-    if (status === "1Y" && prevStatus !== "1Y") handleTimeChange();
-    if (status !== "1Y" && prevStatus === "1Y") handleTimeChange();
+    if (status === "1Y" && prevStatus !== "1Y") handleDatasetUpdate();
+    if (status !== "1Y" && prevStatus === "1Y") handleDatasetUpdate();
   }, [status]);
 
   useEffect(() => {
@@ -101,6 +101,10 @@ const CoinCarousel = () => {
       setSkip(true);
     }
   }, [isSuccess, chartData]);
+
+  useEffect(() => {
+    handleDatasetUpdate();
+  }, [currency]);
 
   return (
     <div>
