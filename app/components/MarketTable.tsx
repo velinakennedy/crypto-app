@@ -124,6 +124,11 @@ const MarketTable = () => {
     }
   }, [isSuccess, currentData, queryInfo, formattedData]);
 
+  useEffect(() => {
+    setFormattedData(null);
+    setQueryInfo({ page: 1, skip: false });
+  }, [currency]);
+
   return (
     <div>
       {formattedData ? (
