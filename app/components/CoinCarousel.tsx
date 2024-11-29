@@ -70,7 +70,10 @@ const CoinCarousel = () => {
   };
 
   const mediaBreaks = {
-    680: {
+    600: {
+      slidesPerView: 2,
+    },
+    780: {
       slidesPerView: 3,
     },
     1200: {
@@ -113,7 +116,7 @@ const CoinCarousel = () => {
               modules={[Navigation, Autoplay]}
               spaceBetween={10}
               autoplay={{
-                delay: 2000,
+                delay: 4000,
                 disableOnInteraction: false,
               }}
               breakpoints={mediaBreaks}
