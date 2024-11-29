@@ -21,7 +21,7 @@ const MarketBar = () => {
     <div className="w-full">
       {isLoading && <div>Loading...</div>}
       {data && (
-        <div className="flex sm:flex justify-center items-center gap-10 bg-purple-text dark:bg-[#1e1932] px-10 py-3 rounded-t-lg h-full text-sm text-white">
+        <div className="flex sm:flex justify-center items-center gap-10 bg-purple-text dark:bg-[#1e1932] px-10 py-3 h-full text-sm text-white">
           <div className="flex md:flex gap-2 xs:hidden">
             <span className="flex items-center gap-1 h-full font-thin">
               <RiCoinsFill />
