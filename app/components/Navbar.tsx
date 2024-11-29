@@ -24,28 +24,30 @@ const Navbar = () => {
   return (
     <div className="flex justify-center w-full">
       {data && (
-        <div className="flex flex-col items-center xl:px-10 w-full max-w-[120rem]">
+        <div className="flex flex-col items-center bg-white dark:bg-[#13121a] w-full">
           <MarketBar />
-          <div className="flex justify-between items-center sm:gap-0 xs:gap-3 bg-white dark:bg-[#13121a] px-10 py-5 rounded-b-lg w-full h-full text-purple-text dark:text-gray-300">
-            <h1>
-              <Link href={"/"} className="flex gap-1 font-bold text-2xl dark:text-white">
-                <GiCoins className="text-3xl dark:text-white" /> <span className="lg:inline-block xs:hidden">CoinTrade</span>
-              </Link>
-            </h1>
-            <div className="md:inline-block xs:hidden">
-              <NavbarLinks />
-            </div>
-            <div className="flex gap-7 sm:gap-5 md:gap-7 xs:gap-3">
-              <SearchCoinList
-                isSearchBar={true}
-                placeholderText="Search..."
-                width="w-96 xs:w-40 md:w-60 lg:w-72 xl:w-96"
-                clearInput={true}
-                color="bg-purple-secondary"
-              />
-              <Dropdown />
+          <div className="flex justify-center w-full max-w-[120rem]">
+            <div className="flex justify-between items-center sm:gap-0 xs:gap-3 px-10 py-5 w-full h-full text-purple-text dark:text-gray-300">
+              <h1>
+                <Link href={"/"} className="flex gap-1 font-bold text-2xl dark:text-white">
+                  <GiCoins className="text-3xl dark:text-white" /> <span className="lg:inline-block xs:hidden">CoinTrade</span>
+                </Link>
+              </h1>
               <div className="md:inline-block xs:hidden">
-                <DarkModeButton />
+                <NavbarLinks />
+              </div>
+              <div className="flex gap-7 sm:gap-5 md:gap-7 xs:gap-3">
+                <SearchCoinList
+                  isSearchBar={true}
+                  placeholderText="Search..."
+                  width="w-96 xs:w-40 md:w-60 lg:w-72 xl:w-96"
+                  clearInput={true}
+                  color="bg-purple-secondary"
+                />
+                <Dropdown />
+                <div className="md:inline-block xs:hidden">
+                  <DarkModeButton />
+                </div>
               </div>
             </div>
           </div>
