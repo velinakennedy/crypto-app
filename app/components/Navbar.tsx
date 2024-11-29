@@ -22,11 +22,11 @@ const Navbar = () => {
   }, [data]);
 
   return (
-    <div>
+    <div className="flex justify-center w-full">
       {data && (
-        <div>
+        <div className="flex flex-col items-center xl:px-10 w-full max-w-[180rem]">
           <MarketBar />
-          <div className="flex justify-between items-center sm:gap-0 xs:gap-3 bg-white dark:bg-[#13121a] px-10 p-5 h-full text-purple-text dark:text-gray-300">
+          <div className="flex justify-between items-center sm:gap-0 xs:gap-3 bg-white dark:bg-[#13121a] px-10 py-5 rounded-b-lg w-full h-full text-purple-text dark:text-gray-300">
             <h1>
               <Link href={"/"} className="flex gap-1 font-bold text-2xl dark:text-white">
                 <GiCoins className="text-3xl dark:text-white" /> <span className="lg:inline-block xs:hidden">CoinTrade</span>
