@@ -31,14 +31,14 @@ const CoinCarouselItem = ({ coin }: { coin: CoinMarketData }) => {
       <div
         className={`flex gap-2 z-1 ${
           isSelected ? "dark:bg-purple-hover-dark bg-[#a2a4e8]" : "bg-purple-secondary dark:bg-purple-secondary-dark"
-        } max-h-28 w-full justify-center items-center px-4 py-7 rounded-lg`}
+        } max-h-28 w-full justify-center items-center lg:px-4 lg:py-7 rounded-lg p-16`}
       >
-        <div className="flex justify-center w-full min-w-10">
+        <div className="flex justify-center w-full xs:w-auto min-w-10">
           <Image loader={() => `${coin.image}/w=auto`} src={coin.image} width={30} height={30} alt="coin logo" />
         </div>
-        <div className="flex flex-col items-center gap-2 w-full">
+        <div className="flex flex-col items-center gap-2 w-auto lg:w-full text-center">
           <h2>{`${coin.name} (${coin.symbol.toUpperCase()})`}</h2>
-          <div className="flex gap-2">
+          <div className="flex justify-center gap-2 w-full">
             <h3>
               {formatCurrency(coin.current_price, 6, false, currency).length > 10
                 ? `${formatCurrency(coin.current_price, 6, false, currency).slice(0, 9)}...`

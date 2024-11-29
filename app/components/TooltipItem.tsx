@@ -10,7 +10,7 @@ const TooltipItem = ({ content, placement, color, iconColor }: { content: string
       setShow(false);
     } else {
       setShow(true);
-      setTimeout(() => setShow(false), 1500);
+      setTimeout(() => setShow(false), 8000);
     }
   };
   return (

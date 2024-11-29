@@ -130,50 +130,52 @@ const MarketTable = () => {
   }, [currency]);
 
   return (
-    <div>
-      {formattedData ? (
-        <div className="px-10 w-full">
-          <InfiniteScroll dataLength={formattedData.length} next={fetchData} hasMore={true} loader={<Spinner label="loading..." color="current" />}>
-            <Table
-              removeWrapper
-              sortDescriptor={sortDescriptor}
-              onSortChange={setSortDescriptor}
-              classNames={{
-                table: "bg-purple-secondary rounded-lg dark:bg-transparent",
-                th: "dark:text-gray-400 font-thin bg-transparent text-sm",
-                tr: "even:dark:bg-purple-secondary-dark even:bg-[#3c3d7d15]",
-                sortIcon: "hidden",
-                td: "md:dark:first:rounded-l-lg md:dark:[&:nth-child(2)]:rounded-none dark:[&:nth-child(2)]:rounded-l-lg dark:last:rounded-r-lg md:p-1",
-              }}
-              aria-label="Coin market table"
-            >
-              <TableHeader columns={headers}>
-                {(header) => (
-                  <TableColumn key={header.key} allowsSorting={header.sortable} className={`${tableStyles(header.key)}`}>
-                    <div className={`flex sm:gap-2 justify-center items-center ${header.sortable ? "hover:cursor-pointer" : ""}`}>
-                      {header.title}
-                      {header.sortable && <FaSort />}
-                    </div>
-                  </TableColumn>
-                )}
-              </TableHeader>
-              <TableBody items={sortedData}>
-                {(item) => (
-                  <TableRow key={item.marketCap}>
-                    {(columnKey) => (
-                      <TableCell className={`sm:p-3 text-xs md:text-base ${tableStyles(columnKey)}`}>{renderCell(item, columnKey)}</TableCell>
-                    )}
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </InfiniteScroll>
-        </div>
-      ) : (
-        <div className="flex justify-center w-full">
-          <Spinner label="loading..." color="current" />
-        </div>
-      )}
+    <div className="flex justify-center">
+      <div className="flex flex-col justify-center w-full max-w-[120rem]">
+        {formattedData ? (
+          <div className="px-10 w-full">
+            <InfiniteScroll dataLength={formattedData.length} next={fetchData} hasMore={true} loader={<Spinner label="loading..." color="current" />}>
+              <Table
+                removeWrapper
+                sortDescriptor={sortDescriptor}
+                onSortChange={setSortDescriptor}
+                classNames={{
+                  table: "bg-purple-secondary rounded-lg dark:bg-transparent",
+                  th: "dark:text-gray-400 font-thin bg-transparent text-sm",
+                  tr: "even:dark:bg-purple-secondary-dark even:bg-[#3c3d7d15]",
+                  sortIcon: "hidden",
+                  td: "md:dark:first:rounded-l-lg md:dark:[&:nth-child(2)]:rounded-none dark:[&:nth-child(2)]:rounded-l-lg dark:last:rounded-r-lg md:p-1",
+                }}
+                aria-label="Coin market table"
+              >
+                <TableHeader columns={headers}>
+                  {(header) => (
+                    <TableColumn key={header.key} allowsSorting={header.sortable} className={`${tableStyles(header.key)}`}>
+                      <div className={`flex sm:gap-2 justify-center items-center ${header.sortable ? "hover:cursor-pointer" : ""}`}>
+                        {header.title}
+                        {header.sortable && <FaSort />}
+                      </div>
+                    </TableColumn>
+                  )}
+                </TableHeader>
+                <TableBody items={sortedData}>
+                  {(item) => (
+                    <TableRow key={item.marketCap}>
+                      {(columnKey) => (
+                        <TableCell className={`sm:p-3 text-xs md:text-base ${tableStyles(columnKey)}`}>{renderCell(item, columnKey)}</TableCell>
+                      )}
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </InfiniteScroll>
+          </div>
+        ) : (
+          <div className="flex justify-center w-full">
+            <Spinner label="loading..." color="current" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -8,7 +8,7 @@ const PriceVolumeCharts = ({ data, chartDate }: { data: AllCoinChartData; chartD
   const { priceIdList, volumeIdList } = formatIdList({ ...data.priceData[0], ...data.volumeData[0] });
   return (
     <div className="gap-10 hidden xl:grid grid-cols-2 p-10 w-full">
-      <div className="relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full lg:h-[30vh] xl:h-[30vh] min-h-72">
+      <div className="relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full lg:h-[30vh] xl:h-[40vh] min-h-72">
         <h1 className="pb-5 font-bold text-2xl text-purple-text md:text-lg dark:text-white self-start">{chartDate}</h1>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={data.priceData}>
@@ -53,7 +53,7 @@ const PriceVolumeCharts = ({ data, chartDate }: { data: AllCoinChartData; chartD
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      <div className="relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full lg:h-[30vh] xl:h-[30vh] min-h-72">
+      <div className="relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full lg:h-[30vh] xl:h-[40vh] min-h-72">
         <div className="pb-5 text-purple-text dark:text-white self-start">
           <h1 className="font-bold text-2xl md:text-lg">Volume 24h</h1>
           <h2 className="font-thin text-lg md:text-sm">{chartDate}</h2>

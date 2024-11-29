@@ -70,7 +70,10 @@ const CoinCarousel = () => {
   };
 
   const mediaBreaks = {
-    680: {
+    600: {
+      slidesPerView: 2,
+    },
+    780: {
       slidesPerView: 3,
     },
     1200: {
@@ -81,9 +84,6 @@ const CoinCarousel = () => {
     },
     1680: {
       slidesPerView: 7,
-    },
-    2500: {
-      slidesPerView: 10,
     },
   };
 
@@ -107,53 +107,55 @@ const CoinCarousel = () => {
   }, [currency]);
 
   return (
-    <div>
-      {isUpdated ? (
-        <div className="px-10 pt-10 w-full">
-          <Swiper
-            className="!pb-7"
-            modules={[Navigation, Autoplay]}
-            spaceBetween={10}
-            autoplay={{
-              delay: 2000,
-              disableOnInteraction: false,
-            }}
-            breakpoints={mediaBreaks}
-            navigation={{
-              nextEl: ".swiper-button-next",
-              prevEl: ".swiper-button-prev",
-            }}
-          >
-            <IoIosArrowDropleftCircle className="swiper-button-prev" />
-            {coinData.map((coin: CoinMarketData) => (
-              <SwiperSlide key={coin.id} onClick={() => handleSelection(coin.id)}>
-                <CoinCarouselItem coin={coin} />
-              </SwiperSlide>
-            ))}
-            <IoIosArrowDroprightCircle className="swiper-button-next" />
-          </Swiper>
+    <div className="flex justify-center">
+      <div className="flex flex-col justify-center w-full max-w-[120rem]">
+        {isUpdated ? (
+          <div className="px-10 pt-10 w-full">
+            <Swiper
+              className="!pb-7"
+              modules={[Navigation, Autoplay]}
+              spaceBetween={10}
+              autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+              }}
+              breakpoints={mediaBreaks}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
+            >
+              <IoIosArrowDropleftCircle className="swiper-button-prev" />
+              {coinData.map((coin: CoinMarketData) => (
+                <SwiperSlide key={coin.id} onClick={() => handleSelection(coin.id)}>
+                  <CoinCarouselItem coin={coin} />
+                </SwiperSlide>
+              ))}
+              <IoIosArrowDroprightCircle className="swiper-button-next" />
+            </Swiper>
 
-          <div className="flex flex-wrap gap-3">
-            {activeCoins.map((coin) => {
-              const coinInfo = coinData.find((coinData: CoinMarketData) => coinData.id === coin.id);
-              return (
-                <div
-                  onClick={() => handleSelection(coin.id)}
-                  key={coin.id}
-                  className="flex items-center gap-2 bg-purple-hover dark:bg-purple-hover-dark p-2 rounded-lg"
-                >
-                  <Image loader={() => `${coinInfo.image}/w=auto`} src={coinInfo.image} width={20} height={20} alt="coin logo" />
-                  <h3 className="text-sm">{coinInfo.name}</h3>
-                  <CiCircleRemove />
-                </div>
-              );
-            })}
+            <div className="flex flex-wrap gap-3">
+              {activeCoins.map((coin) => {
+                const coinInfo = coinData.find((coinData: CoinMarketData) => coinData.id === coin.id);
+                return (
+                  <div
+                    onClick={() => handleSelection(coin.id)}
+                    key={coin.id}
+                    className="flex items-center gap-2 bg-purple-hover dark:bg-purple-hover-dark p-2 rounded-lg"
+                  >
+                    <Image loader={() => `${coinInfo.image}/w=auto`} src={coinInfo.image} width={20} height={20} alt="coin logo" />
+                    <h3 className="text-sm">{coinInfo.name}</h3>
+                    <CiCircleRemove />
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      ) : (
-        <div>Loading...</div>
-      )}
-      <CoinCharts id={id} currentData={chartData || updateCoin} hasData={hasChartData} />
+        ) : (
+          <div>Loading...</div>
+        )}
+        <CoinCharts id={id} currentData={chartData || updateCoin} hasData={hasChartData} />
+      </div>
     </div>
   );
 };
