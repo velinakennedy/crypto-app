@@ -24,7 +24,7 @@ const Navbar = () => {
   return (
     <div className="flex justify-center w-full">
       {data && (
-        <div className="flex flex-col items-center xl:px-10 w-full max-w-[180rem]">
+        <div className="flex flex-col items-center xl:px-10 w-full max-w-[120rem]">
           <MarketBar />
           <div className="flex justify-between items-center sm:gap-0 xs:gap-3 bg-white dark:bg-[#13121a] px-10 py-5 rounded-b-lg w-full h-full text-purple-text dark:text-gray-300">
             <h1>

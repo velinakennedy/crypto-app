@@ -82,9 +82,6 @@ const CoinCarousel = () => {
     1680: {
       slidesPerView: 7,
     },
-    2500: {
-      slidesPerView: 10,
-    },
   };
 
   useEffect(() => {
@@ -108,7 +105,7 @@ const CoinCarousel = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-center w-full max-w-[180rem]">
+      <div className="flex flex-col justify-center w-full max-w-[120rem]">
         {isUpdated ? (
           <div className="px-10 pt-10 w-full">
             <Swiper

@@ -131,7 +131,7 @@ const MarketTable = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-center w-full max-w-[180rem]">
+      <div className="flex flex-col justify-center w-full max-w-[120rem]">
         {formattedData ? (
           <div className="px-10 w-full">
             <InfiniteScroll dataLength={formattedData.length} next={fetchData} hasMore={true} loader={<Spinner label="loading..." color="current" />}>

@@ -10,7 +10,7 @@ const ChartTimeframe = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col justify-center p-10 w-full max-w-[180rem] xs:text-sm">
+      <div className="flex flex-col justify-center p-10 w-full max-w-[120rem] xs:text-sm">
         <div className="flex justify-center gap-4 md:gap-8 bg-purple-secondary dark:bg-purple-secondary-dark p-2 rounded-lg md:w-[35rem] xs:w-full">
           {timeframes.map((time) => {
             return (

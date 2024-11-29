@@ -13,9 +13,9 @@ const CoinInfo = ({ params: { id } }: { params: { id: string } }) => {
   const hasData = currentData && isSuccess;
 
   return (
-    <div>
+    <div className="flex justify-center">
       {hasData && (
-        <div className="flex flex-col gap-3 2xl:gap-7 px-14 2xl:px-20 py-7 text-purple-text dark:text-white">
+        <div className="flex flex-col gap-3 2xl:gap-7 px-10 py-7 w-full max-w-[120rem] text-purple-text dark:text-white">
           <div className="flex 2xl:flex-row flex-col gap-3 2xl:gap-7">
             <CoinPriceInfo currentData={currentData} />
             <div className="grid grid-cols-2 bg-purple-secondary dark:bg-purple-market p-5 2xl:p-10 rounded-lg w-full text-sm md:text-base">
