@@ -121,7 +121,7 @@ const CoinConverter = ({ active }: { active: boolean }) => {
         <div>
           <h1 className="font-bold text-lg text-purple-text dark:text-slate-50">Online Currency Converter</h1>
         </div>
-        <div className="relative flex justify-center items-center gap-8">
+        <div className="relative flex md:flex-row flex-col justify-center items-center gap-8">
           <CoinConverterItem
             title="You sell"
             coin={fromCoin}
@@ -147,7 +147,7 @@ const CoinConverter = ({ active }: { active: boolean }) => {
             bgColor="bg-purple-button dark:bg-purple-hover-dark"
           />
         </div>
-        <div className="relative flex flex-col justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark p-10 rounded-lg w-full h-[30vh] min-h-72">
+        <div className="flex justify-center items-center bg-purple-secondary dark:bg-purple-secondary-dark rounded-lg w-full h-[30vh] xl:h-[40vh] min-h-72">
           {chartData && fromCoin && toCoin ? (
             <CoinConverterChart name={{ fromCoin: fromCoin.name, toCoin: toCoin.name }} chartData={chartData} />
           ) : (
