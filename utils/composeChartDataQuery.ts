@@ -1,9 +1,4 @@
-import { RootState } from "@/app/redux/store";
-import { useSelector } from "react-redux";
-
-const composeChartDataQuery = (id: string) => {
-  const { status, to, from } = useSelector((state: RootState) => state.timeframe);
-  const currency = useSelector((state: RootState) => state.currency.value);
+const composeChartDataQuery = (id: string, currency: string, status: string, to: number, from: number) => {
   return {
     id,
     currency,

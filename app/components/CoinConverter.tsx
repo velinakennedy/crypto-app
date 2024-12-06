@@ -20,11 +20,13 @@ const CoinConverter = ({ active }: { active: boolean }) => {
   const [chartData, setChartData] = useState<CoinChartData[] | null>(null);
   const [coinData, setCoinData] = useState<CoinPriceData>({ fromCoin: null, toCoin: null });
 
-  const { prevStatus, status, from } = useSelector((state: RootState) => state.timeframe);
+  const { prevStatus, status, to, from } = useSelector((state: RootState) => state.timeframe);
   const currency = useSelector((state: RootState) => state.currency.value);
 
   const [updateCoin] = useEditChartDataMutation();
-  const { currentData, isSuccess } = useGetChartDataQuery(composeChartDataQuery(queryParams.id), { skip: queryParams.skip });
+  const { currentData, isSuccess } = useGetChartDataQuery(composeChartDataQuery(queryParams.id, currency, status, to, from), {
+    skip: queryParams.skip,
+  });
 
   const handleFromCoin = (data: CoinMarketData) => {
     setFromCoin(data);
@@ -58,7 +60,7 @@ const CoinConverter = ({ active }: { active: boolean }) => {
       const currentCoins = [coinData.fromCoin, coinData.toCoin];
       const newCoinList: CoinDataItem[] = await Promise.all(
         currentCoins.map(async (coin: CoinDataItem) => {
-          const response: any = await updateCoin(composeChartDataQuery(coin.id));
+          const response: any = await updateCoin(composeChartDataQuery(coin.id, currency, status, to, from));
           return composeCoinItem(coin.id, coin.name, { ...response.data });
         })
       );
