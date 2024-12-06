@@ -13,13 +13,17 @@ const SearchCoinList = ({
   handleCoin,
   clearInput,
   color,
+  darkColor,
+  updateSelection,
 }: {
   isSearchBar: boolean;
   placeholderText: string;
   width: string;
-  color: string;
   handleCoin?: Function;
   clearInput: boolean;
+  color: string;
+  darkColor?: string;
+  updateSelection?: CoinMarketData;
 }) => {
   const [isActive, setIsActive] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -57,19 +61,31 @@ const SearchCoinList = ({
     if (clearInput) setSearchValue("");
   }, [clearInput]);
 
+  useEffect(() => {
+    if (filteredList && searchValue !== "") handleSelection(filteredList[0]);
+  }, [data]);
+
+  useEffect(() => {
+    if (updateSelection && filteredList && searchValue !== "") {
+      if (filteredList[0] !== updateSelection) {
+        handleSelection(updateSelection);
+      }
+    }
+  }, [updateSelection]);
+
   return (
     <div>
       {filteredList && (
         <div
-          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${
-            isSearchBar ? "bg-purple-secondary" : `${color}`
-          } dark:bg-purple-secondary-dark relative ${width}`}
+          className={`${isActive ? "rounded-t-lg" : "rounded-lg"} ${isSearchBar ? "bg-purple-secondary" : `${color}`} ${
+            darkColor ? darkColor : "dark:bg-purple-secondary-dark"
+          } relative ${width}`}
           ref={dropdown}
         >
           <div
             className={`flex items-center h-full gap-3 p-4 rounded-lg ${width} ${color} placeholder-purple-text ${
               isSearchBar ? "hover:bg-purple-hover dark:hover:bg-purple-hover-dark" : ""
-            } dark:bg-purple-secondary-dark`}
+            } ${darkColor ? darkColor : "dark:bg-purple-secondary-dark"}`}
           >
             {isSearchBar && <CiSearch className="text-2xl" />}
             <input
@@ -84,7 +100,7 @@ const SearchCoinList = ({
           <div
             className={`z-10 absolute flex flex-col gap-3 ${width} rounded-b ${isSearchBar ? "bg-purple-secondary " : `${color}`} ${
               isActive ? "" : "hidden"
-            } dark:bg-purple-secondary-dark`}
+            } ${darkColor ? darkColor : "dark:bg-purple-secondary-dark"}`}
           >
             {filteredList.length > 0 ? (
               filteredList.slice(0, +`${isSearchBar ? 10 : 5}`).map((data: CoinMarketData) => {
@@ -99,7 +115,9 @@ const SearchCoinList = ({
                   </Link>
                 ) : (
                   <div
-                    className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
+                    className={`flex gap-1 ${color} ${
+                      darkColor ? darkColor : "dark:bg-purple-secondary-dark"
+                    } hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
                     key={data.id}
                     onClick={() => handleSelection(data)}
                   >
@@ -108,7 +126,11 @@ const SearchCoinList = ({
                 );
               })
             ) : (
-              <div className={`flex gap-1 ${color} dark:bg-purple-secondary-dark hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}>
+              <div
+                className={`flex gap-1 ${color} ${
+                  darkColor ? darkColor : "dark:bg-purple-secondary-dark"
+                } hover:bg-purple-hover dark:hover:bg-purple-hover-dark p-5 rounded`}
+              >
                 No results...
               </div>
             )}
