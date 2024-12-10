@@ -29,6 +29,12 @@ export interface ActiveCoin {
   data: CoinData;
 }
 
+export interface CoinDataItem {
+  id: string;
+  name: string;
+  data: CoinData;
+}
+
 export interface CoinMarketData {
   id: string;
   symbol: string;
@@ -155,4 +161,14 @@ export interface CalculatorChartData {
 
 export interface MarketTooltip extends TooltipProps<number, string> {
   color: string;
+}
+
+export interface QueryParams {
+  skip: boolean;
+  id: string;
+}
+
+export interface CoinPriceData {
+  fromCoin: CoinDataItem | null;
+  toCoin: CoinDataItem | null;
 }
