@@ -15,22 +15,19 @@ const ChartsConverterToggle = ({
   return (
     <div className="flex flex-col items-center">
       <div className="px-10 py-5 w-full max-w-[120rem]">
-        <div className="flex bg-sheer-purple p-3 w-1/3">
+        <div className="flex justify-center bg-sheer-purple p-3 rounded-lg w-1/3 min-w-80">
           {coinActive ? (
-            <GradientButton title="Coins" action={handleCoinClick} width="w-full min-w-36" />
+            <GradientButton title="Coins" action={handleCoinClick} width="w-full" />
           ) : (
-            <button
-              className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full min-w-36 dark:text-gray-400"
-              onClick={handleCoinClick}
-            >
+            <button className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400" onClick={handleCoinClick}>
               Coins
             </button>
           )}
           {converterActive ? (
-            <GradientButton title="Convertor" action={handleConverterClick} width="w-full min-w-36" />
+            <GradientButton title="Convertor" action={handleConverterClick} width="w-full" />
           ) : (
             <button
-              className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full min-w-36 dark:text-gray-400"
+              className="bg-purple-secondary dark:bg-dark-modal-icon p-[1.3px] rounded-lg w-full dark:text-gray-400"
               onClick={handleConverterClick}
             >
               Converter
