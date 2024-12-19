@@ -134,9 +134,9 @@ export interface CoinAsset {
 export interface CalculatorInput {
   from: string;
   to: string;
-  interval: number | undefined;
-  investment: number | undefined;
-  growth: number | undefined;
+  interval: number | null;
+  investment: number | null;
+  growth: number | null;
 }
 
 export interface CalcResult {

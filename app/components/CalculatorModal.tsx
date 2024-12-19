@@ -1,10 +1,10 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useGetPricesQuery } from "../redux/features/historicalCoinPriceSlice";
-import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Area, AreaChart } from "recharts";
 import SearchCoinList from "./SearchCoinList";
 import GradientButton from "./GradientButton";
 import CalculatorItem from "./CalculatorItem";
@@ -21,18 +21,17 @@ import { CalcResult, CalculatorChartData, CalculatorInput, Coin, CoinMarketData,
 const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalculatorToggle: VoidFunction; onCalculator: boolean }) => {
   const [coin, setCoin] = useState<CoinMarketData | Coin>({ name: "", id: "", image: "", symbol: "" });
   const [calculatorType, setCalculatorType] = useState<string>("VCA");
-  const [skip, setSkip] = useState<boolean>(true);
   const [calcResult, setCalcResult] = useState<CalcResult>({ totalInvested: 0, coinsValue: 0 });
-  const [CoinData, setCoinData] = useState<CoinData | undefined>(undefined);
+  const [coinData, setCoinData] = useState<CoinData | null>(null);
   const [isValid, setIsValid] = useState<boolean>(false);
   const [showChart, setShowChart] = useState<boolean>(false);
   const currency = useSelector((state: RootState) => state.currency.value);
   const [calculatorInput, setCalculatorInput] = useState<CalculatorInput>({
     from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
     to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
-    interval: undefined,
-    investment: undefined,
-    growth: undefined,
+    interval: null,
+    investment: null,
+    growth: null,
   });
   const [lineChartData, setLineChartData] = useState<CalculatorChartData[]>([]);
   const date = Date.now();
@@ -42,56 +41,40 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
       currency,
       days: Math.ceil((date - Date.parse(calculatorInput.from)) / 86400000),
     },
-    { skip }
+    { skip: !isValid }
   );
 
-  const handleCalculatorInput = (inputType: string, input: number | string) => {
+  const handleCalculatorInput = (inputType: keyof CalculatorInput, input: number | string) => {
     switch (inputType) {
       case "from":
         if (typeof input === "string") {
           if (input.length < 1) {
-            setCalculatorInput({ ...calculatorInput, from: "" });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, from: "" }));
           } else if (calculatorInput.to.length > 0 && Date.parse(input) < Date.parse(calculatorInput.to)) {
-            setCalculatorInput({ ...calculatorInput, from: input });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, from: input }));
           } else if (calculatorInput.to === "") {
-            setCalculatorInput({ ...calculatorInput, from: input });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, from: input }));
           }
         }
         break;
       case "to":
         if (typeof input === "string")
           if (input.length < 1) {
-            setCalculatorInput({ ...calculatorInput, to: "" });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, to: "" }));
           } else if (calculatorInput.from.length > 0 && Date.parse(input) > Date.parse(calculatorInput.from)) {
-            setCalculatorInput({ ...calculatorInput, to: input });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, to: input }));
           } else if (calculatorInput.from === "") {
-            setCalculatorInput({ ...calculatorInput, to: input });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, to: input }));
           }
         break;
       case "interval":
-        if (typeof input === "number") {
-          if (input > 0) {
-            setCalculatorInput({ ...calculatorInput, interval: input });
-          } else {
-            setCalculatorInput({ ...calculatorInput, interval: undefined });
-          }
-        }
-        break;
       case "investment":
-        if (typeof input === "number") {
-          if (input > 0) {
-            setCalculatorInput({ ...calculatorInput, investment: input });
-          } else {
-            setCalculatorInput({ ...calculatorInput, investment: undefined });
-          }
-        }
-        break;
       case "growth":
         if (typeof input === "number") {
           if (input > 0) {
-            setCalculatorInput({ ...calculatorInput, growth: input });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, [inputType]: input }));
           } else {
-            setCalculatorInput({ ...calculatorInput, growth: undefined });
+            setCalculatorInput((calculatorInput) => ({ ...calculatorInput, [inputType]: null }));
           }
         }
         break;
@@ -109,9 +92,9 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
   };
 
   const handleCalculation = () => {
-    if (isValid && CoinData && calculatorInput.interval && calculatorInput.investment && calculatorInput.growth) {
+    if (isValid && coinData && calculatorInput.interval && calculatorInput.investment && calculatorInput.growth) {
       const pricesEachInterval = intervalPrices(
-        CoinData.prices,
+        coinData.prices,
         Date.parse(calculatorInput.from),
         Date.parse(calculatorInput.to),
         calculatorInput.interval
@@ -131,37 +114,10 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
   };
 
   useEffect(() => {
-    if (!onCalculator) {
-      setCoin({ name: "", id: "", image: "", symbol: "" });
-      setCalculatorInput({
-        from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
-        to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
-        interval: undefined,
-        investment: undefined,
-        growth: undefined,
-      });
-      setCalcResult({ totalInvested: 0, coinsValue: 0 });
-      setCoinData(undefined);
-      setSkip(true);
-      setShowChart(false);
-      setLineChartData([]);
-    }
-  }, [onCalculator]);
-
-  useEffect(() => {
-    calculatorInput.from.length > 0 && coin.id.length > 0 ? setSkip(false) : setSkip(true);
-  }, [calculatorInput.from, coin.id]);
-
-  useEffect(() => {
     if (isSuccess && currentData && !isFetching) {
       setCoinData(currentData);
-      setSkip(true);
     }
-  }, [currentData, isSuccess]);
-
-  useEffect(() => {
-    if (isFetching) setCoinData(undefined);
-  }, [isFetching, CoinData]);
+  }, [currentData, isSuccess, isFetching]);
 
   useEffect(() => {
     if (
@@ -170,13 +126,31 @@ const CalculatorModal = ({ handleCalculatorToggle, onCalculator }: { handleCalcu
       calculatorInput.interval &&
       calculatorInput.investment &&
       calculatorInput.growth &&
-      CoinData
+      coin
     ) {
       setIsValid(true);
     } else {
       setIsValid(false);
     }
-  }, [calculatorInput, CoinData, coin]);
+  }, [calculatorInput, coin]);
+
+  useEffect(() => {
+    if (!onCalculator) {
+      setCoin({ name: "", id: "", image: "", symbol: "" });
+      setCalculatorInput({
+        from: new Date(new Date().getFullYear(), 0, 1).toISOString().slice(0, 16).toString(),
+        to: new Date(Date.now()).toISOString().slice(0, 16).toString(),
+        interval: null,
+        investment: null,
+        growth: null,
+      });
+      setCalcResult({ totalInvested: 0, coinsValue: 0 });
+      setCoinData(null);
+      setIsValid(false);
+      setShowChart(false);
+      setLineChartData([]);
+    }
+  }, [onCalculator]);
 
   return (
     <div
