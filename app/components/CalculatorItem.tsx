@@ -14,7 +14,7 @@ const CalculatorItem = ({
   title: string;
   isInput: boolean;
   content: string;
-  value?: number;
+  value?: number | null;
   action?: CallableFunction;
   placeholder?: string;
   isLast?: boolean;
@@ -36,10 +36,10 @@ const CalculatorItem = ({
           <input
             type="number"
             min={1}
-            className="border-1 border-purple-text bg-transparent dark:bg-dark-modal-icon dark:bg-opacity-50 p-2 border-dashed rounded-lg w-full sm:w-32 md:w-full lg:w-full outline-none dark:placeholder-gray-400 placeholder-purple-text"
+            className="border-1 border-purple-text bg-transparent dark:bg-dark-modal-icon dark:bg-opacity-50 p-2 border-dashed rounded-lg w-full sm:w-32 md:w-full lg:w-full dark:placeholder-gray-400 outline-none placeholder-purple-text"
             placeholder={placeholder}
             onChange={(e) => action(inputType, +e.target.value)}
-            value={value === undefined ? "" : value}
+            value={value === null ? "" : value}
           />
         ) : (
           `$${result}`
